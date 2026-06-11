@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://leinguard-gimhae.co.kr/sitemap.xml

@@ -1,0 +1,204 @@
+:root {
+  --primary-color: #1B61FC;
+  --primary-hover: #0D4CD3;
+  --secondary-color: #FF5E00;
+  --secondary-hover: #E05300;
+  --kakao-color: #F5C400;
+  --kakao-hover: #D9A300;
+  --text-dark: #111827;
+  --text-muted: #4B5563;
+  --text-light: #9CA3AF;
+  --bg-light: #F8FAFC;
+  --bg-white: #FFFFFF;
+  --border-color: #F1F5F9;
+  
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Malgun Gothic", sans-serif;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-sans);
+  color: var(--text-dark);
+  background-color: var(--bg-white);
+  line-height: 1.6;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/* 컨테이너 */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* 섹션 공통 */
+section {
+  padding: 6rem 0;
+}
+@media (max-width: 768px) {
+  section {
+    padding: 4rem 0;
+  }
+}
+
+/* 그리드 시스템 */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.grid-8 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+/* 반응형 그리드 제어 (모바일 1열) */
+@media (max-width: 1024px) {
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .grid-4, .grid-8 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4, .grid-8 {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem;
+  }
+}
+
+/* 버튼 스타일 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: none;
+  font-size: 1.05rem;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--bg-white);
+  box-shadow: 0 4px 14px rgba(27, 97, 252, 0.3);
+}
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  box-shadow: 0 6px 20px rgba(27, 97, 252, 0.4);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: var(--bg-white);
+  box-shadow: 0 4px 14px rgba(255, 94, 0, 0.3);
+}
+.btn-secondary:hover {
+  background-color: var(--secondary-hover);
+  box-shadow: 0 6px 20px rgba(255, 94, 0, 0.4);
+}
+
+.btn-kakao {
+  background-color: var(--kakao-color);
+  color: #3C1E1E;
+  box-shadow: 0 4px 14px rgba(247, 230, 0, 0.2);
+}
+.btn-kakao:hover {
+  background-color: var(--kakao-hover);
+}
+
+.btn-outline {
+  background-color: var(--bg-white);
+  color: var(--text-dark);
+  border: 1px solid var(--text-light);
+}
+.btn-outline:hover {
+  background-color: var(--bg-light);
+}
+
+/* 카드형 UI 공통 */
+.card {
+  background-color: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(27, 97, 252, 0.15);
+}
+
+/* 배지 */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 0.3rem 0.8rem;
+  border-radius: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.badge-blue {
+  background-color: rgba(27, 97, 252, 0.08);
+  color: var(--primary-color);
+}
+.badge-orange {
+  background-color: rgba(255, 94, 0, 0.08);
+  color: var(--secondary-color);
+}
+
+/* 줄바꿈 제어 */
+.break-keep {
+  word-break: keep-all;
+}
+
+/* 가독성을 위한 문단 여백 및 가이드 */
+p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
