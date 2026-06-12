@@ -113,7 +113,24 @@ export const App: React.FC = () => {
       ogImage.setAttribute("property", "og:image");
       document.head.appendChild(ogImage);
     }
-    ogImage.setAttribute("content", `${origin}/assets/hero-bg.jpg`);
+    ogImage.setAttribute("content", `${origin}/og-image.jpg`);
+
+    // Open Graph 이미지 크기 명시 (네이버 검색 최적화)
+    let ogImageWidth = document.querySelector('meta[property="og:image:width"]');
+    if (!ogImageWidth) {
+      ogImageWidth = document.createElement("meta");
+      ogImageWidth.setAttribute("property", "og:image:width");
+      document.head.appendChild(ogImageWidth);
+    }
+    ogImageWidth.setAttribute("content", "1200");
+
+    let ogImageHeight = document.querySelector('meta[property="og:image:height"]');
+    if (!ogImageHeight) {
+      ogImageHeight = document.createElement("meta");
+      ogImageHeight.setAttribute("property", "og:image:height");
+      document.head.appendChild(ogImageHeight);
+    }
+    ogImageHeight.setAttribute("content", "630");
 
     // 3. JSON-LD 동적 삽입/업데이트
     let jsonLdEl = document.getElementById("json-ld-seo");
@@ -130,7 +147,7 @@ export const App: React.FC = () => {
       "@type": "LocalBusiness",
       "name": BRAND_NAME,
       "url": origin,
-      "image": `${origin}/assets/hero-bg.jpg`,
+      "image": `${origin}/og-image.jpg`,
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "김해시",
