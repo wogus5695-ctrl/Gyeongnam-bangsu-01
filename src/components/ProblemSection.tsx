@@ -46,7 +46,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({ keywordConfig })
   return (
     <section className="problem-section" id="problems" style={{ 
       backgroundColor: "var(--bg-light)",
-      padding: "3.5rem 0",
+      padding: "5.5rem 0",
       borderBottom: "1px solid rgba(0, 0, 0, 0.03)"
     }}>
       <div className="container">
@@ -54,7 +54,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({ keywordConfig })
           display: "flex",
           flexDirection: "row",
           gap: "3rem",
-          alignItems: "center",
+          alignItems: "flex-start",
           textAlign: "left"
         }}>
           {/* 좌측: 타이틀 및 설명 영역 */}
