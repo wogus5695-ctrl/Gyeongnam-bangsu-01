@@ -22,7 +22,7 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({ keywordConfig })
     {
       id: "rooftop",
       name: "옥상방수",
-      keyText: "옥상 누수·방수층 노후·지붕 방수까지 현장 상태에 맞춰 안내합니다",
+      keyText: "손상된 누수층을 복구하고, 옥상/지붕 빗물누수 해결",
       tags: ["옥상방수", "옥상누수", "지붕방수", "건물방수"],
       imageUrl: placeholderImages.rooftopWaterproof,
       altDefault: "옥상방수 및 옥상누수 보수 작업 이미지",
@@ -31,7 +31,7 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({ keywordConfig })
     {
       id: "exterior",
       name: "외벽방수·발수",
-      keyText: "외벽 크랙·빗물 유입·표면 흡수 문제를 함께 확인합니다",
+      keyText: "확인하기 어려운 벽면 누수 잡는 20년 베테랑",
       tags: ["외벽방수", "외벽발수", "외벽누수", "건물방수"],
       imageUrl: placeholderImages.exteriorWaterproof,
       altDefault: "외벽방수와 외벽발수 작업 이미지",
@@ -40,7 +40,7 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({ keywordConfig })
     {
       id: "painting",
       name: "외벽도색",
-      keyText: "도막 박리·오염·바탕면 상태를 점검한 뒤 도장 공정을 안내합니다",
+      keyText: "건물의 수명을 늘리는 공정을 안내",
       tags: ["외벽도색", "도막박리", "바탕면정리", "외벽오염"],
       imageUrl: placeholderImages.exteriorPainting,
       altDefault: "외벽도색과 바탕면 정리 작업 이미지"
