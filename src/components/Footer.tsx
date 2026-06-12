@@ -1,9 +1,11 @@
 import React from "react";
 import {
   BRAND_NAME,
+  COMPANY_NAME,
   REPRESENTATIVE_NAME,
   BUSINESS_NUMBER,
   CONTACT_PHONE,
+  HAS_COMPANY,
   HAS_REPRESENTATIVE,
   HAS_BUSINESS_NUMBER,
   HAS_FOOTER_INFO,
@@ -101,6 +103,11 @@ export const Footer: React.FC = () => {
             {/* 사업자/대표 정보 (있을 때만 조건부 렌더링) */}
             {HAS_FOOTER_INFO ? (
               <p style={{ color: "#6b7280", margin: 0, fontWeight: 500 }} className="break-keep">
+                {HAS_COMPANY && (
+                  <span style={{ marginRight: "1.5rem" }}>
+                    상호: {COMPANY_NAME}
+                  </span>
+                )}
                 {HAS_REPRESENTATIVE && (
                   <span style={{ marginRight: "1.5rem" }}>
                     대표자: {REPRESENTATIVE_NAME}
