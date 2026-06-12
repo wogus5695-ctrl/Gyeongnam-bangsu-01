@@ -47,7 +47,7 @@ export const DEFAULT_KEYWORD_CONFIG: KeywordConfig = {
   ],
   imageDesc: "외벽방수와 외벽도색 현장 작업 이미지",
   title: "부산·경남·울산 방수·도색 전문 | 레인가드",
-  description: "부산·경남·울산 외벽방수, 외벽발수, 옥상방수, 지붕방수, 외벽도색, 옥상누수, 외벽누수, 건물방수 상담을 진행합니다."
+  description: "부산·경남·울산 외벽방수, 옥상방수, 외벽도색, 건물방수 상담을 진행합니다. 외벽 크랙, 옥상 누수, 도막 박리 등 현장 상태를 확인하고 필요한 공정만 안내합니다."
 };
 
 // 8가지 서비스 키워드별 동적 문구 세트
@@ -82,7 +82,7 @@ const keywordTemplates: Record<string, Omit<KeywordConfig, "isActive" | "region"
     ],
     imageDesc: "김해 외벽발수 현장 작업 이미지",
     title: "김해 외벽발수 전문 시공 | 레인가드",
-    description: "김해 외벽발수 전문 시공 안내. 외벽 표면이 빗물을 흡수하거나 오염, 백화, 수분 자국이 반복된다면 수분 흡수 저감을 위한 발수 시공을 검토해 보세요."
+    description: "김해 외벽발수 상담. 외벽 표면의 수분 흡수와 오염 상태를 확인하고 발수제 적용이 필요한지 안내합니다."
   },
   "옥상방수": {
     topLabel: "김해 옥상방수 현장진단",

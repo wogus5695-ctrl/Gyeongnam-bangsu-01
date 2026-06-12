@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://leinguard-gimhae.co.kr/sitemap.xml
+Sitemap: https://gyeongnam-bangsu-01.vercel.app/sitemap.xml
