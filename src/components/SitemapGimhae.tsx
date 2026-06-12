@@ -1,6 +1,6 @@
 import React from "react";
-import { activeKeywordRegions } from "../data/regions";
 import { services } from "../data/services";
+import { generateKeywordItems } from "../data/keywords";
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -17,21 +17,64 @@ const cardDescriptions: Record<string, string> = {
 };
 
 export const SitemapGimhae: React.FC = () => {
-  // activeKeywordRegions("김해")와 services(8종)를 다중 루프로 매핑해 김해 8대 키워드 링크 생성
-  const keywordLinks = activeKeywordRegions.flatMap((region) =>
-    services.map((service) => {
-      const keyword = `${region} ${service.name}`;
-      const url = `/?k=${region}-${service.name}`;
-      const desc = cardDescriptions[service.key] || `${service.name} 안내 페이지입니다.`;
-      
-      return {
-        keyword,
-        url,
-        desc,
-        serviceKey: service.key
-      };
-    })
-  );
+  // 한글 서비스 명칭과 영문 서비스 키 매핑
+  const serviceKeyMap = services.reduce((acc, curr) => {
+    acc[curr.name] = curr.key;
+    return acc;
+  }, {} as Record<string, string>);
+
+  // 전체 키워드 중 phase 1만 노출 (시단위 + 마산 별칭)
+  const allKeywords = generateKeywordItems();
+  const visibleKeywords = allKeywords.filter(k => k.phase === 1);
+
+  // 지역 유형에 따라 그룹화
+  const cityKeywords = visibleKeywords.filter(k => k.type === "city");
+  const aliasKeywords = visibleKeywords.filter(k => k.type === "alias");
+
+  // 개별 키워드 아이템 렌더러 함수
+  const renderKeywordLink = (link: typeof visibleKeywords[0]) => {
+    const serviceKey = serviceKeyMap[link.service] || "";
+    const desc = cardDescriptions[serviceKey] || `${link.service} 안내 페이지입니다.`;
+
+    return (
+      <a
+        key={link.label}
+        href={link.href}
+        className="card sitemap-link-card"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          padding: "1.5rem 2rem",
+          textDecoration: "none",
+          textAlign: "left",
+          borderRadius: "16px",
+          border: "1px solid var(--border-color)",
+          backgroundColor: "var(--bg-white)",
+          transition: "all 0.2s ease"
+        }}
+      >
+        <span style={{
+          fontSize: "1.15rem",
+          fontWeight: 900,
+          color: "var(--primary-color)",
+          marginBottom: "0.3rem",
+          letterSpacing: "-0.02em"
+        }}>
+          {link.label} →
+        </span>
+        
+        <span style={{
+          fontSize: "0.9rem",
+          color: "var(--text-muted)",
+          fontWeight: 500,
+          lineHeight: "1.5"
+        }}>
+          {desc}
+        </span>
+      </a>
+    );
+  };
 
   return (
     <div className="app-container" style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
@@ -53,7 +96,7 @@ export const SitemapGimhae: React.FC = () => {
               marginBottom: "1.5rem",
               letterSpacing: "-0.04em"
             }}>
-              김해 방수·도색 키워드 안내
+              경남 방수·도색 키워드 안내
             </h1>
             
             <p style={{
@@ -62,59 +105,58 @@ export const SitemapGimhae: React.FC = () => {
               fontWeight: 500,
               lineHeight: "1.6"
             }} className="break-keep">
-              김해 지역에서 제공하는 외벽방수, 외벽발수, 옥상방수, 지붕방수, 외벽도색, 옥상누수, 외벽누수, 건물방수 서비스 안내 페이지입니다. 각 키워드를 클릭하면 해당 서비스 안내 페이지로 이동합니다.
+              경남 시단위와 주요 검색 별칭 등 레인가드가 제공하는 각 키워드별 상세 안내 페이지입니다. 키워드를 클릭하면 해당 서비스 설명 페이지로 연결됩니다.
             </p>
           </div>
 
-          {/* 8대 김해 키워드 카드 리스트 */}
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "1fr",
-            gap: "1.25rem",
-            marginBottom: "4rem"
-          }}>
-            {keywordLinks.map((link) => (
-              <a
-                key={link.keyword}
-                href={link.url}
-                className="card sitemap-link-card"
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "flex-start",
-                  padding: "1.75rem 2.25rem",
-                  textDecoration: "none",
-                  textAlign: "left",
-                  borderRadius: "16px",
-                  border: "1px solid var(--border-color)",
-                  backgroundColor: "var(--bg-white)",
-                  transition: "all 0.2s ease"
-                }}
-              >
-                <span style={{
-                  fontSize: "1.2rem",
-                  fontWeight: 900,
-                  color: "var(--primary-color)",
-                  marginBottom: "0.4rem",
-                  letterSpacing: "-0.02em"
-                }}>
-                  {link.keyword} →
-                </span>
-                
-                <span style={{
-                  fontSize: "0.92rem",
-                  color: "var(--text-muted)",
-                  fontWeight: 500,
-                  lineHeight: "1.5"
-                }}>
-                  {link.desc}
-                </span>
-              </a>
-            ))}
+          {/* 1. 경남 시단위 키워드 그룹 */}
+          <div style={{ marginBottom: "4rem" }}>
+            <h2 style={{
+              fontSize: "1.5rem",
+              fontWeight: 900,
+              color: "var(--text-dark)",
+              marginBottom: "1.5rem",
+              letterSpacing: "-0.03em",
+              borderLeft: "4px solid var(--primary-color)",
+              paddingLeft: "0.75rem"
+            }}>
+              📍 경남 시단위 키워드 ({cityKeywords.length}개)
+            </h2>
+            
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "1fr",
+              gap: "1rem"
+            }}>
+              {cityKeywords.map(renderKeywordLink)}
+            </div>
+          </div>
+
+          {/* 2. 마산 검색 별칭 키워드 그룹 */}
+          <div style={{ marginBottom: "4rem" }}>
+            <h2 style={{
+              fontSize: "1.5rem",
+              fontWeight: 900,
+              color: "var(--text-dark)",
+              marginBottom: "1.5rem",
+              letterSpacing: "-0.03em",
+              borderLeft: "4px solid var(--accent-color, #f43f5e)",
+              paddingLeft: "0.75rem"
+            }}>
+              🔍 마산 검색 별칭 키워드 ({aliasKeywords.length}개)
+            </h2>
+            
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "1fr",
+              gap: "1rem"
+            }}>
+              {aliasKeywords.map(renderKeywordLink)}
+            </div>
           </div>
 
           {/* 홈으로 돌아가기 버튼 */}
-          <div style={{ textAlign: "center" }}>
+          <div style={{ textAlign: "center", marginTop: "5rem" }}>
             <a
               href="/"
               className="btn btn-outline"
@@ -137,13 +179,13 @@ export const SitemapGimhae: React.FC = () => {
 
       <style>{`
         .sitemap-link-card:hover {
-          transform: translateX(5px) !important;
-          border-color: rgba(27, 97, 252, 0.25) !important;
+          transform: translateX(6px) !important;
+          border-color: rgba(27, 97, 252, 0.3) !important;
           box-shadow: var(--shadow-md) !important;
         }
         @media (max-width: 768px) {
           .sitemap-link-card {
-            padding: 1.5rem !important;
+            padding: 1.25rem 1.5rem !important;
           }
           .sitemap-link-card span:first-child {
             font-size: 1.05rem !important;

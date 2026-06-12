@@ -1,3 +1,5 @@
+import { allRegions } from "./regions";
+
 export interface KeywordConfig {
   isActive: boolean;
   region: string;
@@ -50,7 +52,7 @@ export const DEFAULT_KEYWORD_CONFIG: KeywordConfig = {
   description: "부산·경남·울산 외벽방수, 옥상방수, 외벽도색, 건물방수 상담을 진행합니다. 외벽 크랙, 옥상 누수, 도막 박리 등 현장 상태를 확인하고 필요한 공정만 안내합니다."
 };
 
-// 8가지 서비스 키워드별 동적 문구 세트
+// 8가지 서비스 키워드별 동적 문구 세트 (치환 템플릿)
 const keywordTemplates: Record<string, Omit<KeywordConfig, "isActive" | "region" | "service" | "fullKeyword">> = {
   "외벽방수": {
     topLabel: "김해 외벽방수 현장진단",
@@ -152,7 +154,7 @@ const keywordTemplates: Record<string, Omit<KeywordConfig, "isActive" | "region"
     topLabel: "김해 외벽누수 원인진단",
     h1: "김해 외벽누수,\n유입 경로를 먼저 밝혀냅니다",
     heroBody: "실내 곰팡이와 물자국의 원인이 되는\n외벽 균열 및 창틀 코킹 누수 지점을 진단합니다.",
-    subCopy: "실내 물자국과 외벽 상태 사진을 함께 보내주시면 외벽누수 가능성을 먼저 확인할 수 있습니다.",
+    subCopy: "실내 물자국 and 외벽 상태 사진을 함께 보내주시면 외벽누수 가능성을 먼저 확인할 수 있습니다.",
     ctaText: "김해 외벽누수 상담",
     kakaoCtaText: "유입 경로 확인받기",
     seoSubLabel: "김해 외벽누수·외벽방수·외벽발수 상담 가능",
@@ -182,6 +184,12 @@ const keywordTemplates: Record<string, Omit<KeywordConfig, "isActive" | "region"
   }
 };
 
+// "김해" 문자열을 주어진 지역명(region)으로 동적 변환해 주는 헬퍼 함수
+function replaceGimhae(text: string, region: string): string {
+  if (!text) return text;
+  return text.replace(/김해/g, region);
+}
+
 /**
  * URL query parameter 'k'를 파싱하여 키워드 매핑 데이터를 리턴하는 헬퍼 유틸리티
  */
@@ -201,20 +209,32 @@ export function parseQueryKeyword(searchString: string): KeywordConfig {
 
     const [region, service] = parts;
 
-    // 지역명이 '김해'가 아니거나, 허용된 8대 시공에 미포함 시 fallback
-    if (region !== "김해" || !ALLOWED_SERVICES.includes(service)) {
+    // 전체 유효 지역 검증 (regions.ts에 정의된 전체 지역 풀 매칭)
+    const foundRegion = allRegions.find(r => r.name === region);
+    if (!foundRegion || !ALLOWED_SERVICES.includes(service)) {
       return DEFAULT_KEYWORD_CONFIG;
     }
 
     const template = keywordTemplates[service];
     if (!template) return DEFAULT_KEYWORD_CONFIG;
 
+    // 템플릿의 모든 "김해" 문구를 동적으로 들어온 지역명으로 대체하여 반환
     return {
       isActive: true,
       region,
       service,
       fullKeyword: `${region} ${service}`,
-      ...template
+      topLabel: replaceGimhae(template.topLabel, region),
+      h1: replaceGimhae(template.h1, region),
+      heroBody: replaceGimhae(template.heroBody, region),
+      subCopy: replaceGimhae(template.subCopy, region),
+      ctaText: replaceGimhae(template.ctaText, region),
+      kakaoCtaText: replaceGimhae(template.kakaoCtaText, region),
+      seoSubLabel: template.seoSubLabel ? replaceGimhae(template.seoSubLabel, region) : undefined,
+      badges: template.badges.map(badge => replaceGimhae(badge, region)),
+      imageDesc: replaceGimhae(template.imageDesc, region),
+      title: replaceGimhae(template.title, region),
+      description: replaceGimhae(template.description, region)
     } as KeywordConfig;
   } catch (e) {
     return DEFAULT_KEYWORD_CONFIG;
@@ -222,7 +242,51 @@ export function parseQueryKeyword(searchString: string): KeywordConfig {
 }
 
 export const SITEMAP_GIMHAE_SEO = {
-  title: "김해 방수·도색 키워드 안내 | 레인가드",
-  description: "김해 외벽방수, 외벽발수, 옥상방수, 지붕방수, 외벽도색, 옥상누수, 외벽누수, 건물방수 서비스 안내 링크를 확인할 수 있습니다."
+  title: "경남 방수·도색 키워드 안내 | 레인가드",
+  description: "경남 시단위, 마산 별칭 등 주요 방수·도색 서비스 키워드와 안내 링크를 확인할 수 있습니다."
 };
 
+// Sitemap용 전체 키워드 항목 정보 구조
+export interface KeywordItem {
+  label: string;
+  k: string;
+  href: string;
+  region: string;
+  service: string;
+  type: "city" | "alias" | "legal-dong";
+  parent: string;
+  phase: number;
+}
+
+/**
+ * 중복 없는 전체 조합 키워드 생성기
+ */
+export function generateKeywordItems(): KeywordItem[] {
+  const items: KeywordItem[] = [];
+  const seenLabels = new Set<string>();
+
+  allRegions.forEach(region => {
+    ALLOWED_SERVICES.forEach(service => {
+      const label = `${region.name} ${service}`;
+      
+      // 중복 방지 안전장치
+      if (seenLabels.has(label)) {
+        return;
+      }
+      seenLabels.add(label);
+
+      items.push({
+        label,
+        k: `${region.name}-${service}`,
+        href: `/?k=${encodeURIComponent(`${region.name}-${service}`)}`,
+        region: region.name,
+        service,
+        type: region.type,
+        parent: region.parent,
+        phase: region.phase
+      });
+    });
+  });
+
+  return items;
+}
