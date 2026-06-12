@@ -9,8 +9,10 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
   // 기본/동적 페이지 데이터 추출
   const topLabel = keywordConfig.topLabel;
-  // 신뢰 배지 2개로 제한
-  const badges = keywordConfig.badges.slice(0, 2);
+
+  // 강조 배지 보강 목록
+  const pcBadges = ["사진 상담 가능", "누수 원인 확인", "필요 공정만 안내"];
+  const moBadges = ["사진 상담 가능", "원인 확인 후 안내"];
 
   return (
     <section className="hero-section hero-section-bg" 
@@ -26,8 +28,9 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
       }}
     >
       <div className="container">
-        {/* 우측 미디어 카드는 제거하고 좌측 텍스트 영역만 너비 제한으로 렌더링 */}
-        <div className="hero-content" style={{ textAlign: "left", maxWidth: "620px", width: "100%" }}>
+        {/* 우측 작업 현장 이미지가 보이도록 좌측 텍스트 영역의 가로폭 최대 600px로 세팅 */}
+        <div className="hero-content" style={{ textAlign: "left", maxWidth: "600px", width: "100%" }}>
+          {/* 1. 라벨 */}
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1rem" }}>
             <span className="badge badge-blue" style={{
               backgroundColor: "rgba(27, 97, 252, 0.15)",
@@ -38,10 +41,11 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
             </span>
           </div>
           
+          {/* 2. H1 */}
           <h1 style={{
-            fontSize: "2.8rem",
+            fontSize: "2.6rem",
             fontWeight: 900,
-            lineHeight: "1.3",
+            lineHeight: "1.35",
             color: "#ffffff",
             margin: "0 0 1rem 0",
             letterSpacing: "-0.03em",
@@ -50,6 +54,7 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
             {keywordConfig.h1}
           </h1>
           
+          {/* 3. 본문 */}
           <p style={{
             fontSize: "1.05rem",
             fontWeight: 500,
@@ -61,7 +66,7 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
             {keywordConfig.heroBody}
           </p>
 
-          {/* SEO 보조 문구 노출 (본문 텍스트 아래로 이동하여 튀지 않게 조정) */}
+          {/* 4. 보조 키워드 문구 (본문 아래 차분한 톤으로 배치) */}
           {keywordConfig.seoSubLabel && (
             <p style={{
               fontSize: "0.92rem",
@@ -74,24 +79,24 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
             </p>
           )}
 
-          {/* 신뢰 배지 2개 - 모바일에서는 미디어 쿼리로 display: none 처리 */}
+          {/* 5. 강조 배지 (PC용 - 3개 노출) */}
           <div style={{
             display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
+            gridTemplateColumns: "repeat(3, 1fr)",
             gap: "0.5rem",
             marginBottom: "0px",
-            maxWidth: "360px"
-          }} className="hero-badges">
-            {badges.map((badgeText, idx) => (
+            maxWidth: "540px"
+          }} className="hero-badges-pc">
+            {pcBadges.map((badgeText, idx) => (
               <div key={idx} style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "0.78rem",
-                fontWeight: 600,
-                color: "#cbd5e1",
-                backgroundColor: "rgba(255, 255, 255, 0.04)",
-                border: "1px solid rgba(255, 255, 255, 0.08)",
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                color: "#f8fafc",
+                backgroundColor: "rgba(255, 255, 255, 0.08)",
+                border: "1px solid rgba(255, 255, 255, 0.18)",
                 padding: "0.6rem 0.8rem",
                 borderRadius: "8px",
                 whiteSpace: "nowrap"
@@ -100,6 +105,34 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
               </div>
             ))}
           </div>
+
+          {/* 5. 강조 배지 (모바일용 - 2개 노출) */}
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: "0.5rem",
+            marginBottom: "0px",
+            maxWidth: "360px"
+          }} className="hero-badges-mo">
+            {moBadges.map((badgeText, idx) => (
+              <div key={idx} style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "0.76rem",
+                fontWeight: 700,
+                color: "#f8fafc",
+                backgroundColor: "rgba(255, 255, 255, 0.08)",
+                border: "1px solid rgba(255, 255, 255, 0.18)",
+                padding: "0.55rem 0.7rem",
+                borderRadius: "8px",
+                whiteSpace: "nowrap"
+              }} className="hero-badge-item">
+                {badgeText}
+              </div>
+            ))}
+          </div>
+
         </div>
       </div>
       
@@ -107,12 +140,19 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
         .hero-section-bg {
           background-image: linear-gradient(
             90deg,
-            rgba(5, 15, 35, 0.95) 0%,
-            rgba(5, 15, 35, 0.82) 45%,
-            rgba(5, 15, 35, 0.35) 100%
+            rgba(5, 15, 35, 0.88) 0%,
+            rgba(5, 15, 35, 0.72) 38%,
+            rgba(5, 15, 35, 0.32) 68%,
+            rgba(5, 15, 35, 0.12) 100%
           ), url('${heroImages.default}');
           background-size: cover;
           background-position: center right;
+        }
+        .hero-badges-pc {
+          display: grid;
+        }
+        .hero-badges-mo {
+          display: none;
         }
         @media (max-width: 768px) {
           .hero-section {
@@ -124,8 +164,10 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
           }
           .hero-section-bg {
             background-image: linear-gradient(
-              rgba(5, 15, 35, 0.93),
-              rgba(5, 15, 35, 0.93)
+              180deg,
+              rgba(5, 15, 35, 0.82) 0%,
+              rgba(5, 15, 35, 0.68) 45%,
+              rgba(5, 15, 35, 0.50) 100%
             ), url('${heroImages.default}');
             background-position: 65% center;
           }
@@ -141,10 +183,13 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
           }
           .hero-seo-sub {
             font-size: 0.82rem !important;
-            margin-bottom: 0rem !important;
+            margin-bottom: 1rem !important;
           }
-          .hero-badges {
+          .hero-badges-pc {
             display: none !important;
+          }
+          .hero-badges-mo {
+            display: grid !important;
           }
         }
       `}</style>
