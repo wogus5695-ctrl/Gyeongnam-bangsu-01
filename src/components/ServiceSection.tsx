@@ -1,5 +1,5 @@
 import React from "react";
-import { KAKAO_URL, HAS_KAKAO } from "../data/brand";
+
 import { placeholderImages } from "../data/images";
 import type { KeywordConfig } from "../data/keywords";
 
@@ -273,40 +273,7 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({ keywordConfig })
           })}
         </div>
 
-        {/* 하단 CTA 영역 */}
-        <div style={{
-          marginTop: "3.5rem",
-          textAlign: "center",
-          padding: "1.75rem",
-          backgroundColor: "var(--bg-light)",
-          borderRadius: "24px",
-          border: "1px solid var(--border-color)"
-        }} className="services-footer-cta">
-          <p style={{
-            fontSize: "1rem",
-            fontWeight: 700,
-            color: "var(--text-dark)",
-            marginBottom: "0.75rem"
-          }} className="break-keep">
-            사진으로 현재 상태를 보내주시면 필요한 공정부터 안내드립니다.
-          </p>
-          <a
-            href={HAS_KAKAO ? KAKAO_URL : "#contact"}
-            target={HAS_KAKAO ? "_blank" : "_self"}
-            rel={HAS_KAKAO ? "noopener noreferrer" : undefined}
-            className="btn btn-kakao"
-            style={{
-              padding: "0.75rem 1.75rem",
-              fontSize: "0.95rem",
-              fontWeight: 850,
-              backgroundColor: "var(--kakao-color)",
-              color: "#3C1E1E",
-              boxShadow: "0 4px 12px rgba(245, 196, 0, 0.12)"
-            }}
-          >
-            💬 사진 견적 문의
-          </a>
-        </div>
+
 
       </div>
 
