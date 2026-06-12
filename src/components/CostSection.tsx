@@ -12,11 +12,11 @@ export const CostSection: React.FC<CostSectionProps> = ({ keywordConfig }) => {
 
   // 기본 문구 설정
   let label = "견적 안내";
-  let title = "방수·도색 비용은 현장 상태에 따라 달라집니다";
+  let title = "현장에 꼭 필요한\n공정만을 안내드립니다.";
   let body = "시공 면적, 균열 범위, 기존 방수층·도막 상태, 작업 높이에 따라 필요한 공정이 달라집니다.\n사진 상담 또는 현장 확인 후 필요한 범위만 안내드립니다.";
 
   if (keywordConfig.isActive) {
-    title = `${keywordConfig.fullKeyword} 비용은 현장 상태에 따라 달라집니다`;
+    title = `${keywordConfig.fullKeyword} 현장에 꼭 필요한\n공정만을 안내드립니다.`;
   }
 
   const renderWithLineBreaks = (text: string) => {
