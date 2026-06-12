@@ -1,11 +1,8 @@
 import React from "react";
-import { CONTACT_PHONE, KAKAO_URL, HAS_PHONE, HAS_KAKAO } from "../data/brand";
+import { CONTACT_PHONE, HAS_PHONE } from "../data/brand";
 
 export const FloatingCTA: React.FC = () => {
   const phoneHref = HAS_PHONE ? `tel:${CONTACT_PHONE}` : "#contact";
-  const kakaoHref = HAS_KAKAO ? KAKAO_URL : "#contact";
-  const kakaoTarget = HAS_KAKAO ? "_blank" : "_self";
-  const kakaoRel = HAS_KAKAO ? "noopener noreferrer" : undefined;
 
   return (
     <>
@@ -49,30 +46,7 @@ export const FloatingCTA: React.FC = () => {
         padding: "0.6rem 1rem calc(0.6rem + env(safe-area-inset-bottom, 0px)) 1rem", // iOS 세이프 에리아 대응
         gap: "0.75rem"
       }}>
-        {/* 카카오톡 상담 바로가기 */}
-        <a
-          href={kakaoHref}
-          target={kakaoTarget}
-          rel={kakaoRel}
-          style={{
-            flex: 1,
-            backgroundColor: "var(--kakao-color)",
-            color: "#3C1E1E",
-            textDecoration: "none",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "0.5rem",
-            height: "50px",
-            borderRadius: "12px",
-            fontWeight: 900,
-            fontSize: "1rem",
-            boxSizing: "border-box"
-          }}
-        >
-          <span>💬</span>
-          <span>카톡상담</span>
-        </a>
+
 
         {/* 전화상담 바로가기 */}
         <a

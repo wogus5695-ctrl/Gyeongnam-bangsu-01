@@ -207,6 +207,9 @@ export const CostSection: React.FC<CostSectionProps> = ({ keywordConfig }) => {
             width: 100%;
             padding: 0.95rem 1.5rem;
           }
+          .cost-buttons .btn-outline {
+            display: none !important;
+          }
         }
       `}</style>
     </section>
