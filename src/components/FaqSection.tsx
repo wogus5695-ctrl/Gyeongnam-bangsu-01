@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import { faqs } from "../data/faq";
+import { getDynamicFaqs } from "../data/faq";
+import type { KeywordConfig } from "../data/keywords";
 
-export const FaqSection: React.FC = () => {
+interface FaqSectionProps {
+  keywordConfig: KeywordConfig;
+}
+
+export const FaqSection: React.FC<FaqSectionProps> = ({ keywordConfig }) => {
   const [openId, setOpenId] = useState<number | null>(null);
+  const displayFaqs = getDynamicFaqs(keywordConfig);
 
   const handleToggle = (id: number) => {
     setOpenId((prev) => (prev === id ? null : id));
@@ -35,7 +41,7 @@ export const FaqSection: React.FC = () => {
 
         {/* 아코디언 그룹 */}
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          {faqs.map((faq) => {
+          {displayFaqs.map((faq) => {
             const isOpen = openId === faq.id;
             return (
               <div

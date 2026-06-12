@@ -1,5 +1,5 @@
 import React from "react";
-import { CONTACT_PHONE, HAS_PHONE } from "../data/brand";
+import { CONTACT_PHONE, KAKAO_URL, HAS_PHONE, HAS_KAKAO } from "../data/brand";
 import type { KeywordConfig } from "../data/keywords";
 import { sectionImages } from "../data/images";
 
@@ -12,37 +12,11 @@ export const CostSection: React.FC<CostSectionProps> = ({ keywordConfig }) => {
 
   // 기본 문구 설정
   let label = "견적 안내";
-  let title = "방수·도색 비용은\n현장 상태에 따라 달라집니다";
-  let body = "시공 면적, 건물 높이, 균열 범위, 기존 방수층과 도막 상태에 따라 필요한 공정이 달라집니다.\n사진 상담 또는 현장 확인 후 필요한 범위만 안내드립니다.";
-  let subLabel = "무조건 저렴한 견적보다, 하자 가능성을 줄이는 공정 기준으로 확인하는 것이 중요합니다.";
+  let title = "방수·도색 비용은 현장 상태에 따라 달라집니다";
+  let body = "시공 면적, 균열 범위, 기존 방수층·도막 상태, 작업 높이에 따라 필요한 공정이 달라집니다.\n사진 상담 또는 현장 확인 후 필요한 범위만 안내드립니다.";
 
   if (keywordConfig.isActive) {
-    const service = keywordConfig.service;
-    if (service === "외벽방수") {
-      title = "김해 외벽방수 비용은\n외벽 상태에 따라 달라집니다";
-      body = "외벽 크랙 범위, 조인트 상태, 창호 주변 틈, 작업 높이에 따라 필요한 보수·방수 공정이 달라집니다.\n사진 상담 후 대략적인 범위를 먼저 안내드립니다.";
-    } else if (service === "외벽발수") {
-      title = "김해 외벽발수 비용은\n표면 상태에 따라 달라집니다";
-      body = "외벽 재질, 수분 흡수 상태, 오염 정도, 발수제 적용 범위에 따라 시공 방식이 달라집니다.\n현장 상태를 확인한 뒤 필요한 범위를 안내드립니다.";
-    } else if (service === "옥상방수") {
-      title = "김해 옥상방수 비용은\n방수층 상태에 따라 달라집니다";
-      body = "옥상 면적, 바닥 균열, 방수층 들뜸, 배수구 주변 손상 여부에 따라 부분 보수와 전체 방수 범위가 달라집니다.\n사진 또는 현장 확인 후 안내드립니다.";
-    } else if (service === "지붕방수") {
-      title = "김해 지붕방수 비용은\n지붕 구조에 따라 달라집니다";
-      body = "판넬, 기와, 슬라브 등 지붕 구조와 접합부 상태, 작업 높이에 따라 필요한 보강 공정이 달라집니다.\n누수 위치 확인 후 견적 범위를 안내드립니다.";
-    } else if (service === "외벽도색") {
-      title = "김해 외벽도색 비용은\n바탕면 상태에 따라 달라집니다";
-      body = "도막 박리, 오염, 미세 균열, 면 정리 범위와 도장 면적에 따라 필요한 공정이 달라집니다.\n도색 전 바탕면 상태를 먼저 확인합니다.";
-    } else if (service === "옥상누수") {
-      title = "김해 옥상누수 보수 비용은\n누수 원인에 따라 달라집니다";
-      body = "방수층 노후, 배수구 주변 손상, 파라펫 접합부 문제 등 실제 유입 지점에 따라 보수 범위가 달라집니다.\n누수 흔적과 옥상 상태를 함께 확인합니다.";
-    } else if (service === "외벽누수") {
-      title = "김해 외벽누수 보수 비용은\n유입 경로에 따라 달라집니다";
-      body = "외벽 크랙, 창호 주변, 조인트 부위, 마감재 틈 등 빗물 유입 경로에 따라 보수 방식이 달라집니다.\n실내 물자국과 외벽 상태를 함께 확인합니다.";
-    } else if (service === "건물방수") {
-      title = "김해 건물방수 비용은\n점검 범위에 따라 달라집니다";
-      body = "외벽, 옥상, 지붕 등 건물 전체의 누수 취약 부위와 시공 범위에 따라 비용이 달라집니다.\n현장 상태를 확인한 뒤 필요한 공정만 안내드립니다.";
-    }
+    title = `${keywordConfig.fullKeyword} 비용은 현장 상태에 따라 달라집니다`;
   }
 
   const renderWithLineBreaks = (text: string) => {
@@ -75,13 +49,17 @@ export const CostSection: React.FC<CostSectionProps> = ({ keywordConfig }) => {
           <span className="cost-label">{label}</span>
           <h2 className="cost-title">{renderWithLineBreaks(title)}</h2>
           <p className="cost-desc">{renderWithLineBreaks(body)}</p>
-          <p className="cost-sub">{subLabel}</p>
           <div className="cost-buttons">
             <a href={HAS_PHONE ? `tel:${CONTACT_PHONE}` : "#contact"} className="btn btn-primary">
-              📞 무료 방문 견적 예약
+              📞 전화로 견적 상담
             </a>
-            <a href="#contact" className="btn btn-outline">
-              📝 온라인 문의 신청
+            <a 
+              href={HAS_KAKAO ? KAKAO_URL : "#contact"} 
+              target={HAS_KAKAO ? "_blank" : "_self"} 
+              rel={HAS_KAKAO ? "noopener noreferrer" : undefined} 
+              className="btn btn-outline"
+            >
+              💬 사진 보내고 견적받기
             </a>
           </div>
         </div>

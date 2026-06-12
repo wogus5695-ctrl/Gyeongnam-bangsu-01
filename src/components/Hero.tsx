@@ -51,6 +51,19 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
             {keywordConfig.h1}
           </h1>
           
+          {/* SEO 보조 문구 노출 */}
+          {keywordConfig.seoSubLabel && (
+            <p style={{
+              fontSize: "1.1rem",
+              fontWeight: 800,
+              color: "#60a5fa",
+              marginTop: "-0.5rem",
+              marginBottom: "1.25rem"
+            }} className="break-keep">
+              {keywordConfig.seoSubLabel}
+            </p>
+          )}
+          
           <p style={{
             fontSize: "1.05rem",
             fontWeight: 500,
@@ -61,19 +74,6 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
           }} className="break-keep hero-body-text">
             {keywordConfig.heroBody}
           </p>
-
-          {/* SEO 보조 문구 노출 */}
-          {keywordConfig.seoSubLabel && (
-            <p style={{
-              fontSize: "0.95rem",
-              fontWeight: 700,
-              color: "#60a5fa",
-              marginTop: "-0.75rem",
-              marginBottom: "1.75rem"
-            }} className="break-keep">
-              {keywordConfig.seoSubLabel}
-            </p>
-          )}
 
           {/* 신뢰 배지 4개 - 모바일 최적화 (2열 고정) */}
           <div style={{

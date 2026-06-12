@@ -73,11 +73,11 @@ const keywordTemplates: Record<string, Omit<KeywordConfig, "isActive" | "region"
   },
   "외벽발수": {
     topLabel: "김해 외벽발수 현장진단",
-    h1: "빗물을 머금는 외벽,\n발수 처리로 표면부터 보호합니다",
-    heroBody: "김해 외벽발수는 외벽 표면이 빗물을 흡수하지 않도록 발수제를 도포해 수분 침투와 오염을 줄이는 작업입니다.",
-    subCopy: "외벽 오염, 수분 흡수, 백화 흔적이 보인다면 사진 상담으로 상태를 먼저 확인할 수 있습니다.",
+    h1: "김해 외벽발수,\n빗물을 머금는 외벽부터 점검합니다",
+    heroBody: "외벽 표면이 빗물을 쉽게 흡수하거나 오염, 백화, 수분 자국이 반복된다면 발수 시공을 검토할 수 있습니다.",
+    subCopy: "누수 의심 현장은 외벽방수 또는 외벽누수 진단이 함께 필요할 수 있습니다.",
     ctaText: "김해 외벽발수 상담",
-    kakaoCtaText: "외벽 상태 확인받기",
+    kakaoCtaText: "사진 보내고 견적받기",
     badges: [
       "외벽 흡수 상태 확인",
       "발수제 시공 상담",
@@ -86,7 +86,7 @@ const keywordTemplates: Record<string, Omit<KeywordConfig, "isActive" | "region"
     ],
     imageDesc: "김해 외벽발수 현장 작업 이미지",
     title: "김해 외벽발수 전문 시공 | 레인가드",
-    description: "김해 외벽발수 상담. 외벽 표면의 수분 흡수와 오염을 줄이기 위해 건물 상태에 맞는 발수 시공 방향을 안내합니다."
+    description: "김해 외벽발수 전문 시공 안내. 외벽 표면이 빗물을 흡수하거나 오염, 백화, 수분 자국이 반복된다면 수분 흡수 저감을 위한 발수 시공을 검토해 보세요."
   },
   "옥상방수": {
     topLabel: "김해 옥상방수 현장진단",

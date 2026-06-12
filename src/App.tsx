@@ -11,8 +11,9 @@ import FinalCTA from "./components/FinalCTA";
 import Footer from "./components/Footer";
 import FloatingCTA from "./components/FloatingCTA";
 import SitemapGimhae from "./components/SitemapGimhae";
+import FaqSection from "./components/FaqSection";
 import { parseQueryKeyword, SITEMAP_GIMHAE_SEO } from "./data/keywords";
-import { faqs } from "./data/faq";
+import { getDynamicFaqs } from "./data/faq";
 import { BRAND_NAME, REPRESENTATIVE_NAME, BUSINESS_NUMBER, CONTACT_PHONE } from "./data/brand";
 import type { KeywordConfig } from "./data/keywords";
 import "./App.css";
@@ -183,10 +184,11 @@ export const App: React.FC = () => {
     };
 
     // 3.3 FAQPage Schema
+    const displayFaqsForLd = getDynamicFaqs(keywordConfig);
     const faqPageSchema: any = {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      "mainEntity": faqs.map((faq) => ({
+      "mainEntity": displayFaqsForLd.map((faq) => ({
         "@type": "Question",
         "name": faq.question,
         "acceptedAnswer": {
@@ -262,6 +264,9 @@ export const App: React.FC = () => {
 
       {/* 8. 대표 작업 예시 */}
       <CaseSection keywordConfig={keywordConfig} />
+
+      {/* FAQ 자주 묻는 질문 */}
+      <FaqSection keywordConfig={keywordConfig} />
 
       {/* 9. 최종 CTA 배너 */}
       <FinalCTA keywordConfig={keywordConfig} />
