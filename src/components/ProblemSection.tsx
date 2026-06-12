@@ -50,26 +50,30 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({ keywordConfig })
       borderBottom: "1px solid rgba(0, 0, 0, 0.03)"
     }}>
       <div className="container">
+        
+        {/* 누수 원인 체크 배지 - 상단 단독 배치 */}
+        <div style={{ textAlign: "left", marginBottom: "1.25rem" }} className="problem-badge-wrapper">
+          <span className="badge badge-blue" style={{ 
+            backgroundColor: "rgba(27, 97, 252, 0.08)",
+            color: "var(--primary-color)",
+            border: "1px solid rgba(27, 97, 252, 0.15)",
+            fontSize: "0.8rem",
+            fontWeight: 700,
+            padding: "0.3rem 0.6rem"
+          }}>
+            누수 원인 체크
+          </span>
+        </div>
+
         <div className="problem-container" style={{
           display: "flex",
           flexDirection: "row",
           gap: "3rem",
-          alignItems: "flex-start",
+          alignItems: "center",
           textAlign: "left"
         }}>
           {/* 좌측: 타이틀 및 설명 영역 */}
           <div style={{ flex: "1 1 40%", maxWidth: "440px" }} className="problem-info">
-            <span className="badge badge-blue" style={{ 
-              marginBottom: "0.75rem",
-              backgroundColor: "rgba(27, 97, 252, 0.08)",
-              color: "var(--primary-color)",
-              border: "1px solid rgba(27, 97, 252, 0.15)",
-              fontSize: "0.8rem",
-              fontWeight: 700,
-              padding: "0.3rem 0.6rem"
-            }}>
-              누수 원인 체크
-            </span>
             <h2 style={{
               fontSize: "2rem",
               fontWeight: 900,
@@ -152,6 +156,10 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({ keywordConfig })
         @media (max-width: 768px) {
           .problem-section {
             padding: 2.5rem 0 !important;
+          }
+          .problem-badge-wrapper {
+            text-align: center !important;
+            margin-bottom: 0.75rem !important;
           }
           .problem-container {
             flex-direction: column !important;
