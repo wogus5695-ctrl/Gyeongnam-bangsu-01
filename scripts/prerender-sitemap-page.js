@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const origin = "https://gyeongnam-bangsu-01.vercel.app";
+const origin = "https://www.gnrainguard.co.kr";
 
 const serviceKeywords = [
   "외벽방수",

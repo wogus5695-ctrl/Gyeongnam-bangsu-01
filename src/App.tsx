@@ -86,7 +86,7 @@ export const App: React.FC = () => {
       canonicalEl.setAttribute("rel", "canonical");
       document.head.appendChild(canonicalEl);
     }
-    const origin = "https://gyeongnam-bangsu-01.vercel.app";
+    const origin = "https://www.gnrainguard.co.kr";
     let canonicalHref = origin;
     if (isSitemapPage) {
       canonicalHref = `${origin}/sitemap-gimhae`;

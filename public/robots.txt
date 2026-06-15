@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://gyeongnam-bangsu-01.vercel.app/sitemap.xml
+Sitemap: https://www.gnrainguard.co.kr/sitemap.xml

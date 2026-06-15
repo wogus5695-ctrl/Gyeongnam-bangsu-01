@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const origin = "https://gyeongnam-bangsu-01.vercel.app";
+const origin = "https://www.gnrainguard.co.kr";
 
 const serviceKeywords = [
   "외벽방수",
@@ -185,7 +185,7 @@ regionGroups.forEach(group => {
     });
   });
 
-  // 2. 동단위 URL 추가 (includeInSitemap 조건과 충돌 여부에 따라 필터링)
+  // 2. 동단위 URL 추가 (includeInSitemap 및 exposeInHub 조건과 충돌 여부에 따라 필터링)
   group.dongNames.forEach(dongName => {
     serviceKeywords.forEach(service => {
       const kParam = `${dongName}-${service}`;
@@ -195,9 +195,11 @@ regionGroups.forEach(group => {
       seenUrls.add(loc);
 
       const isCollided = collisionDongs.has(dongName);
+      const exposeInHub = isCollided ? false : group.dongExposeInHub;
       const includeInSitemap = isCollided ? false : group.dongIncludeInSitemap;
 
-      if (includeInSitemap) {
+      // exposeInHub=false 또는 includeInSitemap=false인 URL은 sitemap.xml에 넣지 않음
+      if (exposeInHub && includeInSitemap) {
         urls.push({ loc, priority: "0.8" });
       }
     });
@@ -209,6 +211,11 @@ let xml = `<?xml version="1.0" encoding="UTF-8"?>
 `;
 
 urls.forEach(url => {
+  // /#contact 같은 앵커 URL 필터링
+  if (url.loc.includes('#')) return;
+  // gyeongnam-bangsu-01.vercel.app 도메인 필터링
+  if (url.loc.includes('gyeongnam-bangsu-01.vercel.app')) return;
+
   xml += `  <url>
     <loc>${url.loc}</loc>
     <priority>${url.priority}</priority>
