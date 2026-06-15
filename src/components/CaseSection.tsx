@@ -172,7 +172,7 @@ export const CaseSection: React.FC<CaseSectionProps> = ({ keywordConfig }) => {
                   {/* 하단 정보 오버레이 (카드 내부 오버레이 스타일) */}
                   <div className="showcase-info-overlay">
                     <span className="showcase-category">
-                      📍 {item.location} · {categoryName}
+                      📍 {categoryName}
                     </span>
                     <h3 className="showcase-title">
                       {item.title}
