@@ -109,8 +109,8 @@ const regionGroups = [
       "평림동"
     ],
     phase: 5,
-    dongExposeInHub: false,
-    dongIncludeInSitemap: false
+    dongExposeInHub: true,
+    dongIncludeInSitemap: true
   },
   {
     groupTitle: "사천",
@@ -122,8 +122,8 @@ const regionGroups = [
       "동금동", "향촌동", "이홀동", "와룡동", "백천동", "신전동"
     ],
     phase: 5,
-    dongExposeInHub: false,
-    dongIncludeInSitemap: false
+    dongExposeInHub: true,
+    dongIncludeInSitemap: true
   },
   {
     groupTitle: "밀양",
@@ -133,9 +133,9 @@ const regionGroups = [
       "내이동", "삼문동", "가곡동", "활성동", "남포동", "용평동", "교동", "내일동"
     ],
     phase: 5,
-    dongExposeInHub: false,
-    dongIncludeInSitemap: false
-  }
+    dongExposeInHub: true,
+    dongIncludeInSitemap: true
+  },
 ];
 
 // --- 중복 동명 충돌 감지 로직 ---
