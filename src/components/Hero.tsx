@@ -81,7 +81,6 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
 
           {/* 5. 강조 배지 (PC용 - 3개 노출) */}
           <div style={{
-            display: "grid",
             gridTemplateColumns: "repeat(3, 1fr)",
             gap: "0.5rem",
             marginBottom: "0px",
@@ -108,7 +107,6 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
 
           {/* 5. 강조 배지 (모바일용 - 2개 노출) */}
           <div style={{
-            display: "grid",
             gridTemplateColumns: "repeat(2, 1fr)",
             gap: "0.5rem",
             marginBottom: "0px",
