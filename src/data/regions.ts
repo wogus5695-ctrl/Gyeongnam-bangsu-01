@@ -49,8 +49,8 @@ export const regionGroups: RegionGroup[] = [
       "덕산동", "풍호동", "용원동"
     ],
     phase: 3,
-    dongExposeInHub: false,
-    dongIncludeInSitemap: false
+    dongExposeInHub: true,
+    dongIncludeInSitemap: true
   },
   {
     groupTitle: "마산",
@@ -64,8 +64,8 @@ export const regionGroups: RegionGroup[] = [
       "합성동", "구암동", "봉암동"
     ],
     phase: 3,
-    dongExposeInHub: false,
-    dongIncludeInSitemap: false
+    dongExposeInHub: true,
+    dongIncludeInSitemap: true
   },
   {
     groupTitle: "진주",
