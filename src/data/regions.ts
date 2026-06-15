@@ -78,8 +78,8 @@ export const regionGroups: RegionGroup[] = [
       "평거동", "이현동", "유곡동", "판문동", "귀곡동", "가좌동", "호탄동", "동전동"
     ],
     phase: 4,
-    dongExposeInHub: false,
-    dongIncludeInSitemap: false
+    dongExposeInHub: true,
+    dongIncludeInSitemap: true
   },
   {
     groupTitle: "거제",
@@ -90,8 +90,8 @@ export const regionGroups: RegionGroup[] = [
       "능포동", "마전동", "장승포동", "두모동", "아양동", "옥포동"
     ],
     phase: 4,
-    dongExposeInHub: false,
-    dongIncludeInSitemap: false
+    dongExposeInHub: true,
+    dongIncludeInSitemap: true
   },
   {
     groupTitle: "양산",
@@ -103,8 +103,8 @@ export const regionGroups: RegionGroup[] = [
       "평산동", "덕계동"
     ],
     phase: 4,
-    dongExposeInHub: false,
-    dongIncludeInSitemap: false
+    dongExposeInHub: true,
+    dongIncludeInSitemap: true
   },
   {
     groupTitle: "통영",
