@@ -1,4 +1,6 @@
-import { allRegions } from "./regions";
+import { allRegions, regionGroups } from "./regions";
+import type { RegionGroup } from "./regions";
+export { regionGroups } from "./regions";
 
 export interface KeywordConfig {
   isActive: boolean;
@@ -190,6 +192,28 @@ function replaceGimhae(text: string, region: string): string {
   return text.replace(/김해/g, region);
 }
 
+// --- 중복 동명 충돌 감지 로직 ---
+const dongNameCounts = new Map<string, string[]>(); // dongName -> parentCity[]
+
+regionGroups.forEach((group: RegionGroup) => {
+  group.dongNames.forEach((dong: string) => {
+    if (!dongNameCounts.has(dong)) {
+      dongNameCounts.set(dong, []);
+    }
+    dongNameCounts.get(dong)!.push(group.groupTitle);
+  });
+});
+
+export const collisionDongs = new Set<string>();
+export const collisionReport: Record<string, string[]> = {};
+
+dongNameCounts.forEach((parents, dongName) => {
+  if (parents.length >= 2) {
+    collisionDongs.add(dongName);
+    collisionReport[dongName] = parents;
+  }
+});
+
 /**
  * URL query parameter 'k'를 파싱하여 키워드 매핑 데이터를 리턴하는 헬퍼 유틸리티
  */
@@ -212,6 +236,11 @@ export function parseQueryKeyword(searchString: string): KeywordConfig {
     // 전체 유효 지역 검증 (regions.ts에 정의된 전체 지역 풀 매칭)
     const foundRegion = allRegions.find(r => r.name === region);
     if (!foundRegion || !ALLOWED_SERVICES.includes(service)) {
+      return DEFAULT_KEYWORD_CONFIG;
+    }
+
+    // 중복 동명(충돌동)이 쿼리 파라미터로 들어오면 fallback 처리 (검색 봇 및 주소 혼선 차단)
+    if (collisionDongs.has(region)) {
       return DEFAULT_KEYWORD_CONFIG;
     }
 
@@ -242,48 +271,93 @@ export function parseQueryKeyword(searchString: string): KeywordConfig {
 }
 
 export const SITEMAP_GIMHAE_SEO = {
-  title: "경남 방수·도색 키워드 안내 | 레인가드",
-  description: "경남 시단위, 마산 별칭 등 주요 방수·도색 서비스 키워드와 안내 링크를 확인할 수 있습니다."
+  title: "경남 방수·도색 시공 서비스 안내 | 레인가드",
+  description: "경남 지역 외벽방수, 외벽발수, 옥상방수, 지붕방수, 외벽도색, 옥상누수, 외벽누수, 건물방수 관련 시공 지역 및 서비스를 확인하실 수 있습니다."
 };
 
 // Sitemap용 전체 키워드 항목 정보 구조
 export interface KeywordItem {
   label: string;
+  displayText: string;
   k: string;
   href: string;
+  parent: string;
   region: string;
   service: string;
-  type: "city" | "alias" | "legal-dong";
-  parent: string;
+  type: "city" | "alias";
+  level: "city" | "dong";
   phase: number;
+  exposeInHub: boolean;
+  includeInSitemap: boolean;
 }
 
 /**
- * 중복 없는 전체 조합 키워드 생성기
+ * 중복 없는 전체 조합 키워드 생성기 (시/동단위 전체 생성 및 충돌동 오버라이딩 적용)
  */
 export function generateKeywordItems(): KeywordItem[] {
   const items: KeywordItem[] = [];
-  const seenLabels = new Set<string>();
+  const seenUrls = new Set<string>();
 
-  allRegions.forEach(region => {
-    ALLOWED_SERVICES.forEach(service => {
-      const label = `${region.name} ${service}`;
-      
-      // 중복 방지 안전장치
-      if (seenLabels.has(label)) {
-        return;
-      }
-      seenLabels.add(label);
+  regionGroups.forEach((group: RegionGroup) => {
+    // 1. 시단위 키워드 조합 생성 (창원, 창원시 등)
+    group.cityNames.forEach((cityName: string) => {
+      ALLOWED_SERVICES.forEach(service => {
+        const kParam = `${cityName}-${service}`;
+        const url = `/?k=${encodeURIComponent(kParam)}`;
+        const label = `${cityName} ${service}`;
 
-      items.push({
-        label,
-        k: `${region.name}-${service}`,
-        href: `/?k=${encodeURIComponent(`${region.name}-${service}`)}`,
-        region: region.name,
-        service,
-        type: region.type,
-        parent: region.parent,
-        phase: region.phase
+        if (seenUrls.has(url)) {
+          return;
+        }
+        seenUrls.add(url);
+
+        items.push({
+          label,
+          displayText: kParam,
+          k: kParam,
+          href: url,
+          parent: group.groupTitle,
+          region: cityName,
+          service,
+          type: group.type,
+          level: "city",
+          phase: 1, // 시단위는 무조건 phase 1 고정 노출 및 사이트맵 등록
+          exposeInHub: true,
+          includeInSitemap: true
+        });
+      });
+    });
+
+    // 2. 동단위 키워드 조합 생성 (삼계동 등)
+    group.dongNames.forEach((dongName: string) => {
+      ALLOWED_SERVICES.forEach(service => {
+        const kParam = `${dongName}-${service}`;
+        const url = `/?k=${encodeURIComponent(kParam)}`;
+        const label = `${dongName} ${service}`;
+
+        if (seenUrls.has(url)) {
+          return;
+        }
+        seenUrls.add(url);
+
+        // 중복 동명 충돌 여부 판단
+        const isCollided = collisionDongs.has(dongName);
+
+        items.push({
+          label,
+          displayText: kParam,
+          k: kParam,
+          href: url,
+          parent: group.groupTitle,
+          region: dongName,
+          service,
+          type: group.type,
+          level: "dong",
+          phase: group.phase,
+          // 충돌 시 노출 및 사이트맵 제외 오버라이딩
+          exposeInHub: isCollided ? false : group.dongExposeInHub,
+          includeInSitemap: isCollided ? false : group.dongIncludeInSitemap
+        });
       });
     });
   });
