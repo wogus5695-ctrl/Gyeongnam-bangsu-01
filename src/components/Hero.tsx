@@ -51,7 +51,49 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
             letterSpacing: "-0.03em",
             whiteSpace: "pre-line"
           }} className="break-keep hero-h1">
-            {keywordConfig.h1}
+            {(() => {
+              const text = keywordConfig.h1;
+              if (!text.includes("\n")) {
+                return text;
+              }
+              const [line1, line2] = text.split("\n");
+              const targetPhrases = [
+                "취약 부위별로",
+                "유입 경로를",
+                "근본적인 원인부터",
+                "바탕면 정리부터",
+                "접합부 틈새부터",
+                "원인부터",
+                "표면 흡수부터",
+                "누수 원인부터"
+              ];
+              const matchedPhrase = targetPhrases.find(phrase => line2.startsWith(phrase));
+              if (matchedPhrase) {
+                const remainingText = line2.slice(matchedPhrase.length);
+                return (
+                  <>
+                    {line1}
+                    <br />
+                    <span style={{
+                      textDecoration: "underline",
+                      textDecorationColor: "var(--primary-color, #1b61fc)",
+                      textUnderlineOffset: "8px",
+                      textDecorationThickness: "4px"
+                    }}>
+                      {matchedPhrase}
+                    </span>
+                    {remainingText}
+                  </>
+                );
+              }
+              return (
+                <>
+                  {line1}
+                  <br />
+                  {line2}
+                </>
+              );
+            })()}
           </h1>
           
           {/* 3. 본문 */}
