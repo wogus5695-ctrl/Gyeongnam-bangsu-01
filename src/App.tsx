@@ -120,7 +120,7 @@ export const App: React.FC = () => {
         "외벽방수": "images/service-exterior-waterproof-actual.jpg",
         "외벽발수": "images/service-exterior-waterproof-actual.jpg",
         "옥상방수": "images/service-rooftop-waterproof-actual.jpg",
-        "지붕방수": "images/showcase/rooftop-after-actual.jpg",
+        "지붕방수": "images/service-roof-waterproof-actual.jpg",
         "외벽도색": "images/service-exterior-painting-actual.jpg",
         "옥상누수": "images/defect-waterproof-layer-actual.jpg",
         "외벽누수": "images/defect-crack-actual.jpg",
