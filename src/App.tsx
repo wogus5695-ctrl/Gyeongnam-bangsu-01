@@ -106,14 +106,33 @@ export const App: React.FC = () => {
     }
     ogUrl.setAttribute("content", canonicalHref);
 
-    // Open Graph 이미지 반영
+    // Open Graph 이미지 반영 (서비스별 특화 썸네일 노출로 후킹성 극대화 및 스팸 방지)
     let ogImage = document.querySelector('meta[property="og:image"]');
     if (!ogImage) {
       ogImage = document.createElement("meta");
       ogImage.setAttribute("property", "og:image");
       document.head.appendChild(ogImage);
     }
-    ogImage.setAttribute("content", `${origin}/og-image.jpg`);
+    
+    let ogImageFilename = "og-image.jpg"; // 기본값
+    if (keywordConfig.isActive && keywordConfig.service) {
+      const serviceImageMap: Record<string, string> = {
+        "외벽방수": "images/service-exterior-waterproof-actual.jpg",
+        "외벽발수": "images/service-exterior-waterproof-actual.jpg",
+        "옥상방수": "images/service-rooftop-waterproof-actual.jpg",
+        "지붕방수": "images/showcase/rooftop-after-actual.jpg",
+        "외벽도색": "images/service-exterior-painting-actual.jpg",
+        "옥상누수": "images/defect-waterproof-layer-actual.jpg",
+        "외벽누수": "images/defect-crack-actual.jpg",
+        "건물방수": "images/hero-waterproof-actual.jpg"
+      };
+      
+      const mappedImg = serviceImageMap[keywordConfig.service];
+      if (mappedImg) {
+        ogImageFilename = mappedImg;
+      }
+    }
+    ogImage.setAttribute("content", `${origin}/${ogImageFilename}`);
 
     // Open Graph 이미지 크기 명시 (네이버 검색 최적화)
     let ogImageWidth = document.querySelector('meta[property="og:image:width"]');
