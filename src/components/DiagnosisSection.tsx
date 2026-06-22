@@ -98,7 +98,7 @@ export const DiagnosisSection: React.FC<DiagnosisSectionProps> = ({ keywordConfi
             fontWeight: 500,
             lineHeight: "1.6"
           }} className="break-keep diagnosis-body-text">
-            누수는 보이는 현상보다 실제 원인이 더 중요합니다. 대표 결함 유형을 먼저 확인한 뒤 현장 상태에 맞는 시공 방향을 안내합니다.
+            {keywordConfig.diagnosticSection || "누수는 보이는 현상보다 실제 원인이 더 중요합니다. 대표 결함 유형을 먼저 확인한 뒤 현장 상태에 맞는 시공 방향을 안내합니다."}
           </p>
         </div>
 

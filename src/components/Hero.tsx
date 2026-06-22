@@ -59,8 +59,10 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
               const [line1, line2] = text.split("\n");
               const targetPhrases = [
                 "취약 부위별로",
+                "물자국보다 유입 경로부터",
                 "유입 경로를",
                 "근본적인 원인부터",
+                "방수층과 배수구부터",
                 "바탕면 정리부터",
                 "접합부 틈새부터",
                 "원인부터",

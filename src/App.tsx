@@ -191,8 +191,8 @@ export const App: React.FC = () => {
     const serviceSchema: any = {
       "@context": "https://schema.org",
       "@type": "Service",
-      "name": keywordConfig.isActive ? `${keywordConfig.fullKeyword} 전문 시공` : "부산·경남·울산 방수·도색 서비스",
-      "serviceType": keywordConfig.isActive ? `${keywordConfig.region} ${keywordConfig.service}` : "방수 및 도색 전문",
+      "name": keywordConfig.isActive && keywordConfig.serviceJsonLdType ? keywordConfig.serviceJsonLdType : (keywordConfig.isActive ? `${keywordConfig.fullKeyword} 전문 시공` : "부산·경남·울산 방수·도색 서비스"),
+      "serviceType": keywordConfig.isActive && keywordConfig.serviceJsonLdType ? keywordConfig.serviceJsonLdType : "방수 및 도색 전문",
       "provider": {
         "@type": "LocalBusiness",
         "name": BRAND_NAME,
@@ -255,7 +255,7 @@ export const App: React.FC = () => {
       itemListElement.push({
         "@type": "ListItem",
         "position": 2,
-        "name": keywordConfig.fullKeyword,
+        "name": keywordConfig.breadcrumbLabel || keywordConfig.fullKeyword,
         "item": `${origin}/?k=${keywordConfig.region}-${keywordConfig.service}`
       });
     }

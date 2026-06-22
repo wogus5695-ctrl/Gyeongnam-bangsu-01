@@ -45,41 +45,15 @@ export const faqs: FaqItem[] = [
 /**
  * 동적 키워드 유무에 따라 첫 번째 질문을 키워드 관련 질문으로 동적 치환하는 헬퍼 함수
  */
-export function getDynamicFaqs(keywordConfig: { isActive: boolean; service: string; region: string; fullKeyword: string }): FaqItem[] {
-  if (!keywordConfig.isActive) {
-    return faqs;
+export function getDynamicFaqs(keywordConfig: any): FaqItem[] {
+  if (keywordConfig.isActive && keywordConfig.faqQuestion && keywordConfig.faqAnswer) {
+    const firstFaq: FaqItem = {
+      id: 1,
+      question: keywordConfig.faqQuestion,
+      answer: keywordConfig.faqAnswer
+    };
+    return [firstFaq, ...faqs.slice(1)];
   }
 
-  const { service, region, fullKeyword } = keywordConfig;
-  let dynamicQ = `${fullKeyword}는 어떤 경우에 필요하나요?`;
-  let dynamicA = "";
-
-  if (service === "외벽발수") {
-    dynamicA = `${region} 외벽발수는 외벽 표면이 빗물을 쉽게 흡수하거나 오염, 백화, 수분 자국이 반복된다면 발수 시공을 검토할 수 있습니다.`;
-  } else if (service === "외벽방수") {
-    dynamicA = `${region} 외벽방수는 외벽 균열이나 조인트, 창틀 실리콘 틈새로 빗물이 실내로 유입될 때 보수 및 방수를 위해 필요합니다.`;
-  } else if (service === "옥상방수") {
-    dynamicA = `${region} 옥상방수는 기존 우레탄 방수층이 노화되어 갈라지거나 들뜸, 옥상 바닥 슬래브 균열로 누수가 일어날 때 필수적으로 시공됩니다.`;
-  } else if (service === "지붕방수") {
-    dynamicA = `${region} 지붕방수는 판넬이나 기와 등 지붕 자재 틈새와 못 박힌 부위의 부식으로 빗물이 고이고 샐 때 보강 방수를 진행합니다.`;
-  } else if (service === "외벽도색") {
-    dynamicA = `${region} 외벽도색은 오염 물질과 미세 균열을 다듬고 페인트 층을 새로 입혀, 건물 가치를 올리고 외장 표면 손상을 예방할 때 필요합니다.`;
-  } else if (service === "옥상누수") {
-    dynamicA = `${region} 옥상누수는 탑층 천장이나 옥상 아래 구역에 물자국이 생길 때, 방수층 들뜸과 배수구 주변의 손상 여부 등을 진단하여 보수합니다.`;
-  } else if (service === "외벽누수") {
-    dynamicA = `${region} 외벽누수는 실내 벽지 곰팡이나 마감재 젖음이 나타날 때, 외벽 미세 크랙이나 창호 코킹 틈새 등 유입 경로를 점검하여 보수합니다.`;
-  } else if (service === "건물방수") {
-    dynamicA = `${region} 건물방수는 건물 옥상, 외벽, 지붕 등 여러 하자가 복합적으로 얽혀 비가 샐 때 건물 상태를 정밀 체크하여 방수 설계를 합니다.`;
-  } else {
-    return faqs;
-  }
-
-  const firstFaq: FaqItem = {
-    id: 1,
-    question: dynamicQ,
-    answer: dynamicA
-  };
-
-  // 기존 faqs의 첫 번째 항목을 치환하고 나머지 항목들을 결합
-  return [firstFaq, ...faqs.slice(1)];
+  return faqs;
 }

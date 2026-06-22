@@ -93,58 +93,137 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({ keywordConfig })
               margin: 0,
               whiteSpace: "pre-line"
             }} className="break-keep problem-body-text">
-              {"외벽·옥상·지붕 상태를 함께 확인해\n필요한 보수 범위만 안내합니다."}
+              {keywordConfig.intro || "외벽·옥상·지붕 상태를 함께 확인해\n필요한 보수 범위만 안내합니다."}
             </p>
           </div>
 
-          {/* 우측: 2x2 미니 체크 카드 배열 */}
+          {/* 우측: 체크 항목 영역 (누수 전용 리스트 분기) */}
           <div style={{ flex: "1 1 60%", width: "100%" }} className="problem-grid">
-            {problems.map((prob) => {
-              const isActiveCard = getCardActiveState(prob.id);
-              return (
-                <div key={prob.id} className="problem-card" style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: "0.65rem",
-                  padding: "1rem 1.15rem",
-                  backgroundColor: "var(--bg-white)",
-                  border: isActiveCard ? "1px solid rgba(27, 97, 252, 0.3)" : "1px solid var(--border-color)",
-                  borderRadius: "16px",
-                  boxShadow: isActiveCard ? "0 4px 12px rgba(27, 97, 252, 0.03)" : "var(--shadow-sm)",
-                  transition: "all 0.25s ease"
-                }}>
-                  {/* 파란색 체크 아이콘 포인트 */}
-                  <span style={{ 
-                    color: "var(--primary-color)", 
-                    fontSize: "1.05rem", 
-                    fontWeight: 900, 
-                    lineHeight: "1.2",
-                    userSelect: "none"
+            {keywordConfig.leakChecklist && keywordConfig.leakChecklist.length > 0 ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.65rem", gridColumn: "1 / -1" }}>
+                {keywordConfig.leakChecklist.map((item, idx) => (
+                  <div key={idx} style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.85rem",
+                    padding: "0.85rem 1.25rem",
+                    backgroundColor: "rgba(27, 97, 252, 0.02)",
+                    border: "1px solid rgba(27, 97, 252, 0.15)",
+                    borderRadius: "12px"
                   }}>
-                    ✓
-                  </span>
-                  <div>
-                    <h4 style={{ 
+                    <span style={{ 
+                      color: "var(--primary-color)", 
+                      fontSize: "1.2rem", 
+                      fontWeight: 900, 
+                      userSelect: "none"
+                    }}>
+                      ✓
+                    </span>
+                    <span style={{ 
                       fontSize: "0.95rem", 
-                      fontWeight: 800, 
-                      margin: "0 0 0.15rem 0", 
+                      fontWeight: 700, 
                       color: "var(--text-dark)" 
                     }} className="break-keep">
-                      {prob.title}
-                    </h4>
-                    <p style={{ 
-                      fontSize: "0.82rem", 
-                      color: "var(--text-muted)", 
-                      margin: 0 
-                    }} className="break-keep">
-                      {prob.desc}
-                    </p>
+                      {item}
+                    </span>
                   </div>
-                </div>
-              );
-            })}
+                ))}
+              </div>
+            ) : (
+              problems.map((prob) => {
+                const isActiveCard = getCardActiveState(prob.id);
+                return (
+                  <div key={prob.id} className="problem-card" style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "0.65rem",
+                    padding: "1rem 1.15rem",
+                    backgroundColor: "var(--bg-white)",
+                    border: isActiveCard ? "1px solid rgba(27, 97, 252, 0.3)" : "1px solid var(--border-color)",
+                    borderRadius: "16px",
+                    boxShadow: isActiveCard ? "0 4px 12px rgba(27, 97, 252, 0.03)" : "var(--shadow-sm)",
+                    transition: "all 0.25s ease"
+                  }}>
+                    <span style={{ 
+                      color: "var(--primary-color)", 
+                      fontSize: "1.05rem", 
+                      fontWeight: 900, 
+                      lineHeight: "1.2",
+                      userSelect: "none"
+                    }}>
+                      ✓
+                    </span>
+                    <div>
+                      <h4 style={{ 
+                        fontSize: "0.95rem", 
+                        fontWeight: 800, 
+                        margin: "0 0 0.15rem 0", 
+                        color: "var(--text-dark)" 
+                      }} className="break-keep">
+                        {prob.title}
+                      </h4>
+                      <p style={{ 
+                        fontSize: "0.82rem", 
+                        color: "var(--text-muted)", 
+                        margin: 0 
+                      }} className="break-keep">
+                        {prob.desc}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
+
+        {/* 연관 서비스 내부 링크 영역 */}
+        {keywordConfig.isActive && keywordConfig.relatedServices && keywordConfig.relatedServices.length > 0 && (
+          <div style={{
+            marginTop: "3rem",
+            padding: "1.5rem",
+            backgroundColor: "var(--bg-white)",
+            border: "1px solid var(--border-color)",
+            borderRadius: "16px",
+            textAlign: "center"
+          }}>
+            <p style={{ fontSize: "0.95rem", fontWeight: 800, color: "var(--text-dark)", margin: "0 0 1rem 0" }}>
+              연관 진단 및 보수 공정 알아보기
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "0.75rem" }}>
+              {keywordConfig.relatedServices.map((relService, idx) => (
+                <a 
+                  key={idx} 
+                  href={`/?k=${keywordConfig.region}-${relService}`}
+                  style={{
+                    display: "inline-block",
+                    padding: "0.5rem 1rem",
+                    fontSize: "0.85rem",
+                    fontWeight: 600,
+                    color: "var(--text-muted)",
+                    backgroundColor: "var(--bg-light)",
+                    border: "1px solid var(--border-color)",
+                    borderRadius: "8px",
+                    textDecoration: "none",
+                    transition: "all 0.2s ease"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = "var(--primary-color)";
+                    e.currentTarget.style.borderColor = "var(--primary-color)";
+                    e.currentTarget.style.backgroundColor = "rgba(27, 97, 252, 0.03)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = "var(--text-muted)";
+                    e.currentTarget.style.borderColor = "var(--border-color)";
+                    e.currentTarget.style.backgroundColor = "var(--bg-light)";
+                  }}
+                >
+                  {keywordConfig.region} {relService}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
       
       <style>{`
