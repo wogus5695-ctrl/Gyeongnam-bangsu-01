@@ -123,14 +123,15 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
             </p>
           )}
 
-          {/* 5. 강조 배지 (PC용 - 3개 노출) */}
+          {/* 5. 강조 배지 (PC용) */}
           <div style={{
-            gridTemplateColumns: "repeat(3, 1fr)",
+            display: "flex",
+            flexWrap: "wrap",
             gap: "0.5rem",
             marginBottom: "0px",
             maxWidth: "540px"
           }} className="hero-badges-pc">
-            {pcBadges.map((badgeText, idx) => (
+            {(keywordConfig.badges || pcBadges).map((badgeText, idx) => (
               <div key={idx} style={{
                 display: "flex",
                 alignItems: "center",
@@ -149,14 +150,15 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
             ))}
           </div>
 
-          {/* 5. 강조 배지 (모바일용 - 2개 노출) */}
+          {/* 5. 강조 배지 (모바일용) */}
           <div style={{
-            gridTemplateColumns: "repeat(2, 1fr)",
+            display: "flex",
+            flexWrap: "wrap",
             gap: "0.5rem",
             marginBottom: "0px",
             maxWidth: "360px"
           }} className="hero-badges-mo">
-            {moBadges.map((badgeText, idx) => (
+            {(keywordConfig.badges || moBadges).map((badgeText, idx) => (
               <div key={idx} style={{
                 display: "flex",
                 alignItems: "center",
@@ -191,7 +193,7 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
           background-position: center right;
         }
         .hero-badges-pc {
-          display: grid;
+          display: flex;
         }
         .hero-badges-mo {
           display: none;
@@ -231,7 +233,7 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
             display: none !important;
           }
           .hero-badges-mo {
-            display: grid !important;
+            display: flex !important;
           }
         }
       `}</style>

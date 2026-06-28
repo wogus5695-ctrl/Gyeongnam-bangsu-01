@@ -60,7 +60,7 @@ export const FloatingCTA: React.FC = () => {
             alignItems: "center",
             justifyContent: "center",
             gap: "0.5rem",
-            height: "50px",
+            height: "56px",
             borderRadius: "12px",
             fontWeight: 900,
             fontSize: "1rem",
