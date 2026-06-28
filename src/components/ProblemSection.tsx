@@ -218,7 +218,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({ keywordConfig })
                     e.currentTarget.style.backgroundColor = "var(--bg-light)";
                   }}
                 >
-                  {keywordConfig.region} {relService}
+                  {keywordConfig.region}-{relService}
                 </a>
               ))}
             </div>

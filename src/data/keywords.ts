@@ -278,7 +278,7 @@ export const serviceIntentMap: Record<string, ServiceIntent> = {
     diagnosticTemplate: "{region} 건물방수 진단은 외벽 조인트, 옥상 우수관, 지붕 접합부 등 건물 전반의 방수 성능을 종합 점검하여 누수 재발을 방지합니다.",
     diagnosticSectionTemplate: "{region} 건물방수 진단은 외벽 조인트, 옥상 우수관, 지붕 접합부 등 건물 전반의 방수 성능을 종합 점검하여 누수 재발을 방지합니다.",
     faqQuestionTemplate: "{region} 건물방수 종합 공사는 견적이 많이 나오나요?",
-    faqAnswerTemplate: "{region} 건물방수는 전체를 무조건 뜯어내기보다 정밀 진단을 통해 누수 유입이 가장 심한 외벽 크랙이나 옥상 취약부 위주로 선별 시공하여 비용 효율을 높입니다.",
+    faqAnswerTemplate: "{region} 건물방수는 전체를 일률적으로 뜯어내기보다 정밀 진단을 통해 누수 유입이 가장 심한 외벽 크랙이나 옥상 취약부 위주로 선별 시공하여 비용 효율을 높입니다.",
     serviceJsonLdTypeTemplate: "{region} 건물방수 종합 시공",
     breadcrumbLabelTemplate: "{region} 건물방수",
     relatedServices: ["외벽방수", "옥상방수", "외벽도색"],
