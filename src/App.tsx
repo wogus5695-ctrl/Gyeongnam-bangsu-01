@@ -188,11 +188,20 @@ export const App: React.FC = () => {
     }
 
     // 3.2 Service Schema
+    let serviceDescription = pageDesc;
+    if (keywordConfig.isActive) {
+      if (keywordConfig.service === "외벽누수") {
+        serviceDescription = `${keywordConfig.region} 외벽누수 원인 진단 및 보수 상담. 실내 물자국, 외벽 크랙, 조인트, 창호 주변 틈을 함께 확인합니다.`;
+      } else if (keywordConfig.service === "옥상누수") {
+        serviceDescription = `${keywordConfig.region} 옥상누수 원인 진단 및 방수 보수 상담. 천장 물자국, 방수층 노후, 배수구 주변 손상을 함께 확인합니다.`;
+      }
+    }
+
     const serviceSchema: any = {
       "@context": "https://schema.org",
       "@type": "Service",
-      "name": keywordConfig.isActive && keywordConfig.serviceJsonLdType ? keywordConfig.serviceJsonLdType : (keywordConfig.isActive ? `${keywordConfig.fullKeyword} 전문 시공` : "부산·경남·울산 방수·도색 서비스"),
-      "serviceType": keywordConfig.isActive && keywordConfig.serviceJsonLdType ? keywordConfig.serviceJsonLdType : "방수 및 도색 전문",
+      "name": keywordConfig.isActive ? `${keywordConfig.fullKeyword} 전문 시공` : "부산·경남·울산 방수·도색 서비스",
+      "serviceType": keywordConfig.isActive ? keywordConfig.fullKeyword : "방수 및 도색 전문",
       "provider": {
         "@type": "LocalBusiness",
         "name": BRAND_NAME,
@@ -216,7 +225,7 @@ export const App: React.FC = () => {
           "name": "경상남도"
         }
       ],
-      "description": pageDesc
+      "description": serviceDescription
     };
 
     // 3.3 FAQPage Schema
