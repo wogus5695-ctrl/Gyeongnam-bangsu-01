@@ -94,7 +94,7 @@ export const AreaSection: React.FC = () => {
             margin: 0
           }} className="break-keep">
             현재 <strong>경남 김해시 전역</strong>(삼계동, 내외동, 외동, 부원동, 어방동, 활천동, 장유동, 진영읍 등)에 <br className="hidden-mobile" />
-            우선 배치 엔지니어가 상주하고 있어, <strong>당일 긴급 방문 진단 예약</strong> 및 균열 원인 스캔이 신속하게 이루어집니다.
+            우선 배치 엔지니어가 상주하고 있어, <strong>신속한 방문 진단 예약</strong> 및 균열 원인 스캔이 신속하게 이루어집니다.
           </p>
 
           <div style={{
