@@ -125,7 +125,10 @@ export const leakDiagnosisFaqs: FaqItem[] = [
 function replaceRegion(text: string, region: string): string {
   if (!text) return text;
   const r = region || "부산·경남·울산";
-  return text.replace(/\{region\}/g, r).replace(/김해/g, r);
+  let result = text.replace(/\{region\}/g, r);
+  result = result.replace(/김해시/g, r);
+  result = result.replace(/김해(?!시)/g, r);
+  return result;
 }
 
 /**

@@ -291,7 +291,10 @@ export const serviceIntentMap: Record<string, ServiceIntent> = {
 };// 동적 문자열 치환 헬퍼 (기존 "김해" 문자열 및 신규 "{region}" 플레이스홀더 모두 지원)
 function replaceRegion(text: string, region: string): string {
   if (!text) return text;
-  return text.replace(/\{region\}/g, region).replace(/김해/g, region);
+  let result = text.replace(/\{region\}/g, region);
+  result = result.replace(/김해시/g, region);
+  result = result.replace(/김해(?!시)/g, region);
+  return result;
 }
 
 // --- 중복 동명 충돌 감지 로직 ---

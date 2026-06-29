@@ -7,12 +7,83 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
-  // 기본/동적 페이지 데이터 추출
-  const topLabel = keywordConfig.topLabel;
+  // 화면 크기에 따른 모바일 여부 판단 (SSR 대응을 위해 useEffect에서 윈도우 크기 감지)
+  const [isMobile, setIsMobile] = React.useState(false);
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-  // 강조 배지 보강 목록
-  const pcBadges = ["사진 상담 가능", "누수 원인 확인", "필요 공정만 안내"];
-  const moBadges = ["사진 상담 가능", "원인 확인 후 안내"];
+  const region = keywordConfig.region || "부산·경남·울산";
+  const service = keywordConfig.service;
+
+  // 기본값 설정
+  let topLabel = keywordConfig.topLabel;
+  let h1 = keywordConfig.h1;
+  let heroBody = keywordConfig.heroBody;
+  let badges = keywordConfig.badges || ["사진 상담 가능", "누수 원인 확인", "필요 공정만 안내"];
+
+  // 모바일 전용 텍스트 압축 및 분기
+  if (isMobile && keywordConfig.isActive) {
+    if (service === "외벽누수") {
+      topLabel = `${region} 외벽누수 현장진단`;
+      h1 = `${region} 외벽누수,\n유입 경로부터 봅니다`;
+      heroBody = "비 온 뒤 생기는 물자국은\n외벽 크랙·조인트·창호 틈을 함께 확인해야 합니다.";
+      badges = ["원인 확인 후 보수", "사진 상담 가능"];
+    } else if (service === "옥상누수") {
+      topLabel = `${region} 옥상누수 현장진단`;
+      h1 = `${region} 옥상누수,\n방수층부터 확인합니다`;
+      heroBody = "천장 물자국이 반복된다면\n방수층·배수구·바닥 균열을 함께 점검해야 합니다.";
+      badges = ["원인 확인 후 보수", "사진 상담 가능"];
+    } else {
+      // 기타 작업명 페이지 모바일용 H1, 본문 2줄 내외 정리
+      const serviceMobileTexts: Record<string, { h1: string; body: string }> = {
+        "외벽방수": {
+          h1: `${region} 외벽방수,\n외벽 크랙부터 점검합니다`,
+          body: "외벽 크랙, 조인트, 창틀 틈새를 점검해\n빗물 유입을 차단하는 외벽방수를 진행합니다."
+        },
+        "외벽발수": {
+          h1: `${region} 외벽발수,\n빗물 흡수 상태부터 점검합니다`,
+          body: "외벽 표면의 빗물 흡수와 백화를 막는\n발수 시공 필요 여부를 정밀 확인합니다."
+        },
+        "옥상방수": {
+          h1: `${region} 옥상방수,\n방수층 상태부터 확인합니다`,
+          body: "바닥 균열, 방수층 들뜸을 진단해\n부분 보수 또는 전체 우레탄 공정을 안내합니다."
+        },
+        "지붕방수": {
+          h1: `${region} 지붕방수,\n지붕 접합부부터 점검합니다`,
+          body: "판넬 이음새, 기와 파손, 용마루 접합부 등\n지붕의 미세한 누수 취약점을 보강합니다."
+        },
+        "외벽도색": {
+          h1: `${region} 외벽도색,\n바탕면 상태부터 확인합니다`,
+          body: "들뜬 구도막 제거와 균열 보수 후\n건물 보호와 미관에 맞는 도장을 시공합니다."
+        },
+        "건물방수": {
+          h1: `${region} 건물방수,\n건물 전체 취약 부위를 점검합니다`,
+          body: "외벽, 옥상, 지붕 등 건물 전체를 진단해\n현장 상태에 맞는 종합 방수를 설계합니다."
+        }
+      };
+
+      const mText = serviceMobileTexts[service];
+      if (mText) {
+        h1 = mText.h1;
+        heroBody = mText.body;
+      }
+      badges = ["원인 확인 후 보수", "사진 상담 가능"];
+    }
+  } else if (isMobile && !keywordConfig.isActive) {
+    // 기본 메인 페이지 모바일 최적화
+    h1 = "비 올 때 새는 건물,\n원인부터 확인합니다";
+    heroBody = "외벽 크랙, 옥상 방수층 들뜸을 점검해\n필요한 공정만 안내해 드립니다.";
+    badges = ["원인 확인 후 보수", "사진 상담 가능"];
+  }
+
+  // 모바일 및 PC 배지 개수 2개 고정
+  const displayBadges = badges.slice(0, 2);
 
   return (
     <section className="hero-section hero-section-bg" 
@@ -52,7 +123,7 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
             whiteSpace: "pre-line"
           }} className="break-keep hero-h1">
             {(() => {
-              const text = keywordConfig.h1;
+              const text = h1;
               if (!text.includes("\n")) {
                 return text;
               }
@@ -67,7 +138,9 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
                 "접합부 틈새부터",
                 "원인부터",
                 "표면 흡수부터",
-                "누수 원인부터"
+                "누수 원인부터",
+                "유입 경로부터",
+                "방수층부터"
               ];
               const matchedPhrase = targetPhrases.find(phrase => line2.startsWith(phrase));
               if (matchedPhrase) {
@@ -107,7 +180,7 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
             margin: "0 0 1rem 0",
             whiteSpace: "pre-line"
           }} className="break-keep hero-body-text">
-            {keywordConfig.heroBody}
+            {heroBody}
           </p>
 
           {/* 4. 보조 키워드 문구 (본문 아래 차분한 톤으로 배치) */}
@@ -131,19 +204,21 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
             marginBottom: "0px",
             maxWidth: "540px"
           }} className="hero-badges-pc">
-            {(keywordConfig.badges || pcBadges).map((badgeText, idx) => (
+            {displayBadges.map((badgeText, idx) => (
               <div key={idx} style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "0.8rem",
+                height: "38px",
+                fontSize: "13px",
                 fontWeight: 700,
-                color: "#f8fafc",
-                backgroundColor: "rgba(255, 255, 255, 0.08)",
-                border: "1px solid rgba(255, 255, 255, 0.18)",
-                padding: "0.6rem 0.8rem",
-                borderRadius: "8px",
-                whiteSpace: "nowrap"
+                color: "rgba(255, 255, 255, 0.95)",
+                backgroundColor: "rgba(255, 255, 255, 0.12)",
+                border: "1px solid rgba(255, 255, 255, 0.2)",
+                padding: "0 0.9rem",
+                borderRadius: "11px",
+                whiteSpace: "nowrap",
+                boxSizing: "border-box"
               }} className="hero-badge-item">
                 {badgeText}
               </div>
@@ -158,19 +233,21 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
             marginBottom: "0px",
             maxWidth: "360px"
           }} className="hero-badges-mo">
-            {(keywordConfig.badges || moBadges).map((badgeText, idx) => (
+            {displayBadges.map((badgeText, idx) => (
               <div key={idx} style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "0.76rem",
+                height: "38px",
+                fontSize: "13px",
                 fontWeight: 700,
-                color: "#f8fafc",
-                backgroundColor: "rgba(255, 255, 255, 0.08)",
-                border: "1px solid rgba(255, 255, 255, 0.18)",
-                padding: "0.55rem 0.7rem",
-                borderRadius: "8px",
-                whiteSpace: "nowrap"
+                color: "rgba(255, 255, 255, 0.9)",
+                backgroundColor: "rgba(255, 255, 255, 0.12)",
+                border: "1px solid rgba(255, 255, 255, 0.2)",
+                padding: "0 0.8rem",
+                borderRadius: "11px",
+                whiteSpace: "nowrap",
+                boxSizing: "border-box"
               }} className="hero-badge-item">
                 {badgeText}
               </div>
@@ -209,9 +286,9 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
           .hero-section-bg {
             background-image: linear-gradient(
               180deg,
-              rgba(5, 15, 35, 0.82) 0%,
-              rgba(5, 15, 35, 0.68) 45%,
-              rgba(5, 15, 35, 0.50) 100%
+              rgba(5, 15, 35, 0.75) 0%,
+              rgba(5, 15, 35, 0.55) 50%,
+              rgba(5, 15, 35, 0.40) 100%
             ), url('${heroImages.default}');
             background-position: 65% center;
           }
@@ -226,8 +303,7 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
             line-height: 1.5 !important;
           }
           .hero-seo-sub {
-            font-size: 0.82rem !important;
-            margin-bottom: 1rem !important;
+            display: none !important;
           }
           .hero-badges-pc {
             display: none !important;
@@ -240,5 +316,4 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
     </section>
   );
 };
-
 export default Hero;
