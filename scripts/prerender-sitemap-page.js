@@ -135,13 +135,156 @@ const regionGroups = [
     phase: 5,
     dongExposeInHub: true,
     dongIncludeInSitemap: true
+  },
+  {
+    groupTitle: "부산",
+    type: "metro",
+    cityNames: ["부산", "부산광역시"],
+    districtNames: [
+      "부산중구", "부산서구", "부산동구", "부산영도구", "부산진구", "부산동래구",
+      "부산남구", "부산북구", "부산해운대구", "부산사하구", "부산금정구", "부산강서구",
+      "부산연제구", "부산수영구", "부산사상구", "부산기장군"
+    ],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "울산",
+    type: "metro",
+    cityNames: ["울산", "울산광역시"],
+    districtNames: [
+      "울산중구", "울산남구", "울산동구", "울산북구", "울산울주군"
+    ],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "함안",
+    type: "county",
+    cityNames: ["함안", "함안군"],
+    subRegionNames: ["가야읍", "칠원읍", "함안면", "군북면", "법수면", "대산면", "칠서면", "칠북면", "산인면", "여항면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "창녕",
+    type: "county",
+    cityNames: ["창녕", "창녕군"],
+    subRegionNames: ["창녕읍", "남지읍", "고암면", "성산면", "대합면", "이방면", "유어면", "대지면", "계성면", "영산면", "장마면", "도천면", "길곡면", "부곡면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "의령",
+    type: "county",
+    cityNames: ["의령", "의령군"],
+    subRegionNames: ["의령읍", "가례면", "칠곡면", "대의면", "화정면", "용덕면", "정곡면", "지정면", "낙서면", "부림면", "봉수면", "궁류면", "유곡면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "합천",
+    type: "county",
+    cityNames: ["합천", "합천군"],
+    subRegionNames: ["합천읍", "봉산면", "묘산면", "가야면", "야로면", "율곡면", "초계면", "쌍책면", "덕곡면", "청덕면", "적중면", "대양면", "쌍백면", "삼가면", "가회면", "대병면", "용주면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "산청",
+    type: "county",
+    cityNames: ["산청", "산청군"],
+    subRegionNames: ["산청읍", "차황면", "오부면", "생초면", "금서면", "삼장면", "시천면", "단성면", "신안면", "생비량면", "신등면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "함양",
+    type: "county",
+    cityNames: ["함양", "함양군"],
+    subRegionNames: ["함양읍", "마천면", "휴천면", "유림면", "수동면", "지곡면", "안의면", "서하면", "서상면", "백전면", "병곡면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "거창",
+    type: "county",
+    cityNames: ["거창", "거창군"],
+    subRegionNames: ["거창읍", "주상면", "웅양면", "고제면", "북상면", "위천면", "마리면", "남상면", "남하면", "신원면", "가조면", "가북면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "하동",
+    type: "county",
+    cityNames: ["하동", "하동군"],
+    subRegionNames: ["하동읍", "화개면", "악양면", "적량면", "횡천면", "고전면", "금남면", "금성면", "진교면", "양보면", "북천면", "청암면", "옥종면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "남해",
+    type: "county",
+    cityNames: ["남해", "남해군"],
+    subRegionNames: ["남해읍", "이동면", "상주면", "삼동면", "미조면", "남면", "서면", "고현면", "설천면", "창선면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
   }
 ];
 
 // --- 중복 동명 충돌 감지 로직 ---
 const dongNameCounts = new Map();
 regionGroups.forEach(group => {
-  group.dongNames.forEach(dong => {
+  const subNames = [
+    ...(group.dongNames || []),
+    ...(group.districtNames || []),
+    ...(group.subRegionNames || [])
+  ];
+  subNames.forEach(dong => {
     if (!dongNameCounts.has(dong)) {
       dongNameCounts.set(dong, []);
     }
@@ -156,6 +299,17 @@ dongNameCounts.forEach((parents, dongName) => {
   }
 });
 
+function formatRegionDisplayName(region) {
+  if (!region) return region;
+  if ((region.startsWith("부산") && region !== "부산" && region !== "부산광역시") || 
+      (region.startsWith("울산") && region !== "울산" && region !== "울산광역시")) {
+    const prefix = region.substring(0, 2);
+    const rest = region.substring(2);
+    return `${prefix} ${rest}`;
+  }
+  return region;
+}
+
 // 키워드 데이터 생성
 const allKeywords = [];
 const seenUrls = new Set();
@@ -166,14 +320,18 @@ regionGroups.forEach(group => {
     serviceKeywords.forEach(service => {
       const kParam = `${cityName}-${service}`;
       const url = `/?k=${encodeURIComponent(kParam)}`;
-      const label = `${cityName} ${service}`;
+      const displayRegion = formatRegionDisplayName(cityName);
+      const label = `${displayRegion} ${service}`;
+      const displayText = displayRegion.includes(" ") 
+        ? `${displayRegion} ${service}` 
+        : kParam;
 
       if (seenUrls.has(url)) return;
       seenUrls.add(url);
 
       allKeywords.push({
         label,
-        displayText: kParam,
+        displayText,
         k: kParam,
         href: url,
         parent: group.groupTitle,
@@ -182,39 +340,114 @@ regionGroups.forEach(group => {
         type: group.type,
         level: "city",
         phase: 1,
-        exposeInHub: true
+        exposeInHub: group.exposeInHub !== false
       });
     });
   });
 
-  // 2. 동단위 키워드 조합 생성
-  group.dongNames.forEach(dongName => {
-    serviceKeywords.forEach(service => {
-      const kParam = `${dongName}-${service}`;
-      const url = `/?k=${encodeURIComponent(kParam)}`;
-      const label = `${dongName} ${service}`;
+  // 2-1. 구/군 단위 키워드 조합 생성 (부산/울산 구·군): phase 2
+  if (group.districtNames) {
+    group.districtNames.forEach((districtName) => {
+      serviceKeywords.forEach(service => {
+        const kParam = `${districtName}-${service}`;
+        const url = `/?k=${encodeURIComponent(kParam)}`;
+        const displayRegion = formatRegionDisplayName(districtName);
+        const label = `${displayRegion} ${service}`;
+        const displayText = displayRegion.includes(" ") 
+          ? `${displayRegion} ${service}` 
+          : kParam;
 
-      if (seenUrls.has(url)) return;
-      seenUrls.add(url);
+        if (seenUrls.has(url)) return;
+        seenUrls.add(url);
 
-      const isCollided = collisionDongs.has(dongName);
+        const isCollided = collisionDongs.has(districtName);
 
-      allKeywords.push({
-        label,
-        displayText: kParam,
-        k: kParam,
-        href: url,
-        parent: group.groupTitle,
-        region: dongName,
-        service,
-        type: group.type,
-        level: "dong",
-        phase: group.phase,
-        // 충돌 시 제외 오버라이딩
-        exposeInHub: isCollided ? false : group.dongExposeInHub
+        allKeywords.push({
+          label,
+          displayText,
+          k: kParam,
+          href: url,
+          parent: group.groupTitle,
+          region: districtName,
+          service,
+          type: group.type,
+          level: "dong",
+          phase: 2,
+          // phase 2: Hub 노출(true), sitemap 미등록(false)
+          exposeInHub: isCollided ? false : true,
+          includeInSitemap: false
+        });
       });
     });
-  });
+  }
+
+  // 2-2. 읍·면 단위 키워드 조합 생성 (경남 군 하위 읍·면): phase 3
+  if (group.subRegionNames) {
+    group.subRegionNames.forEach((subName) => {
+      serviceKeywords.forEach(service => {
+        const kParam = `${subName}-${service}`;
+        const url = `/?k=${encodeURIComponent(kParam)}`;
+        const displayRegion = formatRegionDisplayName(subName);
+        const label = `${displayRegion} ${service}`;
+        const displayText = displayRegion.includes(" ") 
+          ? `${displayRegion} ${service}` 
+          : kParam;
+
+        if (seenUrls.has(url)) return;
+        seenUrls.add(url);
+
+        allKeywords.push({
+          label,
+          displayText,
+          k: kParam,
+          href: url,
+          parent: group.groupTitle,
+          region: subName,
+          service,
+          type: group.type,
+          level: "dong",
+          phase: 3,
+          // phase 3: Hub 미노출(false), sitemap 미등록(false)
+          exposeInHub: false,
+          includeInSitemap: false
+        });
+      });
+    });
+  }
+
+  // 2-3. 법정동 단위 키워드 조합 생성 (기존 법정동)
+  if (group.dongNames) {
+    group.dongNames.forEach(dongName => {
+      serviceKeywords.forEach(service => {
+        const kParam = `${dongName}-${service}`;
+        const url = `/?k=${encodeURIComponent(kParam)}`;
+        const displayRegion = formatRegionDisplayName(dongName);
+        const label = `${displayRegion} ${service}`;
+        const displayText = displayRegion.includes(" ") 
+          ? `${displayRegion} ${service}` 
+          : kParam;
+
+        if (seenUrls.has(url)) return;
+        seenUrls.add(url);
+
+        const isCollided = collisionDongs.has(dongName);
+
+        allKeywords.push({
+          label,
+          displayText,
+          k: kParam,
+          href: url,
+          parent: group.groupTitle,
+          region: dongName,
+          service,
+          type: group.type,
+          level: "dong",
+          phase: group.phase,
+          exposeInHub: isCollided ? false : group.dongExposeInHub
+        });
+      });
+    });
+  }
 });
 
 // exposeInHub === true인 키워드만 가져오기
@@ -272,8 +505,6 @@ activeGroups.forEach(group => {
   `;
 
   groupKeywords.forEach(link => {
-    // encodeURIComponent된 href 대신 네이버 크롤러가 바로 수집할 수 있게 /?k=한글 형태로 표기
-    // 브라우저 및 봇은 이 형태를 표준 규격으로 올바르게 처리함.
     const rawHref = `/?k=${link.k}`;
     contentHtml += `
         <a href="${rawHref}" class="hub-link" style="font-size: 0.95rem; color: #2563eb; text-decoration: none; font-weight: 500; line-height: 1.5">${link.displayText}</a>
@@ -305,7 +536,7 @@ const footerHtml = `
           <div style="width: 24px; height: 24px; background-color: var(--primary-color, #1b61fc); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 0.85rem">R</div>
           <span style="font-weight: 900; font-size: 1.2rem; color: #ffffff; letter-spacing: -0.03em">레인가드</span>
         </div>
-        <p style="line-height: 1.6; color: #6b7280">레인가드은 부산, 경남, 울산 전 지역의 아파트, 상가, 주택 건물의 빗물누수를 원천 차단하는 방수·발수·도색 시공 전문 브랜드입니다. 정밀 원인 진단과 책임감 있는 관리 서비스를 약속합니다.</p>
+        <p style="line-height: 1.6; color: #6b7280">레인가드은 부산, 경남, 울산 전 지역의 아파트, 상가, 주택 건물의 빗물누수를 원천 차단하는 방수·발수·도색 시공 전문 브랜드입니다. 정밀 원인 진단 및 책임감 있는 관리 서비스를 약속합니다.</p>
       </div>
       <div style="flex: 1 1 200px">
         <h4 style="color: #ffffff; font-size: 1rem; font-weight: 800; margin: 0 0 1rem 0">고객센터 및 상담</h4>
@@ -350,7 +581,6 @@ try {
   // 1. robots 메타 태그 주입 및 title 교체
   const robotsMeta = `<meta name="robots" content="index,follow">\n    <meta name="description" content="경남 지역 외벽방수, 외벽발수, 옥상방수, 지붕방수, 외벽도색, 옥상누수, 외벽누수, 건물방수 관련 시공 지역 및 서비스를 확인하실 수 있습니다.">`;
   
-  // viewport 혹은 charset 태그 다음에 robots meta 삽입
   if (indexHtml.includes('<meta name="viewport"')) {
     indexHtml = indexHtml.replace(
       /<meta name="viewport"[^>]+>/,

@@ -1,6 +1,6 @@
-import { allRegions, regionGroups } from "./regions";
-import type { RegionGroup } from "./regions";
-export { regionGroups } from "./regions";
+import { allRegions, regionGroups } from "../regions";
+import type { RegionGroup } from "../regions";
+export { regionGroups } from "../regions";
 
 export interface KeywordConfig {
   isActive: boolean;
@@ -288,38 +288,22 @@ export const serviceIntentMap: Record<string, ServiceIntent> = {
     badgesTemplate: ["원인 진단 후 시공", "사진 상담 가능"],
     imageDescTemplate: "{region} 건물방수 현장 작업 이미지"
   }
-};// 동적 문자열 치환 헬퍼 (기존 "김해" 문자열 및 신규 "{region}" 플레이스홀더 모두 지원)
-export function formatRegionDisplayName(region: string): string {
-  if (!region) return region;
-  if ((region.startsWith("부산") && region !== "부산" && region !== "부산광역시") || 
-      (region.startsWith("울산") && region !== "울산" && region !== "울산광역시")) {
-    const prefix = region.substring(0, 2);
-    const rest = region.substring(2);
-    return `${prefix} ${rest}`;
-  }
-  return region;
-}
+};
 
+// 동적 문자열 치환 헬퍼 (기존 "김해" 문자열 및 신규 "{region}" 플레이스홀더 모두 지원)
 function replaceRegion(text: string, region: string): string {
   if (!text) return text;
-  const displayRegion = formatRegionDisplayName(region);
-  let result = text.replace(/\{region\}/g, displayRegion);
-  result = result.replace(/김해시/g, displayRegion);
-  result = result.replace(/김해(?!시)/g, displayRegion);
+  let result = text.replace(/\{region\}/g, region);
+  result = result.replace(/김해시/g, region);
+  result = result.replace(/김해(?!시)/g, region);
   return result;
 }
-
 
 // --- 중복 동명 충돌 감지 로직 ---
 const dongNameCounts = new Map<string, string[]>(); // dongName -> parentCity[]
 
 regionGroups.forEach((group: RegionGroup) => {
-  const subNames = [
-    ...(group.dongNames || []),
-    ...(group.districtNames || []),
-    ...(group.subRegionNames || [])
-  ];
-  subNames.forEach((dong: string) => {
+  group.dongNames.forEach((dong: string) => {
     if (!dongNameCounts.has(dong)) {
       dongNameCounts.set(dong, []);
     }
@@ -422,7 +406,7 @@ export interface KeywordItem {
   parent: string;
   region: string;
   service: string;
-  type: "city" | "alias" | "metro" | "county";
+  type: "city" | "alias";
   level: "city" | "dong";
   phase: number;
   exposeInHub: boolean;
@@ -442,31 +426,16 @@ export function generateKeywordItems(): KeywordItem[] {
       ALLOWED_SERVICES.forEach(service => {
         const kParam = `${cityName}-${service}`;
         const url = `/?k=${encodeURIComponent(kParam)}`;
-        const displayRegion = formatRegionDisplayName(cityName);
-        const label = `${displayRegion} ${service}`;
-        const displayText = displayRegion.includes(" ") 
-          ? `${displayRegion} ${service}` 
-          : kParam;
+        const label = `${cityName} ${service}`;
 
         if (seenUrls.has(url)) {
           return;
         }
         seenUrls.add(url);
 
-        let exposeInHub = true;
-        let includeInSitemap = true;
-        let itemPhase = group.phase;
-
-        if (group.type === "metro" || group.type === "county") {
-          // 신규 확장 그룹의 시단위(부산, 울산, 함안 등)는 phase 1에 해당
-          itemPhase = 1;
-          exposeInHub = true;
-          includeInSitemap = true;
-        }
-
         items.push({
           label,
-          displayText,
+          displayText: kParam,
           k: kParam,
           href: url,
           parent: group.groupTitle,
@@ -474,122 +443,45 @@ export function generateKeywordItems(): KeywordItem[] {
           service,
           type: group.type,
           level: "city",
-          phase: itemPhase,
-          exposeInHub,
-          includeInSitemap
+          phase: 1, // 시단위는 무조건 phase 1 고정 노출 및 사이트맵 등록
+          exposeInHub: true,
+          includeInSitemap: true
         });
       });
     });
 
-    // 2-1. 구/군 단위 키워드 조합 생성 (부산/울산 구·군): phase 2
-    if (group.districtNames) {
-      group.districtNames.forEach((districtName: string) => {
-        ALLOWED_SERVICES.forEach(service => {
-          const kParam = `${districtName}-${service}`;
-          const url = `/?k=${encodeURIComponent(kParam)}`;
-          const displayRegion = formatRegionDisplayName(districtName);
-          const label = `${displayRegion} ${service}`;
-          const displayText = displayRegion.includes(" ") 
-            ? `${displayRegion} ${service}` 
-            : kParam;
+    // 2. 동단위 키워드 조합 생성 (삼계동 등)
+    group.dongNames.forEach((dongName: string) => {
+      ALLOWED_SERVICES.forEach(service => {
+        const kParam = `${dongName}-${service}`;
+        const url = `/?k=${encodeURIComponent(kParam)}`;
+        const label = `${dongName} ${service}`;
 
-          if (seenUrls.has(url)) {
-            return;
-          }
-          seenUrls.add(url);
+        if (seenUrls.has(url)) {
+          return;
+        }
+        seenUrls.add(url);
 
-          const isCollided = collisionDongs.has(districtName);
+        // 중복 동명 충돌 여부 판단
+        const isCollided = collisionDongs.has(dongName);
 
-          items.push({
-            label,
-            displayText,
-            k: kParam,
-            href: url,
-            parent: group.groupTitle,
-            region: districtName,
-            service,
-            type: group.type,
-            level: "dong",
-            phase: 2,
-            // phase 2: Hub 노출(true), sitemap 미등록(false)
-            exposeInHub: isCollided ? false : true,
-            includeInSitemap: false
-          });
+        items.push({
+          label,
+          displayText: kParam,
+          k: kParam,
+          href: url,
+          parent: group.groupTitle,
+          region: dongName,
+          service,
+          type: group.type,
+          level: "dong",
+          phase: group.phase,
+          // 충돌 시 노출 및 사이트맵 제외 오버라이딩
+          exposeInHub: isCollided ? false : group.dongExposeInHub,
+          includeInSitemap: isCollided ? false : group.dongIncludeInSitemap
         });
       });
-    }
-
-    // 2-2. 읍·면 단위 키워드 조합 생성 (경남 군 하위 읍·면): phase 3
-    if (group.subRegionNames) {
-      group.subRegionNames.forEach((subName: string) => {
-        ALLOWED_SERVICES.forEach(service => {
-          const kParam = `${subName}-${service}`;
-          const url = `/?k=${encodeURIComponent(kParam)}`;
-          const displayRegion = formatRegionDisplayName(subName);
-          const label = `${displayRegion} ${service}`;
-          const displayText = displayRegion.includes(" ") 
-            ? `${displayRegion} ${service}` 
-            : kParam;
-
-          if (seenUrls.has(url)) {
-            return;
-          }
-          seenUrls.add(url);
-          items.push({
-            label,
-            displayText,
-            k: kParam,
-            href: url,
-            parent: group.groupTitle,
-            region: subName,
-            service,
-            type: group.type,
-            level: "dong",
-            phase: 3,
-            // phase 3: Hub 미노출(false), sitemap 미등록(false)
-            exposeInHub: false,
-            includeInSitemap: false
-          });
-        });
-      });
-    }
-
-    // 2-3. 법정동 단위 키워드 조합 생성 (기존 법정동)
-    if (group.dongNames) {
-      group.dongNames.forEach((dongName: string) => {
-        ALLOWED_SERVICES.forEach(service => {
-          const kParam = `${dongName}-${service}`;
-          const url = `/?k=${encodeURIComponent(kParam)}`;
-          const displayRegion = formatRegionDisplayName(dongName);
-          const label = `${displayRegion} ${service}`;
-          const displayText = displayRegion.includes(" ") 
-            ? `${displayRegion} ${service}` 
-            : kParam;
-
-          if (seenUrls.has(url)) {
-            return;
-          }
-          seenUrls.add(url);
-
-          const isCollided = collisionDongs.has(dongName);
-
-          items.push({
-            label,
-            displayText,
-            k: kParam,
-            href: url,
-            parent: group.groupTitle,
-            region: dongName,
-            service,
-            type: group.type,
-            level: "dong",
-            phase: group.phase,
-            exposeInHub: isCollided ? false : group.dongExposeInHub,
-            includeInSitemap: isCollided ? false : group.dongIncludeInSitemap
-          });
-        });
-      });
-    }
+    });
   });
 
   return items;

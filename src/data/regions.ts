@@ -1,18 +1,22 @@
 export interface RegionGroup {
   groupTitle: string;
-  type: "city" | "alias";
+  type: "city" | "alias" | "metro" | "county";
   cityNames: string[];
   dongNames: string[];
+  districtNames?: string[];
+  subRegionNames?: string[];
   parent?: string;
   phase: number;
   dongExposeInHub: boolean;
   dongIncludeInSitemap: boolean;
+  exposeInHub?: boolean;
+  includeInSitemap?: boolean;
 }
 
 export interface RegionItem {
   name: string;
   aliases?: string[];
-  type: "city" | "alias" | "legal-dong";
+  type: "city" | "alias" | "legal-dong" | "metro" | "county";
   parent: string;
   phase: number;
 }
@@ -142,6 +146,144 @@ export const regionGroups: RegionGroup[] = [
     phase: 5,
     dongExposeInHub: true,
     dongIncludeInSitemap: true
+  },
+  {
+    groupTitle: "부산",
+    type: "metro",
+    cityNames: ["부산", "부산광역시"],
+    districtNames: [
+      "부산중구", "부산서구", "부산동구", "부산영도구", "부산진구", "부산동래구",
+      "부산남구", "부산북구", "부산해운대구", "부산사하구", "부산금정구", "부산강서구",
+      "부산연제구", "부산수영구", "부산사상구", "부산기장군"
+    ],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "울산",
+    type: "metro",
+    cityNames: ["울산", "울산광역시"],
+    districtNames: [
+      "울산중구", "울산남구", "울산동구", "울산북구", "울산울주군"
+    ],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "함안",
+    type: "county",
+    cityNames: ["함안", "함안군"],
+    subRegionNames: ["가야읍", "칠원읍", "함안면", "군북면", "법수면", "대산면", "칠서면", "칠북면", "산인면", "여항면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "창녕",
+    type: "county",
+    cityNames: ["창녕", "창녕군"],
+    subRegionNames: ["창녕읍", "남지읍", "고암면", "성산면", "대합면", "이방면", "유어면", "대지면", "계성면", "영산면", "장마면", "도천면", "길곡면", "부곡면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "의령",
+    type: "county",
+    cityNames: ["의령", "의령군"],
+    subRegionNames: ["의령읍", "가례면", "칠곡면", "대의면", "화정면", "용덕면", "정곡면", "지정면", "낙서면", "부림면", "봉수면", "궁류면", "유곡면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "합천",
+    type: "county",
+    cityNames: ["합천", "합천군"],
+    subRegionNames: ["합천읍", "봉산면", "묘산면", "가야면", "야로면", "율곡면", "초계면", "쌍책면", "덕곡면", "청덕면", "적중면", "대양면", "쌍백면", "삼가면", "가회면", "대병면", "용주면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "산청",
+    type: "county",
+    cityNames: ["산청", "산청군"],
+    subRegionNames: ["산청읍", "차황면", "오부면", "생초면", "금서면", "삼장면", "시천면", "단성면", "신안면", "생비량면", "신등면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "함양",
+    type: "county",
+    cityNames: ["함양", "함양군"],
+    subRegionNames: ["함양읍", "마천면", "휴천면", "유림면", "수동면", "지곡면", "안의면", "서하면", "서상면", "백전면", "병곡면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "거창",
+    type: "county",
+    cityNames: ["거창", "거창군"],
+    subRegionNames: ["거창읍", "주상면", "웅양면", "고제면", "북상면", "위천면", "마리면", "남상면", "남하면", "신원면", "가조면", "가북면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "하동",
+    type: "county",
+    cityNames: ["하동", "하동군"],
+    subRegionNames: ["하동읍", "화개면", "악양면", "적량면", "횡천면", "고전면", "금남면", "금성면", "진교면", "양보면", "북천면", "청암면", "옥종면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
+  },
+  {
+    groupTitle: "남해",
+    type: "county",
+    cityNames: ["남해", "남해군"],
+    subRegionNames: ["남해읍", "이동면", "상주면", "삼동면", "미조면", "남면", "서면", "고현면", "설천면", "창선면"],
+    dongNames: [],
+    phase: 1,
+    dongExposeInHub: false,
+    dongIncludeInSitemap: false,
+    exposeInHub: true,
+    includeInSitemap: true
   }
 ];
 
@@ -164,19 +306,49 @@ regionGroups.forEach(group => {
   });
 
   // 2. 법정동단위 추가
-  group.dongNames.forEach(dongName => {
-    // 중복 동명이 있더라도 전체 파싱 매칭 풀에 유효한 동명으로 등록되도록 주입
-    // (단, 중복 감지 및 Hub/Sitemap 필터링은 keywords.ts 내 generateKeywordItems에서 개별 처리)
-    if (!seenNames.has(dongName)) {
-      seenNames.add(dongName);
-      tempAllRegions.push({
-        name: dongName,
-        type: "legal-dong",
-        parent: group.groupTitle,
-        phase: group.phase
-      });
-    }
-  });
+  if (group.dongNames) {
+    group.dongNames.forEach(dongName => {
+      if (!seenNames.has(dongName)) {
+        seenNames.add(dongName);
+        tempAllRegions.push({
+          name: dongName,
+          type: "legal-dong",
+          parent: group.groupTitle,
+          phase: group.phase
+        });
+      }
+    });
+  }
+
+  // 3. 구/군 단위 추가 (metro)
+  if (group.districtNames) {
+    group.districtNames.forEach(districtName => {
+      if (!seenNames.has(districtName)) {
+        seenNames.add(districtName);
+        tempAllRegions.push({
+          name: districtName,
+          type: "legal-dong",
+          parent: group.groupTitle,
+          phase: group.phase
+        });
+      }
+    });
+  }
+
+  // 4. 읍/면 단위 추가 (county)
+  if (group.subRegionNames) {
+    group.subRegionNames.forEach(subName => {
+      if (!seenNames.has(subName)) {
+        seenNames.add(subName);
+        tempAllRegions.push({
+          name: subName,
+          type: "legal-dong",
+          parent: group.groupTitle,
+          phase: group.phase
+        });
+      }
+    });
+  }
 });
 
 export const allRegions = tempAllRegions;
