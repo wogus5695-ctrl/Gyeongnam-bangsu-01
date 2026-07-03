@@ -291,6 +291,16 @@ export const serviceIntentMap: Record<string, ServiceIntent> = {
 };// 동적 문자열 치환 헬퍼 (기존 "김해" 문자열 및 신규 "{region}" 플레이스홀더 모두 지원)
 export function formatRegionDisplayName(region: string): string {
   if (!region) return region;
+  
+  for (const group of regionGroups) {
+    if (group.subRegionNames) {
+      const found = group.subRegionNames.find(s => s.name === region);
+      if (found) {
+        return found.displayName;
+      }
+    }
+  }
+
   if ((region.startsWith("부산") && region !== "부산" && region !== "부산광역시") || 
       (region.startsWith("울산") && region !== "울산" && region !== "울산광역시")) {
     const prefix = region.substring(0, 2);
@@ -317,7 +327,7 @@ regionGroups.forEach((group: RegionGroup) => {
   const subNames = [
     ...(group.dongNames || []),
     ...(group.districtNames || []),
-    ...(group.subRegionNames || [])
+    ...(group.subRegionNames ? group.subRegionNames.map(s => s.name) : [])
   ];
   subNames.forEach((dong: string) => {
     if (!dongNameCounts.has(dong)) {
@@ -511,21 +521,21 @@ export function generateKeywordItems(): KeywordItem[] {
             type: group.type,
             level: "dong",
             phase: 2,
-            // phase 2: Hub 노출(true), sitemap 미등록(false)
+            // phase 2: Hub 노출(true), sitemap 등록(true)
             exposeInHub: isCollided ? false : true,
-            includeInSitemap: false
+            includeInSitemap: isCollided ? false : true
           });
         });
       });
     }
 
-    // 2-2. 읍·면 단위 키워드 조합 생성 (경남 군 하위 읍·면): phase 3
+    // 2-2. 읍·면/동 단위 키워드 조합 생성 (신규 확장 하위 읍·면·동): phase 3
     if (group.subRegionNames) {
-      group.subRegionNames.forEach((subName: string) => {
+      group.subRegionNames.forEach((sub) => {
         ALLOWED_SERVICES.forEach(service => {
-          const kParam = `${subName}-${service}`;
+          const kParam = `${sub.name}-${service}`;
           const url = `/?k=${encodeURIComponent(kParam)}`;
-          const displayRegion = formatRegionDisplayName(subName);
+          const displayRegion = sub.displayName;
           const label = `${displayRegion} ${service}`;
           const displayText = displayRegion.includes(" ") 
             ? `${displayRegion} ${service}` 
@@ -541,14 +551,14 @@ export function generateKeywordItems(): KeywordItem[] {
             k: kParam,
             href: url,
             parent: group.groupTitle,
-            region: subName,
+            region: sub.name,
             service,
             type: group.type,
             level: "dong",
-            phase: 3,
+            phase: sub.phase,
             // phase 3: Hub 미노출(false), sitemap 미등록(false)
-            exposeInHub: false,
-            includeInSitemap: false
+            exposeInHub: sub.exposeInHub,
+            includeInSitemap: sub.includeInSitemap
           });
         });
       });
