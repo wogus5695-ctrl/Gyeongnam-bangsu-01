@@ -4,7 +4,7 @@ export const REPRESENTATIVE_NAME = "김건자";
 export const BUSINESS_NUMBER = "615-19-60928";
 
 // 연락처 정보 변수 (공란 시 방어 코드 동작)
-export const CONTACT_PHONE = "010-9661-2196";
+export const CONTACT_PHONE = "050-7871-3591";
 export const KAKAO_URL = "";
 
 // 대표 정보 및 사업자 등록번호 노출 여부 판별 플래그
