@@ -27,14 +27,22 @@ export const App: React.FC = () => {
   // 컴포넌트 마운트 시 최초 URL 파라미터를 읽어 키워드 상태 초기화
   const [keywordConfig, setKeywordConfig] = useState<KeywordConfig>(() => {
     const searchStr = typeof window !== "undefined" ? window.location.search : "";
-    return parseQueryKeyword(searchStr);
+    const config = parseQueryKeyword(searchStr);
+    if (typeof window !== "undefined" && config.redirectUrl) {
+      window.location.replace(config.redirectUrl);
+    }
+    return config;
   });
 
   // URL 변경 감지 (예: SPA 라우트 변경 대응용 안전장치)
   useEffect(() => {
     const handleLocationChange = () => {
       setCurrentPath(window.location.pathname);
-      setKeywordConfig(parseQueryKeyword(window.location.search));
+      const config = parseQueryKeyword(window.location.search);
+      if (config.redirectUrl) {
+        window.location.replace(config.redirectUrl);
+      }
+      setKeywordConfig(config);
     };
 
     window.addEventListener("popstate", handleLocationChange);
@@ -90,12 +98,28 @@ export const App: React.FC = () => {
     let canonicalHref = origin;
     if (isSitemapPage) {
       canonicalHref = `${origin}/sitemap-gimhae`;
+    } else if (keywordConfig.redirectUrl) {
+      canonicalHref = new URL(keywordConfig.redirectUrl, origin).toString();
     } else if (keywordConfig.isActive) {
       canonicalHref = `${origin}/?k=${keywordConfig.region}-${keywordConfig.service}`;
     } else {
       canonicalHref = `${origin}/`;
     }
     canonicalEl.setAttribute("href", canonicalHref);
+
+    // 2.1 Robots Meta Tag 동적 업데이트 (잘못된 legacy URL 유입 시 색인 배제)
+    let robotsEl = document.querySelector('meta[name="robots"]');
+    if (!robotsEl) {
+      robotsEl = document.createElement("meta");
+      robotsEl.setAttribute("name", "robots");
+      document.head.appendChild(robotsEl);
+    }
+    const hasKParam = typeof window !== "undefined" && window.location.search.includes("k=");
+    if (hasKParam && !keywordConfig.isActive && !keywordConfig.redirectUrl) {
+      robotsEl.setAttribute("content", "noindex, nofollow");
+    } else {
+      robotsEl.setAttribute("content", "index, follow");
+    }
 
     // Open Graph URL 반영
     let ogUrl = document.querySelector('meta[property="og:url"]');

@@ -31,6 +31,7 @@ export interface KeywordConfig {
   breadcrumbLabel?: string;
   relatedServices?: string[];
   leakChecklist?: string[];
+  redirectUrl?: string;
 }
 
 // 8대 허용 작업명 목록
@@ -324,16 +325,68 @@ function replaceRegion(text: string, region: string): string {
 const dongNameCounts = new Map<string, string[]>(); // dongName -> parentCity[]
 
 regionGroups.forEach((group: RegionGroup) => {
-  const subNames = [
-    ...(group.dongNames || []),
-    ...(group.districtNames || []),
-    ...(group.subRegionNames ? group.subRegionNames.map(s => s.name) : [])
-  ];
+  const subNames: string[] = [];
+  
+  if (group.dongNames) {
+    subNames.push(...group.dongNames);
+  }
+  if (group.districtNames) {
+    group.districtNames.forEach(dist => {
+      subNames.push(dist); // prefix형 (예: 부산중구)
+      
+      // 단독형 구 추가 (예: 중구)
+      let standalone = dist;
+      if (dist.startsWith("부산") && dist !== "부산") {
+        standalone = dist.substring(2);
+      } else if (dist.startsWith("울산") && dist !== "울산") {
+        standalone = dist.substring(2);
+      }
+      subNames.push(standalone);
+    });
+  }
+  if (group.subRegionNames) {
+    group.subRegionNames.forEach(sub => {
+      // 기존 복합형 (예: 부산중구부평동)
+      subNames.push(sub.name);
+      
+      // 단독 동 추출 (예: 부평동)
+      let dongOnly = sub.name;
+      let localized = sub.name;
+      if (group.groupTitle === "부산") {
+        const busanDistricts = ["중구", "서구", "동구", "영도구", "진구", "동래구", "남구", "북구", "해운대구", "사하구", "금정구", "강서구", "연제구", "수영구", "사상구", "기장군"];
+        for (const d of busanDistricts) {
+          if (sub.name.startsWith(`부산${d}`) && sub.name.length > `부산${d}`.length) {
+            dongOnly = sub.name.substring(`부산${d}`.length);
+            localized = `부산${dongOnly}`;
+            break;
+          }
+        }
+      } else if (group.groupTitle === "울산") {
+        const ulsanDistricts = ["중구", "남구", "동구", "북구", "울주군"];
+        for (const d of ulsanDistricts) {
+          if (sub.name.startsWith(`울산${d}`) && sub.name.length > `울산${d}`.length) {
+            dongOnly = sub.name.substring(`울산${d}`.length);
+            localized = `울산${dongOnly}`;
+            break;
+          }
+        }
+      } else {
+        if (sub.name.startsWith(group.groupTitle)) {
+          dongOnly = sub.name.substring(group.groupTitle.length);
+        }
+      }
+      subNames.push(dongOnly);
+      subNames.push(localized);
+    });
+  }
+
   subNames.forEach((dong: string) => {
     if (!dongNameCounts.has(dong)) {
       dongNameCounts.set(dong, []);
     }
-    dongNameCounts.get(dong)!.push(group.groupTitle);
+    if (!dongNameCounts.get(dong)!.includes(group.groupTitle)) {
+      dongNameCounts.get(dong)!.push(group.groupTitle);
+    }
   });
 });
 
@@ -346,6 +399,41 @@ dongNameCounts.forEach((parents, dongName) => {
     collisionReport[dongName] = parents;
   }
 });
+
+export function getRepresentativeRedirect(region: string, service: string): string | null {
+  // 1. 부산 복합형 패턴 탐색 (부산 + [구/군명] + [동/읍/면])
+  const busanDistricts = ["중구", "서구", "동구", "영도구", "진구", "동래구", "남구", "북구", "해운대구", "사하구", "금정구", "강서구", "연제구", "수영구", "사상구", "기장군"];
+  if (region.startsWith("부산") && region !== "부산" && region !== "부산광역시") {
+    for (const dist of busanDistricts) {
+      if (region.startsWith(`부산${dist}`) && region.length > `부산${dist}`.length) {
+        const dong = region.substring(`부산${dist}`.length);
+        return `/?k=${encodeURIComponent(`부산${dong}-${service}`)}`;
+      }
+    }
+  }
+
+  // 2. 울산 복합형 패턴 탐색 (울산 + [구/군명] + [동/읍/면])
+  const ulsanDistricts = ["중구", "남구", "동구", "북구", "울주군"];
+  if (region.startsWith("울산") && region !== "울산" && region !== "울산광역시") {
+    for (const dist of ulsanDistricts) {
+      if (region.startsWith(`울산${dist}`) && region.length > `울산${dist}`.length) {
+        const dong = region.substring(`울산${dist}`.length);
+        return `/?k=${encodeURIComponent(`울산${dong}-${service}`)}`;
+      }
+    }
+  }
+
+  // 3. 경남 군 복합형 패턴 탐색 (군명 + 군 + 읍/면)
+  const counties = ["함안", "창녕", "의령", "합천", "산청", "함양", "거창", "하동", "남해"];
+  for (const county of counties) {
+    if (region.startsWith(`${county}군`) && region.length > `${county}군`.length) {
+      const eupMyeon = region.substring(`${county}군`.length);
+      return `/?k=${encodeURIComponent(`${county}${eupMyeon}-${service}`)}`;
+    }
+  }
+
+  return null;
+}
 
 /**
  * URL query parameter 'k'를 파싱하여 키워드 매핑 데이터를 리턴하는 헬퍼 유틸리티
@@ -365,6 +453,15 @@ export function parseQueryKeyword(searchString: string): KeywordConfig {
     if (parts.length !== 2) return DEFAULT_KEYWORD_CONFIG;
 
     const [region, service] = parts;
+
+    // 복합형 기워드에 대한 리다이렉트 타겟 검출
+    const redirectUrl = getRepresentativeRedirect(region, service);
+    if (redirectUrl) {
+      return {
+        ...DEFAULT_KEYWORD_CONFIG,
+        redirectUrl
+      };
+    }
 
     // 전체 유효 지역 검증 (regions.ts에 정의된 전체 지역 풀 매칭)
     const foundRegion = allRegions.find(r => r.name === region);
@@ -495,71 +592,183 @@ export function generateKeywordItems(): KeywordItem[] {
     if (group.districtNames) {
       group.districtNames.forEach((districtName: string) => {
         ALLOWED_SERVICES.forEach(service => {
-          const kParam = `${districtName}-${service}`;
-          const url = `/?k=${encodeURIComponent(kParam)}`;
-          const displayRegion = formatRegionDisplayName(districtName);
-          const label = `${displayRegion} ${service}`;
-          const displayText = displayRegion.includes(" ") 
-            ? `${displayRegion} ${service}` 
-            : kParam;
+          // A. Prefix형 구/군 (예: 부산중구)
+          const kParamPrefix = `${districtName}-${service}`;
+          const urlPrefix = `/?k=${encodeURIComponent(kParamPrefix)}`;
+          const displayPrefix = formatRegionDisplayName(districtName);
+          const labelPrefix = `${displayPrefix} ${service}`;
+          const displayTextPrefix = displayPrefix.includes(" ") ? `${displayPrefix} ${service}` : kParamPrefix;
 
-          if (seenUrls.has(url)) {
-            return;
+          if (!seenUrls.has(urlPrefix)) {
+            seenUrls.add(urlPrefix);
+            const isCollided = collisionDongs.has(districtName);
+            items.push({
+              label: labelPrefix,
+              displayText: displayTextPrefix,
+              k: kParamPrefix,
+              href: urlPrefix,
+              parent: group.groupTitle,
+              region: districtName,
+              service,
+              type: group.type,
+              level: "dong",
+              phase: 2,
+              exposeInHub: isCollided ? false : true,
+              includeInSitemap: isCollided ? false : true
+            });
           }
-          seenUrls.add(url);
 
-          const isCollided = collisionDongs.has(districtName);
+          // B. 단독형 구/군 (예: 중구)
+          let standaloneDist = districtName;
+          if (districtName.startsWith("부산") && districtName !== "부산") {
+            standaloneDist = districtName.substring(2);
+          } else if (districtName.startsWith("울산") && districtName !== "울산") {
+            standaloneDist = districtName.substring(2);
+          }
 
-          items.push({
-            label,
-            displayText,
-            k: kParam,
-            href: url,
-            parent: group.groupTitle,
-            region: districtName,
-            service,
-            type: group.type,
-            level: "dong",
-            phase: 2,
-            // phase 2: Hub 노출(true), sitemap 등록(true)
-            exposeInHub: isCollided ? false : true,
-            includeInSitemap: isCollided ? false : true
-          });
+          const kParamStandalone = `${standaloneDist}-${service}`;
+          const urlStandalone = `/?k=${encodeURIComponent(kParamStandalone)}`;
+          const labelStandalone = `${standaloneDist} ${service}`;
+
+          if (!seenUrls.has(urlStandalone)) {
+            seenUrls.add(urlStandalone);
+            const isCollided = collisionDongs.has(standaloneDist);
+            items.push({
+              label: labelStandalone,
+              displayText: labelStandalone,
+              k: kParamStandalone,
+              href: urlStandalone,
+              parent: group.groupTitle,
+              region: standaloneDist,
+              service,
+              type: group.type,
+              level: "dong",
+              phase: 2,
+              exposeInHub: isCollided ? false : true,
+              includeInSitemap: false // district-level 단독형은 sitemap=false 우선
+            });
+          }
         });
       });
     }
 
-    // 2-2. 읍·면/동 단위 키워드 조합 생성 (신규 확장 하위 읍·면·동): phase 3
+    // 2-2. 읍·면/동 단위 키워드 조합 생성 (신규 확장 하위 읍·면·동 계층별 분리형): phase 3
     if (group.subRegionNames) {
       group.subRegionNames.forEach((sub) => {
         ALLOWED_SERVICES.forEach(service => {
+          // 기존 복합형 키워드 (예: 부산중구부평동-외벽방수) -> 비활성화 노출/색인 배제
           const kParam = `${sub.name}-${service}`;
           const url = `/?k=${encodeURIComponent(kParam)}`;
           const displayRegion = sub.displayName;
           const label = `${displayRegion} ${service}`;
-          const displayText = displayRegion.includes(" ") 
-            ? `${displayRegion} ${service}` 
-            : kParam;
 
-          if (seenUrls.has(url)) {
-            return;
+          if (!seenUrls.has(url)) {
+            seenUrls.add(url);
+            items.push({
+              label,
+              displayText: label,
+              k: kParam,
+              href: url,
+              parent: group.groupTitle,
+              region: sub.name,
+              service,
+              type: group.type,
+              level: "dong",
+              phase: sub.phase,
+              exposeInHub: false,
+              includeInSitemap: false
+            });
           }
-          seenUrls.add(url);
-          items.push({
-            label,
-            displayText,
-            k: kParam,
-            href: url,
-            parent: group.groupTitle,
-            region: sub.name,
-            service,
-            type: group.type,
-            level: "dong",
-            phase: sub.phase,
-            // phase 3: Hub 미노출(false), sitemap 미등록(false)
-            exposeInHub: sub.exposeInHub,
-            includeInSitemap: sub.includeInSitemap
-          });
+
+          // 동/읍/면 분리형 추출
+          let dongOnly = sub.name;
+          let localizedDong = sub.name;
+          let dongDisplay = sub.name;
+          let localizedDongDisplay = sub.name;
+
+          if (group.groupTitle === "부산") {
+            const busanDistricts = ["중구", "서구", "동구", "영도구", "진구", "동래구", "남구", "북구", "해운대구", "사하구", "금정구", "강서구", "연제구", "수영구", "사상구", "기장군"];
+            for (const dist of busanDistricts) {
+              if (sub.name.startsWith(`부산${dist}`) && sub.name.length > `부산${dist}`.length) {
+                dongOnly = sub.name.substring(`부산${dist}`.length);
+                localizedDong = `부산${dongOnly}`;
+                dongDisplay = dongOnly;
+                localizedDongDisplay = `부산 ${dongOnly}`;
+                break;
+              }
+            }
+          } else if (group.groupTitle === "울산") {
+            const ulsanDistricts = ["중구", "남구", "동구", "북구", "울주군"];
+            for (const dist of ulsanDistricts) {
+              if (sub.name.startsWith(`울산${dist}`) && sub.name.length > `울산${dist}`.length) {
+                dongOnly = sub.name.substring(`울산${dist}`.length);
+                localizedDong = `울산${dongOnly}`;
+                dongDisplay = dongOnly;
+                localizedDongDisplay = `울산 ${dongOnly}`;
+                break;
+              }
+            }
+          } else {
+            if (sub.name.startsWith(group.groupTitle)) {
+              dongOnly = sub.name.substring(group.groupTitle.length);
+              localizedDong = sub.name;
+              dongDisplay = dongOnly;
+              localizedDongDisplay = `${group.groupTitle} ${dongOnly}`;
+            }
+          }
+
+          // A. 단독형 동/읍/면 (예: 부평동, 가야읍)
+          const kParamDong = `${dongOnly}-${service}`;
+          const urlDong = `/?k=${encodeURIComponent(kParamDong)}`;
+          const labelDong = `${dongDisplay} ${service}`;
+
+          if (!seenUrls.has(urlDong)) {
+            seenUrls.add(urlDong);
+            const isCollided = collisionDongs.has(dongOnly);
+            items.push({
+              label: labelDong,
+              displayText: labelDong,
+              k: kParamDong,
+              href: urlDong,
+              parent: group.groupTitle,
+              region: dongOnly,
+              service,
+              type: group.type,
+              level: "dong",
+              phase: 3,
+              exposeInHub: isCollided ? false : true,
+              includeInSitemap: false // dong-level 단독형은 sitemap=false
+            });
+          }
+
+          // B. Localized 동/읍/면 (예: 부산부평동, 함안가야읍)
+          const kParamLoc = `${localizedDong}-${service}`;
+          const urlLoc = `/?k=${encodeURIComponent(kParamLoc)}`;
+          const labelLoc = `${localizedDongDisplay} ${service}`;
+
+          if (!seenUrls.has(urlLoc)) {
+            seenUrls.add(urlLoc);
+            const isCollided = collisionDongs.has(localizedDong);
+            
+            // 대표 지역 6곳의 localized-dong은 includeInSitemap = true
+            const reps = ["부산우동", "부산광안동", "울산삼산동", "울산언양읍", "함안가야읍", "남해남해읍"];
+            const isRep = reps.includes(localizedDong);
+
+            items.push({
+              label: labelLoc,
+              displayText: labelLoc,
+              k: kParamLoc,
+              href: urlLoc,
+              parent: group.groupTitle,
+              region: localizedDong,
+              service,
+              type: group.type,
+              level: "dong",
+              phase: 3,
+              exposeInHub: isCollided ? false : true,
+              includeInSitemap: isCollided ? false : (isRep ? true : false)
+            });
+          }
         });
       });
     }
