@@ -401,34 +401,52 @@ dongNameCounts.forEach((parents, dongName) => {
 });
 
 export function getRepresentativeRedirect(region: string, service: string): string | null {
-  // 1. 부산 복합형 패턴 탐색 (부산 + [구/군명] + [동/읍/면])
+  // 1. 부산 복합형/혼합형 패턴 탐색 (부산 + [구/군명] + [동/읍/면] 및 부산 + [동/읍/면])
   const busanDistricts = ["중구", "서구", "동구", "영도구", "진구", "동래구", "남구", "북구", "해운대구", "사하구", "금정구", "강서구", "연제구", "수영구", "사상구", "기장군"];
   if (region.startsWith("부산") && region !== "부산" && region !== "부산광역시") {
+    // A. 3-level 복합형: 부산중구부평동 -> 부평동
     for (const dist of busanDistricts) {
       if (region.startsWith(`부산${dist}`) && region.length > `부산${dist}`.length) {
         const dong = region.substring(`부산${dist}`.length);
-        return `/?k=${encodeURIComponent(`부산${dong}-${service}`)}`;
+        return `/?k=${encodeURIComponent(`${dong}-${service}`)}`;
       }
+    }
+    // B. 2-level 혼합형: 부산부평동 -> 부평동
+    const rest = region.substring(2);
+    if (!busanDistricts.includes(rest) && rest !== "광역시") {
+      return `/?k=${encodeURIComponent(`${rest}-${service}`)}`;
     }
   }
 
-  // 2. 울산 복합형 패턴 탐색 (울산 + [구/군명] + [동/읍/면])
+  // 2. 울산 복합형/혼합형 패턴 탐색 (울산 + [구/군명] + [동/읍/면] 및 울산 + [동/읍/면])
   const ulsanDistricts = ["중구", "남구", "동구", "북구", "울주군"];
   if (region.startsWith("울산") && region !== "울산" && region !== "울산광역시") {
+    // A. 3-level 복합형: 울산남구삼산동 -> 삼산동
     for (const dist of ulsanDistricts) {
       if (region.startsWith(`울산${dist}`) && region.length > `울산${dist}`.length) {
         const dong = region.substring(`울산${dist}`.length);
-        return `/?k=${encodeURIComponent(`울산${dong}-${service}`)}`;
+        return `/?k=${encodeURIComponent(`${dong}-${service}`)}`;
       }
+    }
+    // B. 2-level 혼합형: 울산삼산동 -> 삼산동
+    const rest = region.substring(2);
+    if (!ulsanDistricts.includes(rest) && rest !== "광역시") {
+      return `/?k=${encodeURIComponent(`${rest}-${service}`)}`;
     }
   }
 
-  // 3. 경남 군 복합형 패턴 탐색 (군명 + 군 + 읍/면)
+  // 3. 경남 군 혼합형 패턴 탐색 (군명 + 군 + 읍/면 및 군명 + 읍/면)
   const counties = ["함안", "창녕", "의령", "합천", "산청", "함양", "거창", "하동", "남해"];
   for (const county of counties) {
     if (region.startsWith(`${county}군`) && region.length > `${county}군`.length) {
       const eupMyeon = region.substring(`${county}군`.length);
-      return `/?k=${encodeURIComponent(`${county}${eupMyeon}-${service}`)}`;
+      return `/?k=${encodeURIComponent(`${eupMyeon}-${service}`)}`;
+    }
+    if (region.startsWith(county) && region !== county && !region.endsWith("군")) {
+      const eupMyeon = region.substring(county.length);
+      if (eupMyeon !== "읍" && eupMyeon !== "면") {
+        return `/?k=${encodeURIComponent(`${eupMyeon}-${service}`)}`;
+      }
     }
   }
 
@@ -725,6 +743,11 @@ export function generateKeywordItems(): KeywordItem[] {
           if (!seenUrls.has(urlDong)) {
             seenUrls.add(urlDong);
             const isCollided = collisionDongs.has(dongOnly);
+
+            // 대표 지역 6곳의 단독형 동은 includeInSitemap = true
+            const reps = ["우동", "광안동", "삼산동", "언양읍", "가야읍", "남해읍"];
+            const isRep = reps.includes(dongOnly);
+
             items.push({
               label: labelDong,
               displayText: labelDong,
@@ -737,23 +760,17 @@ export function generateKeywordItems(): KeywordItem[] {
               level: "dong",
               phase: 3,
               exposeInHub: isCollided ? false : true,
-              includeInSitemap: false // dong-level 단독형은 sitemap=false
+              includeInSitemap: isCollided ? false : (isRep ? true : false)
             });
           }
 
-          // B. Localized 동/읍/면 (예: 부산부평동, 함안가야읍)
+          // B. Localized 동/읍/면 (예: 부산부평동, 함안가야읍) -> 비활성화 노출/색인 배제
           const kParamLoc = `${localizedDong}-${service}`;
           const urlLoc = `/?k=${encodeURIComponent(kParamLoc)}`;
           const labelLoc = `${localizedDongDisplay} ${service}`;
 
           if (!seenUrls.has(urlLoc)) {
             seenUrls.add(urlLoc);
-            const isCollided = collisionDongs.has(localizedDong);
-            
-            // 대표 지역 6곳의 localized-dong은 includeInSitemap = true
-            const reps = ["부산우동", "부산광안동", "울산삼산동", "울산언양읍", "함안가야읍", "남해남해읍"];
-            const isRep = reps.includes(localizedDong);
-
             items.push({
               label: labelLoc,
               displayText: labelLoc,
@@ -765,8 +782,8 @@ export function generateKeywordItems(): KeywordItem[] {
               type: group.type,
               level: "dong",
               phase: 3,
-              exposeInHub: isCollided ? false : true,
-              includeInSitemap: isCollided ? false : (isRep ? true : false)
+              exposeInHub: false,
+              includeInSitemap: false
             });
           }
         });
