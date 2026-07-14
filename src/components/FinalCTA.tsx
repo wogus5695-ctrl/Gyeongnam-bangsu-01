@@ -13,7 +13,7 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ keywordConfig }) => {
   const label = "사진 상담 / 현장 견적";
 
   // 동적 키워드 유무에 따른 타이틀 및 본문 문구 분기 (카톡 숨김 처리에 대응해 전화 상담 중심 어조)
-  const defaultTitle = "외벽·옥상 누수,\n지금 상태부터 확인하세요";
+  const defaultTitle = "누수 위치만 보고 시공을 결정하지 마세요";
   let ctaTitle = defaultTitle;
   if (keywordConfig.isActive) {
     if (keywordConfig.service === "외벽도색") {
@@ -23,7 +23,7 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ keywordConfig }) => {
     }
   }
 
-  const defaultBody = "외벽 크랙, 방수층 들뜸, 도막 박리는 원인이 다릅니다.\n전화 상담으로 현재 상태와 필요한 보수 방향을 먼저 확인해 드립니다.";
+  const defaultBody = "물자국이 보이는 위치와 빗물이 들어오는 지점은 다를 수 있습니다.\n현재 증상과 건물 상태를 확인한 뒤 필요한 작업 범위를 안내합니다.";
   let ctaBody = defaultBody;
   if (keywordConfig.isActive) {
     const service = keywordConfig.service;
@@ -127,7 +127,7 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ keywordConfig }) => {
                 href={HAS_PHONE ? `tel:${CONTACT_PHONE}` : "#contact"}
                 className="cta-btn-phone"
               >
-                📞 전화로 바로 상담
+                📞 현재 누수 상태 문의하기
               </a>
 
               {/* 카톡 상담 바로가기 (활성화 시에만 렌더링) */}

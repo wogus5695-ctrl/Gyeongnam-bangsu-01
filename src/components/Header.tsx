@@ -74,7 +74,7 @@ export const Header: React.FC = () => {
             boxShadow: "none"
           }}
         >
-          📞 전화 문의
+          📞 작업 가능 여부 전화 확인
         </a>
       </div>
 

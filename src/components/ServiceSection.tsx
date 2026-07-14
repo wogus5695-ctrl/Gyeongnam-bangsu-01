@@ -25,7 +25,7 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({ keywordConfig })
       keyText: "손상된 누수층을 복구하고, 옥상/지붕 빗물누수 해결",
       tags: ["옥상방수", "옥상누수", "지붕방수", "건물방수"],
       imageUrl: placeholderImages.rooftopWaterproof,
-      altDefault: "옥상방수 및 옥상누수 보수 작업 이미지",
+      altDefault: "우레탄 방수 도포 및 슬래브 균열을 정비하는 옥상방수 현장",
       objectPosition: "center 22%"
     },
     {
@@ -34,7 +34,7 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({ keywordConfig })
       keyText: "확인하기 어려운 벽면 누수 잡는 20년 베테랑",
       tags: ["외벽방수", "외벽발수", "외벽누수", "건물방수"],
       imageUrl: placeholderImages.exteriorWaterproof,
-      altDefault: "외벽방수와 외벽발수 작업 이미지",
+      altDefault: "외벽 크랙 보강 및 실리콘 코킹 처리를 수행하는 고공 로프 외벽방수 작업",
       objectPosition: "center 18%"
     },
     {
@@ -43,7 +43,7 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({ keywordConfig })
       keyText: "건물의 수명을 늘리는 공정을 안내",
       tags: ["외벽도색", "도막박리", "바탕면정리", "외벽오염"],
       imageUrl: placeholderImages.exteriorPainting,
-      altDefault: "외벽도색과 바탕면 정리 작업 이미지"
+      altDefault: "벗겨진 노후 페인트막을 긁어내고 바탕면 정리를 마친 뒤 도색하는 외벽도색 현장"
     }
   ];
 
@@ -131,9 +131,7 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({ keywordConfig })
         }}>
           {serviceCards.map((card) => {
             const isHighlighted = getCardActiveState(card.id);
-            const imageAlt = isHighlighted 
-              ? `${keywordConfig.region} ${keywordConfig.service} 작업 이미지` 
-              : card.altDefault;
+            const imageAlt = card.altDefault;
 
             return (
               <div

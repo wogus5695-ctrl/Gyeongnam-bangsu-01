@@ -13,7 +13,7 @@ export const CostSection: React.FC<CostSectionProps> = ({ keywordConfig }) => {
   // 기본 문구 설정
   let label = "견적 안내";
   let title = "현장에 꼭 필요한\n공정만을 안내드립니다.";
-  let body = "시공 면적, 균열 범위, 기존 방수층·도막 상태, 작업 높이에 따라 필요한 공정이 달라집니다.\n사진 상담 또는 현장 확인 후 필요한 범위만 안내드립니다.";
+  let body = "방수 공사 비용은 면적만으로 결정되지 않습니다.\n균열과 기존 도막 상태, 건물 높이, 로프 접근 조건과 바탕면 보수 범위를 함께 확인합니다.";
 
   if (keywordConfig.isActive) {
     title = `${keywordConfig.fullKeyword} 현장에 꼭 필요한\n공정만을 안내드립니다.`;
@@ -49,9 +49,12 @@ export const CostSection: React.FC<CostSectionProps> = ({ keywordConfig }) => {
           <span className="cost-label">{label}</span>
           <h2 className="cost-title">{renderWithLineBreaks(title)}</h2>
           <p className="cost-desc">{renderWithLineBreaks(body)}</p>
+          <div className="cost-sub">
+            💡 사진으로 균열과 대략적인 작업 범위는 확인할 수 있지만, 벽체 내부의 물길이나 상부에서 이동한 누수는 현장 확인이 필요할 수 있습니다.
+          </div>
           <div className="cost-buttons">
             <a href={HAS_PHONE ? `tel:${CONTACT_PHONE}` : "#contact"} className="btn btn-primary">
-              📞 전화로 견적 상담
+              📞 비슷한 증상 문의하기
             </a>
             <a 
               href={HAS_KAKAO ? KAKAO_URL : "#contact"} 

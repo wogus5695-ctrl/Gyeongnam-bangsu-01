@@ -1,5 +1,8 @@
 import { allRegions, regionGroups } from "./regions";
 import type { RegionGroup } from "./regions";
+import { CONTACT_PHONE } from "./brand";
+import { serviceTemplates } from "./serviceTemplates";
+
 export { regionGroups } from "./regions";
 
 export interface KeywordConfig {
@@ -19,6 +22,14 @@ export interface KeywordConfig {
   title: string;
   description: string;
   
+  // 템플릿 콘텐츠 필드 추가
+  symptoms?: string[];
+  causeOrCheckPoints?: string[];
+  partialRepairCriteria?: string;
+  processSummary?: string[];
+  estimateFactors?: string[];
+  cautionMessage?: string;
+  
   // 동적 검색 의도 그룹 및 추가 SEO 요소 (치환된 결과값)
   serviceGroup?: "waterproofing-construction" | "surface-protection" | "leak-diagnosis" | "";
   searchIntent?: string;
@@ -32,6 +43,16 @@ export interface KeywordConfig {
   relatedServices?: string[];
   leakChecklist?: string[];
   redirectUrl?: string;
+
+  // 새로 분리된 데이터 항목들
+  regionName?: string;
+  cityName?: string;
+  provinceName?: string;
+  serviceName?: string;
+  serviceType?: string;
+  exactKeyword?: string;
+  originalKeywordParameter?: string;
+  contact?: string;
 }
 
 // 8대 허용 작업명 목록
@@ -52,17 +73,17 @@ export const DEFAULT_KEYWORD_CONFIG: KeywordConfig = {
   region: "",
   service: "",
   fullKeyword: "",
-  h1: "비 올 때 새는 건물,\n겉면만 막으면 반복될 수 있습니다",
-  heroBody: "외벽 크랙, 옥상 방수층 들뜸, 도막 박리까지\n원인을 확인한 뒤 필요한 공정만 안내합니다.",
+  h1: "비가 올 때 새는 건물,\n막기 전에 유입 경로부터 확인합니다",
+  heroBody: "외벽 균열·창호 접합부·옥상과 지붕 상태를 구분해\n필요한 보수 범위를 안내합니다.",
   ctaText: "전화로 바로 상담",
   kakaoCtaText: "사진 보내고 견적받기",
-  topLabel: "부산·경남·울산 방수·도색 현장진단",
+  topLabel: "부산·경남·울산 방수·누수 보수",
   subCopy: "사진 2~3장만 보내주시면 대략적인 보수 방향을 먼저 안내드립니다.",
   seoSubLabel: "외벽방수·옥상방수·외벽도색·건물방수 상담 가능",
-  badges: ["원인 진단 후 시공", "사진 상담 가능"],
+  badges: ["외벽·옥상·지붕 원인 구분", "고층 로프 작업 가능 여부 검토", "사진 사전 확인"],
   imageDesc: "외벽방수와 외벽도색 현장 작업 이미지",
-  title: "부산·경남·울산 방수·도색 전문 | 레인가드",
-  description: "부산·경남·울산 외벽방수, 옥상방수, 외벽도색, 건물방수 상담을 진행합니다. 외벽 크랙, 옥상 누수, 도막 박리 등 현장 상태를 확인하고 필요한 공정만 안내합니다.",
+  title: "부산·경남·울산 방수·누수 보수 | 레인가드",
+  description: "외벽 균열, 옥상과 지붕, 창호 접합부의 빗물 유입 가능성을 구분해 필요한 방수·누수 보수 범위를 안내합니다.",
   
   serviceGroup: "",
   searchIntent: "",
@@ -73,7 +94,16 @@ export const DEFAULT_KEYWORD_CONFIG: KeywordConfig = {
   faqAnswer: "",
   serviceJsonLdType: "방수 및 도색 전문",
   breadcrumbLabel: "",
-  relatedServices: []
+  relatedServices: [],
+
+  regionName: "",
+  cityName: "",
+  provinceName: "",
+  serviceName: "",
+  serviceType: "",
+  exactKeyword: "",
+  originalKeywordParameter: "",
+  contact: CONTACT_PHONE
 };
 
 // 8가지 서비스 키워드별 동적 문구 세트 (검색 의도 분기형)
@@ -107,8 +137,8 @@ export const serviceIntentMap: Record<string, ServiceIntent> = {
     serviceName: "외벽방수",
     serviceGroup: "waterproofing-construction",
     searchIntent: "방수 시공, 보수 범위 확인, 시공 공정 안내, 견적 상담, 현장 상태 점검",
-    titleTemplate: "{region} 외벽방수 전문 시공 | 레인가드",
-    descriptionTemplate: "{region} 외벽방수 상담. 외벽 균열 보수, 창틀 코킹, 조인트 방수 등 시공 범위와 필요한 공정을 정확하게 진단하고 안내합니다.",
+    titleTemplate: "{region} 외벽방수 | 누수 원인 점검·로프 시공 레인가드",
+    descriptionTemplate: "{region} 외벽방수 관련 외벽 균열과 창호 주변 접합부의 증상을 점검하여 부분 보수와 전체 시공 중 적합한 작업 범위를 안내합니다.",
     h1Template: "{region} 외벽방수,\n외벽 크랙부터 점검합니다",
     heroLabelTemplate: "{region} 외벽방수 전문시공",
     heroBodyTemplate: "외벽 크랙, 조인트, 창호 주변 틈으로 유입되는 빗물을 확인하고 필요한 보수·방수 공정을 안내합니다.",
@@ -130,8 +160,8 @@ export const serviceIntentMap: Record<string, ServiceIntent> = {
     serviceName: "외벽발수",
     serviceGroup: "surface-protection",
     searchIntent: "외벽 표면 보호, 발수 처리, 도막 박리, 도장 마감, 바탕면 정리, 오염·백화 방지",
-    titleTemplate: "{region} 외벽발수 전문 시공 | 레인가드",
-    descriptionTemplate: "{region} 외벽발수 상담. 적벽돌, 콘크리트 외벽 표면의 빗물 흡수를 차단하여 습기 예방, 백화 방지 및 마감재 수명 연장을 약속드립니다.",
+    titleTemplate: "{region} 외벽발수 | 누수 원인 점검·로프 시공 레인가드",
+    descriptionTemplate: "{region} 외벽발수 관련 적벽돌 및 콘크리트 외벽 표면의 빗물 흡수 증상을 점검하여 오염과 누수를 예방할 작업 범위를 안내합니다.",
     h1Template: "{region} 외벽발수,\n빗물 흡수 상태부터 점검합니다",
     heroLabelTemplate: "{region} 외벽발수 표면보호",
     heroBodyTemplate: "외벽 표면이 빗물을 쉽게 흡수하거나 오염, 백화, 수분 자국이 반복될 때 발수 시공 필요 여부를 확인합니다.",
@@ -153,8 +183,8 @@ export const serviceIntentMap: Record<string, ServiceIntent> = {
     serviceName: "옥상방수",
     serviceGroup: "waterproofing-construction",
     searchIntent: "방수 시공, 보수 범위 확인, 시공 공정 안내, 견적 상담, 현장 상태 점검",
-    titleTemplate: "{region} 옥상방수 전문 시공 | 레인가드",
-    descriptionTemplate: "{region} 옥상방수 상담. 노후 방수층 들뜸, 바닥 균열 상태를 파악하여 부분 보수 및 고내구성 우레탄 시공 공정을 안내합니다.",
+    titleTemplate: "{region} 옥상방수 | 누수 원인 점검·로프 시공 레인가드",
+    descriptionTemplate: "{region} 옥상방수 관련 노후 우레탄 들뜸과 슬래브 균열 손상 부위를 점검하여 적절한 두께와 연삭 등 작업 범위를 안내합니다.",
     h1Template: "{region} 옥상방수,\n방수층 상태부터 확인합니다",
     heroLabelTemplate: "{region} 옥상방수 전문시공",
     heroBodyTemplate: "옥상 바닥 균열, 방수층 들뜸, 배수구 주변 손상을 확인하고 부분 보수 또는 전체 방수 범위를 안내합니다.",
@@ -176,8 +206,8 @@ export const serviceIntentMap: Record<string, ServiceIntent> = {
     serviceName: "지붕방수",
     serviceGroup: "waterproofing-construction",
     searchIntent: "방수 시공, 보수 범위 확인, 시공 공정 안내, 견적 상담, 현장 상태 점검",
-    titleTemplate: "{region} 지붕방수 전문 시공 | 레인가드",
-    descriptionTemplate: "{region} 지붕방수 상담. 조립식 판넬 지붕, 기와, 슬라브 지붕의 접합부 틈새와 피스 고정 부위 누수 예방 및 방수 보강 계획을 제공합니다.",
+    titleTemplate: "{region} 지붕방수 | 누수 원인 점검·로프 시공 레인가드",
+    descriptionTemplate: "{region} 지붕방수 관련 조립식 판넬 이음새와 풀린 고정 피트 틈새 누수를 점검하여 필요한 보수 작업 범위를 안내합니다.",
     h1Template: "{region} 지붕방수,\n지붕 접합부부터 점검합니다",
     heroLabelTemplate: "{region} 지붕방수 보강시공",
     heroBodyTemplate: "판넬, 기와, 슬라브, 지붕 접합부 틈새와 빗물 유입 가능성을 확인합니다.",
@@ -199,8 +229,8 @@ export const serviceIntentMap: Record<string, ServiceIntent> = {
     serviceName: "외벽도색",
     serviceGroup: "surface-protection",
     searchIntent: "외벽 표면 보호, 발수 처리, 도막 박리, 도장 마감, 바탕면 정리, 오염·백화 방지",
-    titleTemplate: "{region} 외벽도색 전문 시공 | 레인가드",
-    descriptionTemplate: "{region} 외벽도색 상담. 도막 박리, 페인트 노후, 콘크리트 중성화 예방을 위해 철저한 바탕면 정리와 균열 보수 후 도장 시공을 진행합니다.",
+    titleTemplate: "{region} 외벽도색 | 누수 원인 점검·로프 시공 레인가드",
+    descriptionTemplate: "{region} 외벽도색 관련 페인트 갈라짐과 박리된 바탕면 손상 상태를 확인하여 내구성을 높일 적절한 도장 작업 범위를 안내합니다.",
     h1Template: "{region} 외벽도색,\n바탕면 상태부터 확인합니다",
     heroLabelTemplate: "{region} 외벽도색 바탕정리",
     heroBodyTemplate: "도막 박리, 오염, 표면 손상, 미세 균열을 확인한 뒤 외벽 보호와 미관 개선에 맞는 도장 공정을 안내합니다.",
@@ -211,7 +241,7 @@ export const serviceIntentMap: Record<string, ServiceIntent> = {
     faqAnswerTemplate: "{region} 외벽 페인트가 탈색 및 오염되고 도막 박리, 미세 균열이 진행되어 콘크리트 노화 예방과 건물 미관 개선을 위해 바탕 정리 후 도장할 때 필요합니다.",
     serviceJsonLdTypeTemplate: "{region} 외벽도색 전문 시공",
     breadcrumbLabelTemplate: "{region} 외벽도색",
-    relatedServices: ["외벽방수", "외벽발수", "건물방수"],
+    relatedServices: ["외벽방수", "외벽발수"],
     ctaTextTemplate: "{region} 외벽도색 상담",
     kakaoCtaTextTemplate: "외벽 사진 견적받기",
     seoSubLabelTemplate: "{region} 외벽도색·외벽방수·외벽발수 상담 가능",
@@ -222,8 +252,8 @@ export const serviceIntentMap: Record<string, ServiceIntent> = {
     serviceName: "옥상누수",
     serviceGroup: "leak-diagnosis",
     searchIntent: "누수 증상 확인, 물자국 원인 확인, 유입 경로 진단, 방수·보수 범위 판단, 사진 상담, 재누수 방지",
-    titleTemplate: "{region} 옥상누수 원인 진단 및 방수 보수 | 레인가드",
-    descriptionTemplate: "{region} 옥상누수 원인 진단 및 상담. 천장 물자국, 방수층 노후, 바닥 균열, 배수구 주변 손상 등 유입 경로를 추적해 적절한 방수 보수 범위를 결정합니다.",
+    titleTemplate: "{region} 옥상누수 | 누수 점검·로프 시공 레인가드",
+    descriptionTemplate: "{region} 옥상누수 관련 실내 천장 물자국과 배수구 주변 조인트, 파라펫 경계의 유입 원인을 진단하여 작업 범위를 안내합니다.",
     h1Template: "{region} 옥상누수,\n방수층과 배수구부터 확인합니다",
     heroLabelTemplate: "{region} 옥상누수 원인진단",
     heroBodyTemplate: "천장 물자국이나 비 온 뒤 누수가 반복된다면 옥상 방수층 노후, 바닥 균열, 배수구 주변 손상을 함께 점검해야 합니다.",
@@ -246,8 +276,8 @@ export const serviceIntentMap: Record<string, ServiceIntent> = {
     serviceName: "외벽누수",
     serviceGroup: "leak-diagnosis",
     searchIntent: "누수 증상 확인, 물자국 원인 확인, 유입 경로 진단, 방수·보수 범위 판단, 사진 상담, 재누수 방지",
-    titleTemplate: "{region} 외벽누수 원인 진단 및 보수 | 레인가드",
-    descriptionTemplate: "{region} 외벽누수 원인 진단 및 상담. 실내 물자국 발생 시 외벽 크랙, 조인트, 창호 주변 틈을 검사해 정확한 빗물 유입 경로를 규명하고 보수를 안내합니다.",
+    titleTemplate: "{region} 외벽누수 | 누수 점검·로프 시공 레인가드",
+    descriptionTemplate: "{region} 외벽누수 관련 바람 방향에 따른 실내 물자국 발생 구간의 유입로를 역추적 진단하여 적합한 작업 범위를 안내합니다.",
     h1Template: "{region} 외벽누수,\n물자국보다 유입 경로부터 확인합니다",
     heroLabelTemplate: "{region} 외벽누수 현장진단",
     heroBodyTemplate: "비가 온 뒤 실내 벽면에 물자국이나 곰팡이가 생긴다면 외벽 크랙, 조인트, 창호 주변 틈을 함께 확인해야 합니다.",
@@ -258,7 +288,7 @@ export const serviceIntentMap: Record<string, ServiceIntent> = {
     faqAnswerTemplate: "실내 벽면 물자국, 창틀 주변 습기, 외벽 크랙, 조인트 상태를 함께 확인해야 합니다. 비가 온 뒤에만 물자국이 생긴다면 외벽 유입 가능성을 먼저 점검할 수 있습니다.",
     serviceJsonLdTypeTemplate: "{region} 외벽누수 원인 진단",
     breadcrumbLabelTemplate: "{region} 외벽누수",
-    relatedServices: ["외벽방수", "외벽발수", "건물방수"],
+    relatedServices: ["외벽방수", "외벽발수", "외벽도색"],
     leakChecklist: ["실내 벽면 물자국", "창틀 주변 습기", "외벽 크랙", "조인트 틈", "비 올 때만 반복되는 누수"],
     ctaTextTemplate: "{region} 외벽누수 상담",
     kakaoCtaTextTemplate: "유입 경로 확인받기",
@@ -270,8 +300,8 @@ export const serviceIntentMap: Record<string, ServiceIntent> = {
     serviceName: "건물방수",
     serviceGroup: "waterproofing-construction",
     searchIntent: "방수 시공, 보수 범위 확인, 시공 공정 안내, 견적 상담, 현장 상태 점검",
-    titleTemplate: "{region} 건물방수 전문 시공 | 레인가드",
-    descriptionTemplate: "{region} 건물방수 종합 상담. 외벽 균열, 옥상 노후 방수층, 지붕 등 건물 전체의 유기적인 누수 요인을 정밀 진단하여 종합 방수 설계를 제안합니다.",
+    titleTemplate: "{region} 건물방수 | 누수 원인 점검·로프 시공 레인가드",
+    descriptionTemplate: "{region} 건물방수 관련 옥상, 외벽, 지붕의 다발성 누수 결함 구간을 복합 점검하여 우선순위에 맞는 작업 범위를 안내합니다.",
     h1Template: "{region} 건물방수,\n건물 전체 취약 부위를 점검합니다",
     heroLabelTemplate: "{region} 건물방수 종합진단",
     heroBodyTemplate: "외벽, 옥상, 지붕 등 건물 전체의 누수 취약 부위를 확인하고 필요한 공정만 안내합니다.",
@@ -495,6 +525,60 @@ export function parseQueryKeyword(searchString: string): KeywordConfig {
     const template = serviceIntentMap[service];
     if (!template) return DEFAULT_KEYWORD_CONFIG;
 
+    let provinceName = "";
+    let cityName = "";
+    
+    const parentGroup = regionGroups.find(g => g.groupTitle === foundRegion.parent);
+    if (parentGroup) {
+      if (parentGroup.groupTitle === "부산" || parentGroup.parent === "부산") {
+        provinceName = "부산";
+        cityName = "부산";
+      } else if (parentGroup.groupTitle === "울산" || parentGroup.parent === "울산") {
+        provinceName = "울산";
+        cityName = "울산";
+      } else {
+        provinceName = "경남";
+        cityName = parentGroup.groupTitle;
+      }
+    }
+
+    const serviceTypeMap: Record<string, string> = {
+      "외벽방수": "exterior-waterproofing",
+      "외벽발수": "exterior-water-repellent",
+      "옥상방수": "rooftop-waterproofing",
+      "지붕방수": "roof-waterproofing",
+      "외벽도색": "exterior-painting",
+      "옥상누수": "rooftop-leak",
+      "외벽누수": "exterior-leak",
+      "건물방수": "building-waterproofing"
+    };
+    const serviceType = serviceTypeMap[service] || "";
+
+    const serviceContent = serviceTemplates[serviceType];
+
+    const coreDecisionPhrases: Record<string, string> = {
+      "외벽방수": "누수 원인부터 확인합니다",
+      "외벽발수": "외벽 상태에 맞는 적용 여부를 확인합니다",
+      "옥상방수": "기존 방수층 상태부터 점검합니다",
+      "지붕방수": "이음부와 접합부부터 확인합니다",
+      "외벽도색": "균열과 바탕 상태부터 정리합니다",
+      "옥상누수": "물이 들어오는 지점부터 확인합니다",
+      "외벽누수": "실내 물자국보다 유입 경로를 확인합니다",
+      "건물방수": "손상 구간과 작업 우선순위를 구분합니다"
+    };
+    const coreDecision = coreDecisionPhrases[service] || "";
+    const h1 = `${region} ${service}, ${coreDecision}`;
+
+    const heroBody = serviceContent ? serviceContent.heroDescription : replaceRegion(template.heroBodyTemplate, region);
+
+    let diagnosticSection = replaceRegion(template.diagnosticSectionTemplate, region);
+    if (serviceContent) {
+      diagnosticSection = serviceContent.partialRepairCriteria;
+      if (serviceContent.cautionMessage) {
+        diagnosticSection += `\n\n💡 ${serviceContent.cautionMessage}`;
+      }
+    }
+
     // 모든 템플릿의 문구를 동적으로 들어온 지역명으로 대체하여 반환
     return {
       isActive: true,
@@ -502,11 +586,19 @@ export function parseQueryKeyword(searchString: string): KeywordConfig {
       service,
       fullKeyword: `${region} ${service}`,
       
+      // 템플릿 콘텐츠 바인딩
+      symptoms: serviceContent ? serviceContent.symptoms : undefined,
+      causeOrCheckPoints: serviceContent ? serviceContent.causeOrCheckPoints : undefined,
+      partialRepairCriteria: serviceContent ? serviceContent.partialRepairCriteria : undefined,
+      processSummary: serviceContent ? serviceContent.processSummary : undefined,
+      estimateFactors: serviceContent ? serviceContent.estimateFactors : undefined,
+      cautionMessage: serviceContent ? serviceContent.cautionMessage : undefined,
+
       // 검색 의도 그룹 및 SEO 신규 필드
       serviceGroup: template.serviceGroup,
       searchIntent: template.searchIntent,
       intro: replaceRegion(template.introTemplate, region),
-      diagnosticSection: replaceRegion(template.diagnosticSectionTemplate, region),
+      diagnosticSection,
       diagnostic: replaceRegion(template.diagnosticTemplate, region),
       faqQuestion: replaceRegion(template.faqQuestionTemplate, region),
       faqAnswer: replaceRegion(template.faqAnswerTemplate, region),
@@ -517,8 +609,8 @@ export function parseQueryKeyword(searchString: string): KeywordConfig {
 
       // 기존 하위호환/렌더링용 필드
       topLabel: replaceRegion(template.heroLabelTemplate, region),
-      h1: replaceRegion(template.h1Template, region),
-      heroBody: replaceRegion(template.heroBodyTemplate, region),
+      h1,
+      heroBody,
       subCopy: replaceRegion(DEFAULT_KEYWORD_CONFIG.subCopy, region), // 하위호환
       ctaText: replaceRegion(template.ctaTextTemplate, region),
       kakaoCtaText: replaceRegion(template.kakaoCtaTextTemplate, region),
@@ -526,7 +618,17 @@ export function parseQueryKeyword(searchString: string): KeywordConfig {
       badges: template.badgesTemplate.map(badge => replaceRegion(badge, region)),
       imageDesc: replaceRegion(template.imageDescTemplate, region),
       title: replaceRegion(template.titleTemplate, region),
-      description: replaceRegion(template.descriptionTemplate, region)
+      description: replaceRegion(template.descriptionTemplate, region),
+
+      // 새로 분리된 데이터 항목들
+      regionName: region,
+      cityName,
+      provinceName,
+      serviceName: service,
+      serviceType,
+      exactKeyword: `${region} ${service}`,
+      originalKeywordParameter: kVal,
+      contact: CONTACT_PHONE
     } as KeywordConfig;
   } catch (e) {
     return DEFAULT_KEYWORD_CONFIG;

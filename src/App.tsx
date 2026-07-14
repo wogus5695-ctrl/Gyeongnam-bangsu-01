@@ -101,7 +101,7 @@ export const App: React.FC = () => {
     } else if (keywordConfig.redirectUrl) {
       canonicalHref = new URL(keywordConfig.redirectUrl, origin).toString();
     } else if (keywordConfig.isActive) {
-      canonicalHref = `${origin}/?k=${keywordConfig.region}-${keywordConfig.service}`;
+      canonicalHref = `${origin}/?k=${encodeURIComponent(`${keywordConfig.region}-${keywordConfig.service}`)}`;
     } else {
       canonicalHref = `${origin}/`;
     }

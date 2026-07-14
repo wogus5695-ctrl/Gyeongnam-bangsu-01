@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { regionGroups, generateKeywordItems } from '../src/data/keywords';
+import { BRAND_NAME, COMPANY_NAME, REPRESENTATIVE_NAME, BUSINESS_NUMBER, CONTACT_PHONE } from '../src/data/brand';
 
 const origin = "https://www.gnrainguard.co.kr";
 
@@ -17,7 +18,7 @@ const headerHtml = `
   <div class="container" style="height: 80px; display: flex; align-items: center; justify-content: space-between">
     <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 0.5rem">
       <div style="width: 32px; height: 32px; background-color: var(--primary-color, #1b61fc); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 1.1rem">R</div>
-      <span style="font-weight: 900; font-size: 1.35rem; color: var(--text-dark, #0f172a); letter-spacing: -0.04em">레인가드</span>
+      <span style="font-weight: 900; font-size: 1.35rem; color: var(--text-dark, #0f172a); letter-spacing: -0.04em">${BRAND_NAME}</span>
     </a>
     <nav class="desktop-nav" style="display: flex; gap: 2rem">
       <a href="#problems" class="nav-link" style="font-weight: 700; font-size: 0.95rem; color: var(--text-muted, #64748b); text-decoration: none">누수진단</a>
@@ -26,7 +27,7 @@ const headerHtml = `
       <a href="#cases" class="nav-link" style="font-weight: 700; font-size: 0.95rem; color: var(--text-muted, #64748b); text-decoration: none">시공예시</a>
       <a href="#areas" class="nav-link" style="font-weight: 700; font-size: 0.95rem; color: var(--text-muted, #64748b); text-decoration: none">서비스지역</a>
     </nav>
-    <a href="tel:010-9661-2196" class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.95rem; border-radius: 10px; box-shadow: none; text-decoration: none; color: #fff; background-color: var(--primary-color, #1b61fc)">📞 전화 문의</a>
+    <a href="tel:${CONTACT_PHONE}" class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.95rem; border-radius: 10px; box-shadow: none; text-decoration: none; color: #fff; background-color: var(--primary-color, #1b61fc)">📞 작업 가능 여부 전화 확인</a>
   </div>
 </header>
 `;
@@ -87,24 +88,24 @@ const footerHtml = `
       <div style="flex: 1 1 300px">
         <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem">
           <div style="width: 24px; height: 24px; background-color: var(--primary-color, #1b61fc); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 0.85rem">R</div>
-          <span style="font-weight: 900; font-size: 1.2rem; color: #ffffff; letter-spacing: -0.03em">레인가드</span>
+          <span style="font-weight: 900; font-size: 1.2rem; color: #ffffff; letter-spacing: -0.03em">${BRAND_NAME}</span>
         </div>
-        <p style="line-height: 1.6; color: #6b7280">레인가드은 부산, 경남, 울산 전 지역의 아파트, 상가, 주택 건물의 빗물누수를 원천 차단하는 방수·발수·도색 시공 전문 브랜드입니다. 정밀 원인 진단 및 책임감 있는 관리 서비스를 약속합니다.</p>
+        <p style="line-height: 1.6; color: #6b7280">${BRAND_NAME}은 부산, 경남, 울산 전 지역의 아파트, 상가, 주택 건물의 빗물누수를 원천 차단하는 방수·발수·도색 시공 전문 브랜드입니다. 정밀 원인 진단 및 책임감 있는 관리 서비스를 약속합니다.</p>
       </div>
       <div style="flex: 1 1 200px">
         <h4 style="color: #ffffff; font-size: 1rem; font-weight: 800; margin: 0 0 1rem 0">고객센터 및 상담</h4>
-        <a href="tel:010-9661-2196" style="font-size: 2rem; font-weight: 900; color: var(--primary-color, #1b61fc); text-decoration: none; display: block; margin-bottom: 0.5rem">010-9661-2196</a>
+        <a href="tel:${CONTACT_PHONE}" style="font-size: 2rem; font-weight: 900; color: var(--primary-color, #1b61fc); text-decoration: none; display: block; margin-bottom: 0.5rem">${CONTACT_PHONE}</a>
         <p style="margin: 0; color: #6b7280; font-weight: 700">평일 / 주말 오전 7:00 ~ 오후 6:00 (연중무휴)</p>
       </div>
     </div>
     <div style="border-top: 1px solid #1f2937; padding-top: 2rem; display: flex; flex-direction: column; gap: 1rem">
       <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; align-items: center" class="footer-bottom-info">
         <p style="color: #6b7280; margin: 0; font-weight: 500">
-          <span style="margin-right: 1.5rem">상호: 경남레인가드</span>
-          <span style="margin-right: 1.5rem">대표자: 김태진</span>
-          <span>사업자등록번호: 727-25-01582</span>
+          <span style="margin-right: 1.5rem">상호: ${COMPANY_NAME}</span>
+          <span style="margin-right: 1.5rem">대표자: ${REPRESENTATIVE_NAME}</span>
+          <span>사업자등록번호: ${BUSINESS_NUMBER}</span>
         </p>
-        <p style="color: #6b7280; margin: 0">© ${new Date().getFullYear()} 레인가드. All rights reserved.</p>
+        <p style="color: #6b7280; margin: 0">© ${new Date().getFullYear()} ${BRAND_NAME}. All rights reserved.</p>
       </div>
       <p style="color: #4b5563; font-size: 0.8rem; border-top: 1px dashed #1f2937; padding-top: 1rem; margin: 0">* 경상남도(김해, 양산, 창원, 밀양 등), 부산광역시, 울산광역시 전 지역 방수·발수·도색 시공 및 방문 실측 누수 탐지 접수 상담 가능</p>
     </div>

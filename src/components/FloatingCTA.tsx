@@ -68,7 +68,7 @@ export const FloatingCTA: React.FC = () => {
           }}
         >
           <span>📞</span>
-          <span>전화상담</span>
+          <span>전화 문의</span>
         </a>
       </div>
 

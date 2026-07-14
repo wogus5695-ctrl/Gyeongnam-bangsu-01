@@ -21,7 +21,7 @@ const problemMap: Record<string, ProblemMapItem> = {
     body: "{region} 외벽누수는 보이는 위치와 실제 원인이 다를 수 있습니다.\n외벽 크랙·조인트·창호 틈부터 확인합니다.",
     checklist: ["실내 물자국", "창틀 주변 습기", "외벽 크랙", "조인트 틈", "비 올 때 반복 누수"],
     relatedTitle: "외벽누수와 함께 확인할 공정",
-    relatedServices: ["외벽방수", "외벽발수", "건물방수"]
+    relatedServices: ["외벽방수", "외벽발수", "외벽도색"]
   },
   "옥상누수": {
     label: "누수 원인 체크",
@@ -69,7 +69,7 @@ const problemMap: Record<string, ProblemMapItem> = {
     body: "{region} 외벽도색은 도막 박리와 표면 손상을 먼저 확인해야 합니다.\n바탕면 상태에 따라 도장 품질과 유지력이 달라집니다.",
     checklist: ["도막 박리", "외벽 오염", "미세 균열", "바탕면 손상", "표면 들뜸"],
     relatedTitle: "외벽도색과 함께 확인할 공정",
-    relatedServices: ["외벽방수", "외벽발수", "건물방수"]
+    relatedServices: ["외벽방수", "외벽발수"]
   },
   "건물방수": {
     label: "건물 방수 체크",
@@ -116,7 +116,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({ keywordConfig })
     label = config.label;
     title = config.title;
     body = replaceRegion(config.body, region);
-    checklist = config.checklist;
+    checklist = keywordConfig.symptoms || config.checklist;
     relatedTitle = config.relatedTitle;
     relatedServices = config.relatedServices;
   }

@@ -80,6 +80,21 @@ export const CaseSection: React.FC<CaseSectionProps> = ({ keywordConfig }) => {
     return "외벽도색";
   };
 
+  const getCaseLabel = (itemCategory: string) => {
+    if (!keywordConfig.isActive) {
+      return `📍 ${itemCategory}`;
+    }
+    
+    const region = keywordConfig.region || "";
+    const cityName = keywordConfig.cityName || "";
+    
+    if (region === cityName || region === `${cityName}시` || region === `${cityName}군` || region === "김해") {
+      return `📍 ${cityName}권 ${itemCategory} 시공사례`;
+    }
+    
+    return `📍 ${itemCategory} 유사 현장 사례`;
+  };
+
   return (
     <section className="case-section" id="cases" style={{ backgroundColor: "#ffffff" }}>
       <div className="container">
@@ -172,7 +187,7 @@ export const CaseSection: React.FC<CaseSectionProps> = ({ keywordConfig }) => {
                   {/* 하단 정보 오버레이 (카드 내부 오버레이 스타일) */}
                   <div className="showcase-info-overlay">
                     <span className="showcase-category">
-                      📍 {categoryName}
+                      {getCaseLabel(categoryName)}
                     </span>
                     <h3 className="showcase-title">
                       {item.title}
