@@ -55,7 +55,7 @@ export interface KeywordConfig {
   contact?: string;
 }
 
-// 8대 허용 작업명 목록
+// 8대 허용 작업명 목록 + 신규 3대 작업명 추가
 export const ALLOWED_SERVICES = [
   "외벽방수",
   "외벽발수",
@@ -64,7 +64,10 @@ export const ALLOWED_SERVICES = [
   "외벽도색",
   "옥상누수",
   "외벽누수",
-  "건물방수"
+  "건물방수",
+  "빗물누수",
+  "우레탄방수",
+  "균열보수"
 ];
 
 // 기본 메인 페이지용 문구 설정 (Fallback)
@@ -318,8 +321,78 @@ export const serviceIntentMap: Record<string, ServiceIntent> = {
     seoSubLabelTemplate: "{region} 건물방수·외벽방수·옥상방수 상담 가능",
     badgesTemplate: ["원인 진단 후 시공", "사진 상담 가능"],
     imageDescTemplate: "{region} 건물방수 현장 작업 이미지"
+  },
+  "빗물누수": {
+    serviceName: "빗물누수",
+    serviceGroup: "leak-diagnosis",
+    searchIntent: "diagnosis",
+    titleTemplate: "{region} 빗물누수 | 원인 정밀 진단·보수 전문 레인가드",
+    descriptionTemplate: "{region} 빗물누수 관련 창호 주변, 외벽, 지붕 틈의 물길을 추적하여 알맞은 차단 시공 범위를 안내합니다.",
+    h1Template: "{region} 빗물누수,\n물길 유입 지점부터 추적합니다",
+    heroLabelTemplate: "{region} 빗물누수 정밀진단",
+    heroBodyTemplate: "비가 올 때 새는 건물, 창틀 실리콘 노후화와 외벽 미세 균열을 포함한 빗물 유입 경로를 추적합니다.",
+    introTemplate: "{region} 빗물누수 해결을 위해서는 비바람의 세기와 방향에 따라 달라지는 빗물 유입 틈새를 찾아 정확하게 코킹 및 방수 처리해야 합니다.",
+    diagnosticTemplate: "{region} 빗물누수는 눈에 보이는 부위만 막기보다 물이 시작되는 외부 원인 지점을 찾아 정밀 차단하는 것이 중요합니다.",
+    diagnosticSectionTemplate: "{region} 빗물누수는 눈에 보이는 부위만 막기보다 물이 시작되는 외부 원인 지점을 찾아 정밀 차단하는 것이 중요합니다.",
+    faqQuestionTemplate: "{region} 빗물누수는 장마철에만 시공하나요?",
+    faqAnswerTemplate: "아닙니다. {region} 빗물누수 보수는 비가 그치고 바탕면이 바짝 건조되었을 때 시공해야 방수 실란트가 완벽하게 밀착됩니다.",
+    serviceJsonLdTypeTemplate: "{region} 빗물누수 진단 및 시공",
+    breadcrumbLabelTemplate: "{region} 빗물누수",
+    relatedServices: ["외벽누수", "옥상누수", "균열보수"],
+    ctaTextTemplate: "{region} 빗물누수 상담",
+    kakaoCtaTextTemplate: "누수 사진 견적받기",
+    seoSubLabelTemplate: "{region} 빗물누수·외벽방수·우레탄방수 상담 가능",
+    badgesTemplate: ["유입 경로 추적", "사진 상담 환영"],
+    imageDescTemplate: "{region} 빗물누수 진단 현장"
+  },
+  "우레탄방수": {
+    serviceName: "우레탄방수",
+    serviceGroup: "waterproofing-construction",
+    searchIntent: "method",
+    titleTemplate: "{region} 우레탄방수 | 옥상 고탄성 도막 시공 전문 레인가드",
+    descriptionTemplate: "{region} 우레탄방수 관련 바닥 균열, 방수층 들뜸을 해결하기 위해 표준 두께와 꼼꼼한 하도/중도/상도 시공 범위를 안내합니다.",
+    h1Template: "{region} 우레탄방수,\n바닥 습기 건조부터 확인합니다",
+    heroLabelTemplate: "{region} 우레탄방수 옥상도막",
+    heroBodyTemplate: "들뜬 방수층 철거, 바닥 연삭 면정리 및 표준 두께 시공으로 비가 새지 않는 견고한 방수막을 형성합니다.",
+    introTemplate: "{region} 우레탄방수는 슬래브 콘크리트의 습기를 완전히 말린 후 시공해야 기포 발생이나 들뜸 없는 하이엔드 방수 품질을 얻을 수 있습니다.",
+    diagnosticTemplate: "{region} 우레탄방수 시공 전 바닥면 노후 상태를 확인하고, 갈라짐과 물 고임 부위 면정리를 선행하여 확실한 하도를 적용합니다.",
+    diagnosticSectionTemplate: "{region} 우레탄방수 시공 전 바닥면 노후 상태를 확인하고, 갈라짐과 물 고임 부위 면정리를 선행하여 확실한 하도를 적용합니다.",
+    faqQuestionTemplate: "{region} 우레탄방수 수명은 얼마나 가나요?",
+    faqAnswerTemplate: "바탕 정리가 철저히 되고 2.5mm~3mm 표준 두께로 시공된 {region} 우레탄방수는 주기적인 상도(탑코트) 재도포 관리 시 5년~10년 이상 유지됩니다.",
+    serviceJsonLdTypeTemplate: "{region} 우레탄방수 도막 시공",
+    breadcrumbLabelTemplate: "{region} 우레탄방수",
+    relatedServices: ["옥상방수", "지붕방수", "건물방수"],
+    ctaTextTemplate: "{region} 우레탄방수 상담",
+    kakaoCtaTextTemplate: "옥상 사진 견적받기",
+    seoSubLabelTemplate: "{region} 우레탄방수·옥상방수·건물방수 상담 가능",
+    badgesTemplate: ["표준 두께 시공", "면정리 바탕 철저"],
+    imageDescTemplate: "{region} 우레탄방수 시공 현장"
+  },
+  "균열보수": {
+    serviceName: "균열보수",
+    serviceGroup: "waterproofing-construction",
+    searchIntent: "repair",
+    titleTemplate: "{region} 균열보수 | 콘크리트 외벽·크랙 보강 전문 레인가드",
+    descriptionTemplate: "{region} 균열보수 관련 콘크리트 벽체의 가로/세로 균열과 접합부 이격 부위를 보강하여 추가 침투를 차단하는 공법을 안내합니다.",
+    h1Template: "{region} 균열보수,\n균열 진행성 상태부터 검토합니다",
+    heroLabelTemplate: "{region} 균열보수 크랙보강",
+    heroBodyTemplate: "외벽 콘크리트 크랙, 조인트 벌어짐 부위를 꼼꼼하게 퍼티 보강하거나 주입하여 빗물 유입을 차단합니다.",
+    introTemplate: "{region} 균열보수는 외벽과 벽체의 미세 크랙이 대형 구조 균열로 악화되거나 철근 부식 누수로 이어지기 전에 조치하는 예방 시공입니다.",
+    diagnosticTemplate: "{region} 균열보수는 균열 깊이와 거동 여부에 따라 충전 공법 또는 에폭시 주입 공법을 구분해 콘크리트 내구성을 보완합니다.",
+    diagnosticSectionTemplate: "{region} 균열보수는 균열 깊이와 거동 여부에 따라 충전 공법 또는 에폭시 주입 공법을 구분해 콘크리트 내구성을 보완합니다.",
+    faqQuestionTemplate: "{region} 균열보수 후 바로 도색해야 하나요?",
+    faqAnswerTemplate: "네, {region} 균열보수 부위 메움을 마친 후 외벽 전용 고탄성 방수 코팅 또는 퍼티 마감 도색을 진행해야 미관과 방수력이 오랜 시간 유지됩니다.",
+    serviceJsonLdTypeTemplate: "{region} 균열보수 크랙 보강",
+    breadcrumbLabelTemplate: "{region} 균열보수",
+    relatedServices: ["외벽방수", "외벽도색", "빗물누수"],
+    ctaTextTemplate: "{region} 균열보수 상담",
+    kakaoCtaTextTemplate: "균열 사진 견적받기",
+    seoSubLabelTemplate: "{region} 균열보수·외벽도색·외벽방수 상담 가능",
+    badgesTemplate: ["구조 진단형 메움", "탄성 보강재 사용"],
+    imageDescTemplate: "{region} 균열보수 보강 현장"
   }
-};// 동적 문자열 치환 헬퍼 (기존 "김해" 문자열 및 신규 "{region}" 플레이스홀더 모두 지원)
+};
+// 동적 문자열 치환 헬퍼 (기존 "김해" 문자열 및 신규 "{region}" 플레이스홀더 모두 지원)
 export function formatRegionDisplayName(region: string): string {
   if (!region) return region;
   
@@ -517,6 +590,8 @@ export function parseQueryKeyword(searchString: string): KeywordConfig {
       return DEFAULT_KEYWORD_CONFIG;
     }
 
+
+
     // 중복 동명(충돌동)이 쿼리 파라미터로 들어오면 fallback 처리 (검색 봇 및 주소 혼선 차단)
     if (collisionDongs.has(region)) {
       return DEFAULT_KEYWORD_CONFIG;
@@ -550,7 +625,10 @@ export function parseQueryKeyword(searchString: string): KeywordConfig {
       "외벽도색": "exterior-painting",
       "옥상누수": "rooftop-leak",
       "외벽누수": "exterior-leak",
-      "건물방수": "building-waterproofing"
+      "건물방수": "building-waterproofing",
+      "빗물누수": "rainwater-leak",
+      "우레탄방수": "urethane-waterproofing",
+      "균열보수": "crack-repair"
     };
     const serviceType = serviceTypeMap[service] || "";
 
@@ -564,7 +642,10 @@ export function parseQueryKeyword(searchString: string): KeywordConfig {
       "외벽도색": "균열과 바탕 상태부터 정리합니다",
       "옥상누수": "물이 들어오는 지점부터 확인합니다",
       "외벽누수": "실내 물자국보다 유입 경로를 확인합니다",
-      "건물방수": "손상 구간과 작업 우선순위를 구분합니다"
+      "건물방수": "손상 구간과 작업 우선순위를 구분합니다",
+      "빗물누수": "물자국보다 유입 경로부터 확인합니다",
+      "우레탄방수": "기존 방수층 상태부터 확인합니다",
+      "균열보수": "갈라진 부위와 주변 바탕을 함께 확인합니다"
     };
     const coreDecision = coreDecisionPhrases[service] || "";
     const h1 = `${region} ${service}, ${coreDecision}`;
