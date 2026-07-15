@@ -23,22 +23,22 @@ export const DiagnosisSection: React.FC<DiagnosisSectionProps> = ({ keywordConfi
   const defectCards: DefectCard[] = [
     {
       id: "paint-aging",
-      name: "실내 벽이나 천장에 물자국이 생겼나요?",
-      description: "물자국이 보이는 위치와 실제 빗물이 들어오는 외부 지점은 다를 수 있습니다.",
+      name: "실내에 물자국이 생겼나요?",
+      description: "보이는 위치와 유입 지점은 다를 수 있습니다.",
       imageUrl: defectImages.paintAging,
       altText: "습기가 스며들어 천장 실내 벽지에 누수 물자국과 얼룩이 발생한 현장"
     },
     {
       id: "crack",
-      name: "외벽에 균열이나 들뜸이 보이나요?",
-      description: "균열의 범위뿐 아니라 주변 도막과 접합부 상태를 함께 확인해야 합니다.",
+      name: "외벽에 균열이 보이나요?",
+      description: "균열 주변 도막과 접합부를 함께 확인합니다.",
       imageUrl: defectImages.crack,
       altText: "외벽 콘크리트 표면에 굵은 균열이 생기고 주변 페인트 도막이 들뜬 노후 건물 벽면"
     },
     {
       id: "waterproof-damage",
-      name: "옥상에서 누수가 의심되나요?",
-      description: "방수층뿐 아니라 배수구와 파라펫 접합부도 함께 점검합니다.",
+      name: "옥상 누수가 의심되나요?",
+      description: "방수층과 배수구 상태를 먼저 봅니다.",
       imageUrl: defectImages.waterproofLayerDamage,
       altText: "옥상 바닥의 우레탄 방수층이 갈라지고 찢어져 손상된 누수 취약 부위"
     }
@@ -88,17 +88,19 @@ export const DiagnosisSection: React.FC<DiagnosisSectionProps> = ({ keywordConfi
             fontWeight: 900,
             color: "var(--text-dark)",
             marginBottom: "1rem",
-            letterSpacing: "-0.03em"
+            letterSpacing: "-0.03em",
+            whiteSpace: "pre-line"
           }} className="break-keep diagnosis-h2">
-            같은 누수라도 원인이 다르면 시공 방법도 달라집니다
+            {"같은 누수라도 원인이 다르면\n시공 방법도 달라집니다"}
           </h2>
           <p style={{
             color: "var(--text-muted)",
             fontSize: "1.05rem",
             fontWeight: 500,
-            lineHeight: "1.6"
+            lineHeight: "1.6",
+            whiteSpace: "pre-line"
           }} className="break-keep diagnosis-body-text">
-            {keywordConfig.diagnosticSection || "누수는 보이는 현상보다 실제 원인이 더 중요합니다. 대표 결함 유형을 먼저 확인한 뒤 현장 상태에 맞는 시공 방향을 안내합니다."}
+            {"물자국만 보고 막으면 재누수가 반복될 수 있습니다.\n실제 빗물이 들어오는 지점을 먼저 확인합니다."}
           </p>
         </div>
 

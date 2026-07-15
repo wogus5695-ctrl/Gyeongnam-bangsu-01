@@ -16,25 +16,23 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ keywordConfig }) => {
   const defaultTitle = "누수 위치만 보고 시공을 결정하지 마세요";
   let ctaTitle = defaultTitle;
   if (keywordConfig.isActive) {
-    if (keywordConfig.service === "외벽도색") {
-      ctaTitle = `${keywordConfig.region} 외벽도색·균열,\n지금 상태부터 확인하세요`;
-    } else {
-      ctaTitle = `${keywordConfig.fullKeyword} 누수,\n지금 상태부터 확인하세요`;
-    }
+    const region = keywordConfig.region || "부산·경남·울산";
+    const service = keywordConfig.service;
+    ctaTitle = `${region} ${service},\n사진으로 먼저 확인하세요`;
   }
 
-  const defaultBody = "물자국이 보이는 위치와 빗물이 들어오는 지점은 다를 수 있습니다.\n현재 증상과 건물 상태를 확인한 뒤 필요한 작업 범위를 안내합니다.";
+  const defaultBody = "물자국 위치와 빗물이 들어오는 지점은 다를 수 있습니다.\n현재 증상과 건물 상태를 확인한 뒤 필요한 작업 범위를 안내합니다.";
   let ctaBody = defaultBody;
+
+  const serviceName = keywordConfig.service || "";
+  let buttonText = "현재 누수 상태 문의하기";
   if (keywordConfig.isActive) {
-    const service = keywordConfig.service;
-    if (service === "외벽방수" || service === "외벽발수" || service === "외벽누수") {
-      ctaBody = "외벽 크랙, 조인트 틈새, 창틀 주변 누수는 원인이 다양합니다.\n전화 상담으로 현재 상태와 필요한 보수 방향을 먼저 확인해 드립니다.";
-    } else if (service === "옥상방수" || service === "옥상누수" || service === "지붕방수") {
-      ctaBody = "옥상 균열, 방수층 들뜸, 배수구 손상은 원인이 다릅니다.\n전화 상담으로 현재 상태와 필요한 보수 방향을 먼저 확인해 드립니다.";
-    } else if (service === "외벽도색") {
-      ctaBody = "도막 박리, 미세 균열, 외벽 오염은 원인이 다양합니다.\n전화 상담으로 현재 상태와 필요한 보수 방향을 먼저 확인해 드립니다.";
-    } else if (service === "건물방수") {
-      ctaBody = "외벽 크랙, 옥상 방수층 들뜸, 지붕 틈새는 원인이 다릅니다.\n전화 상담으로 현재 상태와 필요한 보수 방향을 먼저 확인해 드립니다.";
+    if (serviceName.includes("도색")) {
+      buttonText = "현재 외벽 상태 문의하기";
+    } else if (serviceName.includes("방수")) {
+      buttonText = "현재 방수 상태 문의하기";
+    } else if (serviceName.includes("누수") || serviceName.includes("빗물")) {
+      buttonText = "현재 누수 상태 문의하기";
     }
   }
 
@@ -127,7 +125,7 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ keywordConfig }) => {
                 href={HAS_PHONE ? `tel:${CONTACT_PHONE}` : "#contact"}
                 className="cta-btn-phone"
               >
-                📞 현재 누수 상태 문의하기
+                📞 {buttonText}
               </a>
 
               {/* 카톡 상담 바로가기 (활성화 시에만 렌더링) */}

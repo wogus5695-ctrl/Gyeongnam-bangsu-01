@@ -15,28 +15,28 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ keywordConfig })
       return [
         {
           num: "01",
-          title: "실내 누수 흔적 조사",
-          desc: "지사 전문팀이 신속 방문하여 실내 벽면 물자국, 곰팡이 분포 및 습기 발생 위치를 정밀 확인합니다."
+          title: "실내 누수 흔적 확인",
+          desc: "물자국·곰팡이·습기 위치를 먼저 봅니다."
         },
         {
           num: "02",
-          title: "외부 균열 상태 점검",
-          desc: "물자국 발생 위치와 인접한 건물 외부 벽면의 콘크리트 균열, 창틀 실리콘 노후 상태를 육안 점검합니다."
+          title: "외부 균열 점검",
+          desc: "외벽 크랙과 창호 주변 틈을 확인합니다."
         },
         {
           num: "03",
-          title: "유입 경로 장비 추적",
-          desc: "필요 시 열화상 장비 및 정밀 탐지법을 활용해 빗물이 콘크리트 내부를 타고 흐르는 유입 경로를 추적합니다."
+          title: "유입 경로 추적",
+          desc: "빗물이 들어오는 방향과 경로를 봅니다."
         },
         {
           num: "04",
-          title: "원인별 최적 보수 처방",
-          desc: "진단된 누수 원인에 맞춰 불필요한 전체 시공을 지양하고, 하자 없는 정밀 부분 방수 및 보수 범위를 설계합니다."
+          title: "보수 범위 설계",
+          desc: "부분 보수와 전체 시공 여부를 구분합니다."
         },
         {
           num: "05",
-          title: "보수 시공 및 사후 관리",
-          desc: "누수 유입 지점의 정밀 코킹 및 균열 충전 시공을 완료한 뒤 공식 보증서 발급과 함께 자가 관리법을 안내합니다."
+          title: "시공 후 관리",
+          desc: "재누수 방지를 위한 관리 기준을 안내합니다."
         }
       ];
     }
@@ -141,7 +141,7 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ keywordConfig })
         </div>
 
         {/* 프로세스 리스트 */}
-        <div style={{
+        <div className="process-list-container" style={{
           display: "flex",
           flexDirection: "column",
           gap: "1.5rem",
@@ -201,7 +201,22 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ keywordConfig })
       </div>
 
       <style>{`
+        .nav-link {
+          font-weight: 700;
+          font-size: 0.95rem;
+          color: var(--text-muted);
+          text-decoration: none;
+        }
+        .nav-link:hover {
+          color: var(--primary-color);
+        }
         @media (max-width: 768px) {
+          .process-section {
+            padding: 3rem 0 !important;
+          }
+          .process-list-container {
+            gap: 0.75rem !important;
+          }
           .process-h2 {
             font-size: 1.5rem !important;
             margin-bottom: 0.75rem !important;
@@ -213,14 +228,14 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ keywordConfig })
           .process-card {
             flex-direction: column !important;
             align-items: flex-start !important;
-            gap: 1rem !important;
-            padding: 1.5rem !important;
+            gap: 0.75rem !important;
+            padding: 1.25rem !important;
           }
           .process-card div:first-child {
-            width: 50px !important;
-            height: 50px !important;
-            font-size: 1.5rem !important;
-            border-radius: 12px !important;
+            width: 46px !important;
+            height: 46px !important;
+            font-size: 1.35rem !important;
+            border-radius: 10px !important;
           }
         }
       `}</style>

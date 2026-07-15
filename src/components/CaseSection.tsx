@@ -95,6 +95,16 @@ export const CaseSection: React.FC<CaseSectionProps> = ({ keywordConfig }) => {
     return `📍 ${itemCategory} 유사 현장 사례`;
   };
 
+  const isLeakService = keywordConfig.isActive && (keywordConfig.service.includes("누수") || keywordConfig.service.includes("빗물"));
+
+  const sectionTitle = keywordConfig.isActive
+    ? (isLeakService ? "비슷한 누수 보수 사례" : `${keywordConfig.service} 작업 예시`)
+    : "전후 비교로 확인하는\n방수·도색 작업 예시";
+
+  const sectionBody = keywordConfig.isActive
+    ? "아래 이미지는 작업 유형을 이해하기 위한 예시입니다.\n실제 현장 사진은 순차적으로 교체 예정입니다."
+    : "아래 이미지는 작업 유형을 이해하기 위한 전후 비교 예시입니다. 실제 현장 사진은 추후 교체 예정입니다.";
+
   return (
     <section className="case-section" id="cases" style={{ backgroundColor: "#ffffff" }}>
       <div className="container">
@@ -109,9 +119,10 @@ export const CaseSection: React.FC<CaseSectionProps> = ({ keywordConfig }) => {
             fontWeight: 900,
             color: "var(--text-dark)",
             marginBottom: "1.25rem",
-            letterSpacing: "-0.03em"
+            letterSpacing: "-0.03em",
+            whiteSpace: "pre-line"
           }} className="break-keep case-h2">
-            전후 비교로 확인하는<br />방수·도색 작업 예시
+            {sectionTitle}
           </h2>
           <p style={{
             color: "var(--text-muted)",
@@ -120,9 +131,10 @@ export const CaseSection: React.FC<CaseSectionProps> = ({ keywordConfig }) => {
             lineHeight: "1.6",
             maxWidth: "720px",
             margin: "0 auto",
-            wordBreak: "keep-all"
+            wordBreak: "keep-all",
+            whiteSpace: "pre-line"
           }} className="break-keep case-body-text">
-            아래 이미지는 작업 유형을 이해하기 위한 전후 비교 예시입니다. 실제 현장 사진은 추후 교체 예정입니다.
+            {sectionBody}
           </p>
         </div>
 

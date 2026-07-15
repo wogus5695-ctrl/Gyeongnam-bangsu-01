@@ -16,7 +16,10 @@ export const CostSection: React.FC<CostSectionProps> = ({ keywordConfig }) => {
   let body = "방수 공사 비용은 면적만으로 결정되지 않습니다.\n균열과 기존 도막 상태, 건물 높이, 로프 접근 조건과 바탕면 보수 범위를 함께 확인합니다.";
 
   if (keywordConfig.isActive) {
-    title = `${keywordConfig.fullKeyword} 현장에 꼭 필요한\n공정만을 안내드립니다.`;
+    const region = keywordConfig.region || "부산·경남·울산";
+    const service = keywordConfig.service;
+    title = `${region} ${service},\n필요한 공정만 안내합니다`;
+    body = "균열, 도막 상태, 접근 조건을 확인한 뒤\n불필요한 전체 시공 없이 보수 범위를 안내합니다.";
   }
 
   const renderWithLineBreaks = (text: string) => {

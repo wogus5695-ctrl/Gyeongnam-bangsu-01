@@ -14,11 +14,11 @@ export const Header: React.FC = () => {
       WebkitBackdropFilter: "blur(12px)",
       boxShadow: "0 1px 3px rgba(0,0,0,0.02)"
     }}>
-      <div className="container" style={{
-        height: "80px",
+      <div className="container header-container" style={{
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        boxSizing: "border-box"
       }}>
         {/* 브랜드 로고 */}
         <a href="/" style={{
@@ -27,7 +27,7 @@ export const Header: React.FC = () => {
           alignItems: "center",
           gap: "0.5rem"
         }}>
-          <div style={{
+          <div className="logo-icon" style={{
             width: "32px",
             height: "32px",
             backgroundColor: "var(--primary-color)",
@@ -37,11 +37,12 @@ export const Header: React.FC = () => {
             justifyContent: "center",
             color: "#fff",
             fontWeight: 900,
-            fontSize: "1.1rem"
+            fontSize: "1.1rem",
+            flexShrink: 0
           }}>
             R
           </div>
-          <span style={{
+          <span className="logo-text" style={{
             fontWeight: 900,
             fontSize: "1.35rem",
             color: "var(--text-dark)",
@@ -66,19 +67,37 @@ export const Header: React.FC = () => {
         {/* 우측 전화문의 실시간 버튼 */}
         <a
           href={HAS_PHONE ? `tel:${CONTACT_PHONE}` : "#contact"}
-          className="btn btn-primary"
+          className="btn btn-primary header-cta-btn"
           style={{
             padding: "0.6rem 1.2rem",
             fontSize: "0.95rem",
             borderRadius: "10px",
-            boxShadow: "none"
+            boxShadow: "none",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            whiteSpace: "nowrap"
           }}
         >
-          📞 작업 가능 여부 전화 확인
+          <span className="cta-text-pc">📞 작업 가능 여부 전화 확인</span>
+          <span className="cta-text-mo">📞 전화 문의</span>
         </a>
       </div>
 
       <style>{`
+        .header-container {
+          height: 80px;
+        }
+        .cta-text-pc {
+          display: inline;
+        }
+        .cta-text-mo {
+          display: none;
+        }
+        .logo-text {
+          white-space: nowrap;
+        }
+        
         .nav-link {
           font-weight: 700;
           font-size: 0.95rem;
@@ -88,9 +107,33 @@ export const Header: React.FC = () => {
         .nav-link:hover {
           color: var(--primary-color);
         }
+        
         @media (max-width: 768px) {
+          .header-container {
+            height: 60px;
+          }
           .desktop-nav {
             display: none !important;
+          }
+          .cta-text-pc {
+            display: none !important;
+          }
+          .cta-text-mo {
+            display: inline !important;
+          }
+          .logo-text {
+            font-size: 1.15rem !important;
+          }
+          .logo-icon {
+            width: 28px !important;
+            height: 28px !important;
+            font-size: 0.95rem !important;
+          }
+          .header-cta-btn {
+            padding: 0.5rem 0.8rem !important;
+            font-size: 0.85rem !important;
+            height: 44px !important;
+            border-radius: 8px !important;
           }
         }
       `}</style>

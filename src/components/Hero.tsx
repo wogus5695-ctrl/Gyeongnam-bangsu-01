@@ -30,6 +30,28 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
   // 모바일 전용 텍스트 압축 및 분기
   if (isMobile && keywordConfig.isActive) {
     topLabel = `${region} ${service} 현장진단`;
+    
+    let tail = "새는 길부터 찾습니다";
+    if (service === "외벽방수") {
+      tail = "외벽 크랙부터 점검합니다";
+    } else if (service === "옥상방수") {
+      tail = "방수층부터 확인합니다";
+    } else if (service === "외벽발수") {
+      tail = "외벽 상태에 맞는 적용 여부를 확인합니다";
+    } else if (service === "지붕방수") {
+      tail = "이음부와 접합부부터 확인합니다";
+    } else if (service === "외벽도색") {
+      tail = "균열과 바탕 상태부터 정리합니다";
+    } else if (service === "건물방수") {
+      tail = "손상 구간과 작업 우선순위를 구분합니다";
+    } else if (service === "옥상누수") {
+      tail = "물이 들어오는 지점부터 확인합니다";
+    } else if (service === "외벽누수") {
+      tail = "실내 물자국보다 유입 경로를 확인합니다";
+    }
+    
+    h1 = `${region} ${service},\n${tail}`;
+    heroBody = "물자국 위치만 막으면 반복될 수 있습니다.\n외벽·창호·옥상 유입 경로를 함께 확인합니다.";
     badges = ["원인 확인 후 보수", "사진 상담 가능"];
   } else if (isMobile && !keywordConfig.isActive) {
     // 기본 메인 페이지 모바일 최적화
@@ -96,7 +118,10 @@ export const Hero: React.FC<HeroProps> = ({ keywordConfig }) => {
                 "표면 흡수부터",
                 "누수 원인부터",
                 "유입 경로부터",
-                "방수층부터"
+                "방수층부터",
+                "새는 길부터 찾습니다",
+                "외벽 크랙부터 점검합니다",
+                "방수층부터 확인합니다"
               ];
               const matchedPhrase = targetPhrases.find(phrase => line2.startsWith(phrase));
               if (matchedPhrase) {

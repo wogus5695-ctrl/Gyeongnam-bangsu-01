@@ -14,11 +14,11 @@ const activeGroups = regionGroups.filter(group =>
 
 // 1. GNB 헤더 HTML 생성
 const headerHtml = `
-<header style="position: sticky; top: 0; z-index: 50; width: 100%; border-bottom: 1px solid rgba(0, 0, 0, 0.05); backgroundColor: rgba(255, 255, 255, 0.9); backdropFilter: blur(12px); -webkit-backdrop-filter: blur(12px); boxShadow: 0 1px 3px rgba(0,0,0,0.02)">
-  <div class="container" style="height: 80px; display: flex; align-items: center; justify-content: space-between">
+<header style="position: sticky; top: 0; z-index: 50; width: 100%; border-bottom: 1px solid rgba(0, 0, 0, 0.05); background-color: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 1px 3px rgba(0,0,0,0.02)">
+  <div class="container header-container" style="display: flex; align-items: center; justify-content: space-between; box-sizing: border-box">
     <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 0.5rem">
-      <div style="width: 32px; height: 32px; background-color: var(--primary-color, #1b61fc); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 1.1rem">R</div>
-      <span style="font-weight: 900; font-size: 1.35rem; color: var(--text-dark, #0f172a); letter-spacing: -0.04em">${BRAND_NAME}</span>
+      <div class="logo-icon" style="width: 32px; height: 32px; background-color: var(--primary-color, #1b61fc); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 1.1rem; flex-shrink: 0">R</div>
+      <span class="logo-text" style="font-weight: 900; font-size: 1.35rem; color: var(--text-dark, #0f172a); letter-spacing: -0.04em">${BRAND_NAME}</span>
     </a>
     <nav class="desktop-nav" style="display: flex; gap: 2rem">
       <a href="#problems" class="nav-link" style="font-weight: 700; font-size: 0.95rem; color: var(--text-muted, #64748b); text-decoration: none">누수진단</a>
@@ -27,8 +27,53 @@ const headerHtml = `
       <a href="#cases" class="nav-link" style="font-weight: 700; font-size: 0.95rem; color: var(--text-muted, #64748b); text-decoration: none">시공예시</a>
       <a href="#areas" class="nav-link" style="font-weight: 700; font-size: 0.95rem; color: var(--text-muted, #64748b); text-decoration: none">서비스지역</a>
     </nav>
-    <a href="tel:${CONTACT_PHONE}" class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.95rem; border-radius: 10px; box-shadow: none; text-decoration: none; color: #fff; background-color: var(--primary-color, #1b61fc)">📞 작업 가능 여부 전화 확인</a>
+    <a href="tel:${CONTACT_PHONE}" class="btn btn-primary header-cta-btn" style="padding: 0.6rem 1.2rem; font-size: 0.95rem; border-radius: 10px; box-shadow: none; text-decoration: none; color: #fff; background-color: var(--primary-color, #1b61fc); display: inline-flex; align-items: center; justify-content: center; white-space: nowrap">
+      <span class="cta-text-pc">📞 작업 가능 여부 전화 확인</span>
+      <span class="cta-text-mo">📞 전화 문의</span>
+    </a>
   </div>
+  <style>
+    .header-container {
+      height: 80px;
+    }
+    .cta-text-pc {
+      display: inline;
+    }
+    .cta-text-mo {
+      display: none;
+    }
+    .logo-text {
+      white-space: nowrap;
+    }
+    @media (max-width: 768px) {
+      .header-container {
+        height: 60px !important;
+      }
+      .desktop-nav {
+        display: none !important;
+      }
+      .cta-text-pc {
+        display: none !important;
+      }
+      .cta-text-mo {
+        display: inline !important;
+      }
+      .logo-text {
+        font-size: 1.15rem !important;
+      }
+      .logo-icon {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 0.95rem !important;
+      }
+      .header-cta-btn {
+        padding: 0.5rem 0.8rem !important;
+        font-size: 0.85rem !important;
+        height: 44px !important;
+        border-radius: 8px !important;
+      }
+    }
+  </style>
 </header>
 `;
 

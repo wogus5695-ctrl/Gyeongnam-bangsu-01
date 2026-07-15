@@ -86,38 +86,33 @@ export const surfaceProtectionFaqs: FaqItem[] = [
 export const leakDiagnosisFaqs: FaqItem[] = [
   {
     id: 1,
-    question: "{region} 비가 올 때만 천장이나 벽면에 물자국이 생기면 누수인가요?",
-    answer: "네, 빗물 유입형 누수일 확률이 99% 이상입니다. 맑은 날에도 물이 일정하게 새어 나오는 상하수도 배관 누수와 달리, 비가 오거나 바람 부는 날에만 실내 콘크리트 벽지가 젖어 들고 건조되기를 반복한다면 외벽 크랙, 창틀 코킹 노후화, 파라펫 틈새가 원인입니다."
+    question: "누수 원인은 어떻게 확인하나요?",
+    answer: "실내 물자국 분포를 조사하고 외부 크랙 및 창호 코킹 상태를 육안 점검합니다. 필요 시 열화상 장비 추적과 살수 테스트를 거쳐 종합 진단합니다."
   },
   {
     id: 2,
-    question: "{region} 실내 물자국 위치와 실제 외벽 누수 유입 경로가 다를 수 있나요?",
-    answer: "네, 대다수의 외벽 누수에서 나타나는 특징입니다. 빗물은 외벽의 미세한 크랙을 통해 내부로 침투한 뒤, 슬래브 조인트나 콘크리트 내부 철근 및 물길을 타고 이동하다가 내장재가 가장 취약하게 뚫린 곳을 통해 실내로 노출됩니다. 따라서 겉면 물자국만 칠하지 말고 유입 경로를 추적해야 합니다."
+    question: "물자국 위치와 원인이 다를 수 있나요?",
+    answer: "네, 빗물은 콘크리트 내부 조인트나 균열을 타고 흘러 엉뚱한 곳에서 맺힐 수 있습니다. 겉면 덧칠보다 외부 유입 경로를 추적해 차단하는 것이 정석입니다."
   },
   {
     id: 3,
-    question: "{region} 옥상누수와 외벽누수를 자가 구분할 수 있는 방법이 있나요?",
-    answer: "가장 탑층인 세대의 천장이나 옥상 바로 아래 옹벽 벽면이 젖는다면 옥상 우레탄 찢어짐, 배수 불량, 파라펫 크랙에 기인한 옥상누수일 가능성이 큽니다. 반면 건물의 중간층 벽면이나 창틀 주변에 물자국이 반복되면 외벽 표면 균열이나 창호 코킹 노화로 인한 외벽누수로 판단할 수 있습니다."
+    question: "외벽누수와 옥상누수는 어떻게 구분하나요?",
+    answer: "최상층 천장이나 옥상 하부 옹벽이 젖는다면 옥상 누수일 확률이 높습니다. 중간층 벽면이나 창틀 주변에 물자국이 생긴다면 외벽 누수일 가능성이 큽니다."
   },
   {
     id: 4,
-    question: "{region} 누수 원인 진단을 위해 어떤 전문 장비를 사용하나요?",
-    answer: "콘크리트 내부 온도 편차를 통해 물이 흐른 경로와 수분 분포를 검사하는 열화상 카메라 진단, 빗물 유입 상황을 테스트하는 살수 테스트, 균열의 진행 상태를 파악하는 정밀 크랙 스케일 등을 활용하여 직관적이고 정확한 진원지를 규명합니다."
+    question: "비바람이 강한 날만 새는 이유는?",
+    answer: "강한 풍압이 외벽이나 창틀 실리콘 틈새로 빗물을 밀어 넣기 때문입니다. 평소에는 누수 반응이 없다 비가 들이치는 특정 방향에서만 유발되는 특징이 있습니다."
   },
   {
     id: 5,
-    question: "{region} 누수가 발생했을 때 부분 보수만으로 재누수를 막을 수 있나요?",
-    answer: "단일 틈새나 특정 불량 조인트 등으로 누수 원인이 명확히 국한된다면 정밀 부분 보수로 정밀하게 막을 수 있습니다. 그러나 건물 전체 마감재와 코킹의 내구연한이 다했다면 수압에 의해 물길이 옆 크랙으로 금방 이동하므로, 진단 결과에 맞춘 종합 보수 설계가 훨씬 경제적입니다."
+    question: "부분 보수만 가능한 경우도 있나요?",
+    answer: "네, 유입 경로가 명확하고 주변 도막이 양호하다면 해당 구간만 부분 실링 보수합니다. 다만 전체 노화가 심한 경우는 물길이 우회하므로 종합 보강이 경제적입니다."
   },
   {
     id: 6,
-    question: "{region} 사진 상담 시 어떤 각도로 촬영해 보내는 것이 진단에 유리한가요?",
-    answer: "실내 벽지의 물자국과 곰팡이를 보여주는 사진 1장, 실외 건물 밖에서 해당 누수 지점에 대칭되는 외부 전경 사진 1장, 그리고 주변 창틀이나 균열 부위의 근접 사진 1장 등 3장을 선명하게 전송해 주시면 유입 지점을 예측하는 데 큰 도움이 됩니다."
-  },
-  {
-    id: 7,
-    question: "{region} 누수 원인 진단 및 실측 비용은 따로 청구되나요?",
-    answer: "저희는 기본적으로 고객 편의를 위한 1차 현장 방문, 레이아웃 육안 실측 및 일반적인 상태 진단을 전액 무상으로 제공하고 있습니다. 특수한 고가 장비를 동원하여 정밀 보고서를 작성하는 극히 이례적인 진단 프로젝트를 제외하면 모두 무료입니다."
+    question: "사진으로 어디까지 확인할 수 있나요?",
+    answer: "선명한 실내외 물자국 및 전경 사진을 전송해 주시면 대략적인 예상 공법과 견적 산출이 가능합니다. 단, 정확한 견적은 현장 실측을 거치는 것이 좋습니다."
   }
 ];
 
@@ -145,7 +140,11 @@ export function getDynamicFaqs(keywordConfig: any): FaqItem[] {
 
   let targetFaqs = waterproofingFaqs; // 기본값
 
-  if (service === "외벽방수") {
+  const isLeakService = service.includes("누수") || service.includes("빗물");
+
+  if (isLeakService) {
+    targetFaqs = leakDiagnosisFaqs;
+  } else if (service === "외벽방수") {
     targetFaqs = exteriorWaterproofingFaqs;
   } else if (service === "외벽발수") {
     targetFaqs = exteriorWaterRepellentFaqs;
@@ -155,14 +154,8 @@ export function getDynamicFaqs(keywordConfig: any): FaqItem[] {
     targetFaqs = roofWaterproofingFaqs;
   } else if (service === "외벽도색") {
     targetFaqs = exteriorPaintingFaqs;
-  } else if (service === "옥상누수") {
-    targetFaqs = rooftopLeakFaqs;
-  } else if (service === "외벽누수") {
-    targetFaqs = exteriorLeakFaqs;
   } else if (service === "건물방수") {
     targetFaqs = buildingWaterproofingFaqs;
-  } else if (service === "빗물누수") {
-    targetFaqs = rainwaterLeakFaqs;
   } else if (service === "우레탄방수") {
     targetFaqs = urethaneWaterproofingFaqs;
   } else if (service === "균열보수") {

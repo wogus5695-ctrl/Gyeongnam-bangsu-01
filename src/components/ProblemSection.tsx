@@ -100,7 +100,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({ keywordConfig })
   const defaultLabel = "누수 원인 체크";
   const defaultTitle = "보이는 누수와\n실제 원인은 다를 수 있습니다";
   const defaultBody = "외벽·옥상·지붕 상태를 함께 확인해\n필요한 보수 범위만 안내합니다.";
-  const defaultChecklist = ["외벽 크랙·조인트 틈새", "옥상 방수층 들뜸·갈라짐", "지붕 접합부 틈새", "도막 박리·표면 손상"];
+  const defaultChecklist = ["외벽 크랙·조인트 틈새", "옥상 방수층 들뜸", "지붕 접합부 틈새", "도막 박리·표면 손상"];
   const defaultRelatedTitle = "연관 진단 및 보수 공정 알아보기";
   const defaultRelatedServices = ["외벽방수", "옥상방수", "외벽누수", "옥상누수"];
 
@@ -111,14 +111,30 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({ keywordConfig })
   let relatedTitle = defaultRelatedTitle;
   let relatedServices = defaultRelatedServices;
 
-  if (isActive && problemMap[service]) {
-    const config = problemMap[service];
-    label = config.label;
-    title = config.title;
-    body = replaceRegion(config.body, region);
-    checklist = keywordConfig.symptoms || config.checklist;
-    relatedTitle = config.relatedTitle;
-    relatedServices = config.relatedServices;
+  const isLeakService = service.includes("누수") || service.includes("빗물");
+
+  if (isActive) {
+    if (isLeakService) {
+      label = "누수 원인 체크";
+      title = "물자국 위치보다\n유입 경로가 먼저입니다";
+      body = "보이는 곳만 막으면 재누수가 반복될 수 있습니다.\n외벽·창호·옥상 상태를 함께 확인합니다.";
+      checklist = ["외벽 크랙·조인트 틈새", "옥상 방수층 들뜸", "지붕 접합부 틈새", "도막 박리·표면 손상"];
+      if (problemMap[service]) {
+        relatedTitle = problemMap[service].relatedTitle;
+        relatedServices = problemMap[service].relatedServices;
+      } else {
+        relatedTitle = "누수와 함께 확인할 공정";
+        relatedServices = ["외벽방수", "옥상방수", "건물방수"];
+      }
+    } else if (problemMap[service]) {
+      const config = problemMap[service];
+      label = config.label;
+      title = config.title;
+      body = replaceRegion(config.body, region);
+      checklist = keywordConfig.symptoms || config.checklist;
+      relatedTitle = config.relatedTitle;
+      relatedServices = config.relatedServices;
+    }
   }
 
   return (
